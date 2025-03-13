@@ -1,0 +1,1 @@
+# studmart-partners-microservice
