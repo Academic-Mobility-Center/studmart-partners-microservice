@@ -26,6 +26,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation", "Infrastructure\StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation\StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.csproj", "{2D78F393-2C30-4804-A460-68CFE4719538}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A3A0A0E3-A6C5-45A7-B488-AD7BC00D7EF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Domain.ValueObjects.Tests", "Tests\StudMart.PartnersMicroservice.Domain.ValueObjects.Tests\StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.csproj", "{5E55B680-DCCA-429E-BB08-C6E6CE713F05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Domain.Entities.Tests", "Tests\StudMart.PartnersMicroservice.Domain.Entities.Tests\StudMart.PartnersMicroservice.Domain.Entities.Tests.csproj", "{2F4B9333-E6F3-4B6F-88A6-E6416B187D9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Domain.Factories.Tests", "Tests\StudMart.PartnersMicroservice.Domain.Factories.Tests\StudMart.PartnersMicroservice.Domain.Factories.Tests.csproj", "{D627EF8A-E315-410E-BC14-B854D76EC6C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{132F3D7D-0F6F-4D89-A085-592042916B94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Common.Helpers", "Common\StudMart.PartnersMicroservice.Common.Helpers\StudMart.PartnersMicroservice.Common.Helpers.csproj", "{8A6C4512-9FCF-4959-A920-6304489CDB03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +80,22 @@ Global
 		{2D78F393-2C30-4804-A460-68CFE4719538}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D78F393-2C30-4804-A460-68CFE4719538}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D78F393-2C30-4804-A460-68CFE4719538}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E55B680-DCCA-429E-BB08-C6E6CE713F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E55B680-DCCA-429E-BB08-C6E6CE713F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E55B680-DCCA-429E-BB08-C6E6CE713F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E55B680-DCCA-429E-BB08-C6E6CE713F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4B9333-E6F3-4B6F-88A6-E6416B187D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4B9333-E6F3-4B6F-88A6-E6416B187D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4B9333-E6F3-4B6F-88A6-E6416B187D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4B9333-E6F3-4B6F-88A6-E6416B187D9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D627EF8A-E315-410E-BC14-B854D76EC6C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D627EF8A-E315-410E-BC14-B854D76EC6C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D627EF8A-E315-410E-BC14-B854D76EC6C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D627EF8A-E315-410E-BC14-B854D76EC6C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A6C4512-9FCF-4959-A920-6304489CDB03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A6C4512-9FCF-4959-A920-6304489CDB03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A6C4512-9FCF-4959-A920-6304489CDB03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A6C4512-9FCF-4959-A920-6304489CDB03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C833E55D-B67C-470C-B9B4-4538A130DAAA} = {7136AC2C-ED87-4C19-B3CB-28BCFD6E193A}
@@ -79,5 +107,9 @@ Global
 		{EF791AE9-13BA-495A-A37E-C0086B1A53BB} = {C17BA2E4-00F1-49E0-82C0-BC35AF1887E1}
 		{7EA5B701-5902-400C-8104-E834F3A35381} = {F9C2ED18-63CA-4C5A-9D7C-3F71EFBB0C1B}
 		{2D78F393-2C30-4804-A460-68CFE4719538} = {F9C2ED18-63CA-4C5A-9D7C-3F71EFBB0C1B}
+		{5E55B680-DCCA-429E-BB08-C6E6CE713F05} = {A3A0A0E3-A6C5-45A7-B488-AD7BC00D7EF9}
+		{2F4B9333-E6F3-4B6F-88A6-E6416B187D9E} = {A3A0A0E3-A6C5-45A7-B488-AD7BC00D7EF9}
+		{D627EF8A-E315-410E-BC14-B854D76EC6C1} = {A3A0A0E3-A6C5-45A7-B488-AD7BC00D7EF9}
+		{8A6C4512-9FCF-4959-A920-6304489CDB03} = {132F3D7D-0F6F-4D89-A085-592042916B94}
 	EndGlobalSection
 EndGlobal

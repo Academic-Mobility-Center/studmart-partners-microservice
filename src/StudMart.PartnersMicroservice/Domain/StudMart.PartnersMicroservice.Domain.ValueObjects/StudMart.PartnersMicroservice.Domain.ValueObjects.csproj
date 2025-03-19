@@ -6,4 +6,11 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Common\StudMart.PartnersMicroservice.Common.Helpers\StudMart.PartnersMicroservice.Common.Helpers.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="StudMart.PartnersMicroservice.Domain.ValueObjects.Tests" />
+    </ItemGroup>
+
 </Project>

@@ -10,4 +10,8 @@
       <ProjectReference Include="..\StudMart.PartnersMicroservice.Domain.Entities\StudMart.PartnersMicroservice.Domain.Entities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Validators\" />
+    </ItemGroup>
+
 </Project>
