@@ -5,7 +5,7 @@ namespace StudMart.PartnersMicroservice.Domain.Entities.Base;
 /// <summary>
 /// Base class for entities that have int Id property
 /// </summary>
-public abstract class IntegerIdentifierEntity : IEntity<int>
+public abstract class IntegerIdentifierEntity : EntityBase<int>
 {
     /// <summary>
     /// Id value
@@ -37,7 +37,7 @@ public abstract class IntegerIdentifierEntity : IEntity<int>
     /// Constructor that creates entity with integer identifier 
     /// </summary>
     /// <param name="id">Identifier of entity</param>
-    protected IntegerIdentifierEntity(int id)
+    protected IntegerIdentifierEntity(int id) : base(id)
     {
         Id = id;
     }

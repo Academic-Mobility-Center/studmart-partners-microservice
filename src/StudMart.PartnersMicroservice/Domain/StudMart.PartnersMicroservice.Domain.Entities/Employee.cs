@@ -18,4 +18,8 @@ public class Employee : GuidIdentifierEntity
         Email = email ?? throw new ArgumentNullException(nameof(email));
         Partner = partner ?? throw new ArgumentNullException(nameof(partner));
     }
+    public Employee(FirstName firstName, LastName lastName, Email email, Partner partner) : this(Guid.NewGuid(), firstName, lastName, email, partner)
+    {
+
+    }
 }

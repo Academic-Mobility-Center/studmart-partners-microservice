@@ -3,8 +3,19 @@ using StudMart.PartnersMicroservice.Domain.ValueObjects;
 
 namespace StudMart.PartnersMicroservice.Domain.Entities;
 
-public class Region(int id, RegionName region, Country country) : IntegerIdentifierEntity(id)
+public class Region : IntegerIdentifierEntity
 {
-    public Country Country { get;  } = country ?? throw new ArgumentNullException(nameof(country));
-    public RegionName Name { get;  } = region ?? throw new ArgumentNullException(nameof(region));
+    public Region(int id, Country country, RegionName name) : base(id)
+    {
+        Country = country;
+        Name = name;
+    }
+
+    public Region(Country country, RegionName name) : this(0, country, name)
+    {
+        
+    }
+
+    public Country Country { get;  } 
+    public RegionName Name { get;  } 
 }

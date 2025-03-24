@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.Domain.ValueObjects;
 
 namespace StudMart.PartnersMicroservice.Domain.Entities.Aggregates;
 
-public class Partner : GuidIdentifierEntity
+public class Partner : SoftDeletableGuidIdentifierEntity
 {
     public Country Country { get; set; }
     public Site Site { get; set; }
@@ -11,11 +11,12 @@ public class Partner : GuidIdentifierEntity
     public CompanyName CompanyName { get; set; }
     public Phone Phone { get; set; }
     public Email Email { get; set; }
+    public PaymentInformation PaymentInformation { get; set; }
     private readonly ICollection<Employee> _employees;
     public IReadOnlyCollection<Employee> Employees => _employees.ToList().AsReadOnly();
     
 
-    public Partner(Guid id, CompanyName companyName, Phone phone, Email email, Country country, Site site, Inn inn, ICollection<Employee> employees) : base(id)
+    public Partner(Guid id, CompanyName companyName, Phone phone, Email email, Country country, Site site, Inn inn, PaymentInformation paymentInformation, ICollection<Employee> employees) : base(id)
     {
         CompanyName = companyName ?? throw new ArgumentNullException(nameof(companyName));
         Phone = phone ?? throw new ArgumentNullException(nameof(phone));
@@ -23,8 +24,25 @@ public class Partner : GuidIdentifierEntity
         Site = site ?? throw new ArgumentNullException(nameof(site));
         Inn = inn ?? throw new ArgumentNullException(nameof(inn));
         Email = email ?? throw new ArgumentNullException(nameof(email));
+        PaymentInformation = paymentInformation ?? throw new ArgumentNullException(nameof(paymentInformation));
         _employees = employees ?? throw new ArgumentNullException(nameof(employees));
     }
-    
+
+    public Partner(CompanyName companyName, Phone phone, Email email, Country country, Site site, Inn inn, PaymentInformation paymentInformation) : this(Guid.NewGuid(), companyName, phone, email, country, site,inn, paymentInformation, new List<Employee>())
+    {
+        
+    }
+
+    public void Hire(Employee employee)
+    {
+        
+            
+        
+    }
+
+    public void File(Employee employee)
+    {
+        
+    }
     
 }
