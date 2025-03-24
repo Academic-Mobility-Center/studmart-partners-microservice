@@ -1,19 +1,16 @@
 using System.Collections;
+using StudMart.PartnersMicroservice.Tests.Common.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.RegionName;
 
-public class RegionNameCorrectTestsData : IEnumerable<object[]>
+public class RegionNameCorrectTestsData() : TestsDataBase<string>(ValidNames)
 {
-    private readonly IEnumerable<object[]> _validNames =
+    private static  readonly IEnumerable<string> ValidNames =
     [
-        ["Московская область"], // Корректное название региона
-        ["Санкт-Петербург"], // Корректное название региона с дефисом
-        ["Республика Татарстан"], // Корректное название региона
-        ["Краснодарский край"], // Корректное название региона
-        ["Ханты-Мансийский автономный округ"] // Корректное название региона с дефисом
+        "Московская область", 
+        "Санкт-Петербург", 
+        "Республика Татарстан", 
+        "Краснодарский край", 
+        "Ханты-Мансийский автономный округ" 
     ];
-
-    public IEnumerator<object[]> GetEnumerator() => _validNames.GetEnumerator();
-    
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

@@ -1,29 +1,20 @@
-using System.Collections;
+using StudMart.PartnersMicroservice.Tests.Common.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Inn;
 
 /// <summary>
 /// Class that contains correct real INNs of companies
 /// </summary>
-public class CorrectInnTestsData : IEnumerable<object[]>
+public class CorrectInnTestsData() : TestsDataBase<long>(CorrectInns)
 {
     /// <summary>
     /// Correct INNs of organizations for tests
     /// </summary>
-    public static readonly IEnumerable<object[]> CorrectInns =
+    private static readonly IEnumerable<long> CorrectInns =
     [
-        [5037011336],
-        [7701908643],
-        [7716955847]
+        5037011336,
+        7701908643,
+        7716955847
     ];
-    /// <summary>
-    /// Enumerator to correct INNs collection
-    /// </summary>
-    /// <returns>Enumerator to first element of INNs collections</returns>
-    public IEnumerator<object[]> GetEnumerator() => CorrectInns.GetEnumerator();
-    /// <summary>
-    /// Enumerator to correct INNs collection
-    /// </summary>
-    /// <returns>Enumerator to first element of INNs collections</returns>
-    IEnumerator IEnumerable.GetEnumerator() =>GetEnumerator();
+
 }

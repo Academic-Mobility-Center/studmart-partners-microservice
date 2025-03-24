@@ -1,20 +1,16 @@
-using System.Collections;
+using StudMart.PartnersMicroservice.Tests.Common.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.FirstName;
 
-public class IncorrectFirstNameTestsData : IEnumerable<object[]>
+public class IncorrectFirstNameTestsData() : TestsDataBase<string>(InvalidNames)
 {
-    private readonly IEnumerable<object[]> _invalidNames =
+    private static readonly IEnumerable<string> InvalidNames =
     [
-        [""], // Пустая строка
-        ["   "], // Строка с пробелами
-        ["Иванов@"], // Некорректная фамилия с символом '@'
-        ["Петров$Водкин"], // Некорректная фамилия с символом '$'
-        ["123 Сидоров"], // Некорректная фамилия с цифрами
-        ["О’Коннор!"] // Некорректная фамилия с символом '!'
+        "", 
+        "   ", 
+        "Иванов@", 
+        "Петров$Водкин", 
+        "123 Сидоров", 
+        "О’Коннор!" 
     ];
-
-    public IEnumerator<object[]> GetEnumerator() => _invalidNames.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

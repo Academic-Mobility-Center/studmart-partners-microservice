@@ -1,20 +1,17 @@
-using System.Collections;
+using StudMart.PartnersMicroservice.Tests.Common.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.CountryName;
 
-public class IncorrectCountryNameTestsData : IEnumerable<object[]>
+public class IncorrectCountryNameTestsData() : TestsDataBase<string>(InvalidNames)
 {
-    private readonly IEnumerable<object[]> _invalidNames = 
+    private static readonly IEnumerable<string> InvalidNames = 
     [
-        [""], // Пустая строка
-        ["   "], // Строка с пробелами
-        ["Россия@"], // Некорректное название с символом '@'
-        ["Южная$Корея"], // Некорректное название с символом '$'
-        ["123 Страна"], // Некорректное название с цифрами
-        ["Кот-д’Ивуар!"] // Некорректное название с символом '!'
+        "", 
+        "   ", 
+        "Россия@", 
+        "Южная$Корея", 
+        "123 Страна", 
+        "Кот-д’Ивуар!" 
     ];
 
-    public IEnumerator<object[]> GetEnumerator() => _invalidNames.GetEnumerator();
-    
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
