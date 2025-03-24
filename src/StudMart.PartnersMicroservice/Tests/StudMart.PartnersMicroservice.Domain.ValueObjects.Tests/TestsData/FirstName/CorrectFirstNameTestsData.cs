@@ -2,7 +2,7 @@ using StudMart.PartnersMicroservice.Tests.Common.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.FirstName;
 
-public class CorrectFirstNameTestsData() : TestsDataBase<string>
+public class CorrectFirstNameTestsData() : TestsDataBase<string>(ValidNames)
 {
     private static readonly IEnumerable<string> ValidNames = 
     [

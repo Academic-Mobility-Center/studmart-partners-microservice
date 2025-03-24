@@ -2,7 +2,7 @@ using StudMart.PartnersMicroservice.Tests.Common.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.RegionName;
 
-public class IncorrectRegionNameTestsData : TestsDataBase<string>
+public class IncorrectRegionNameTestsData() : TestsDataBase<string>(ValidNames)
 {
      private static readonly IEnumerable<string> ValidNames =
     [

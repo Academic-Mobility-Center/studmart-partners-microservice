@@ -32,5 +32,18 @@ public  static class RegexValidationRules
     /// Regex rule for region of country
     /// </summary>
     public const string RegionNameValidationRegex = @"^[а-яА-Я\s\'’-]+$";
+    /// <summary>
+    /// Regex rule for site path
+    /// </summary>
+    public const string SiteValidationRegex = @"^(https?:\/\/)?(www\.)?(([\w-]+\.)+[\w-]+|localhost)(\.\w{2,})?(:[0-9]{1,5})?(\/[^\s<>]*)?(\?[^\s<>]*)?$";
+    /// <summary>
+    /// Regex rule for account number
+    /// </summary>
+    public const string AccountNumberValidationRegex = @"^\d{20}$";
+    /// <summary>
+    /// Regex rule for account number
+    /// </summary>
+    public const string BikValidationRegex = @"^\d{9}$";
+    
 
 }

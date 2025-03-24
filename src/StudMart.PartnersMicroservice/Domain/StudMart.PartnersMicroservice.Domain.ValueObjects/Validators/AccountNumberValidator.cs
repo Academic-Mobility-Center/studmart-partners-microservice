@@ -4,4 +4,5 @@ using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Validators;
 
-public class SiteValidator() : StringValidatorBase<InvalidSiteException>(RegexValidationRules.SiteValidationRegex);
+public class AccountNumberValidator() : StringValidatorBase<InvalidAccountNumberException>(RegexValidationRules
+    .AccountNumberValidationRegex);
