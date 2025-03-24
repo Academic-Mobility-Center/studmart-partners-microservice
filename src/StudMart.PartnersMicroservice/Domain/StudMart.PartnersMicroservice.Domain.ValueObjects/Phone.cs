@@ -1,5 +1,6 @@
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Base;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects;
 
@@ -7,5 +8,14 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects;
 /// <summary>
 /// Class that represents Mobile phone of Employee
 /// </summary>
-/// <param name="value">Mobile phone number of Employee</param>
-public class Phone(string value) : ValueObject<string>(value, new PhoneValidator());
+public class Phone : SingleParameterValueObjectBase<string>
+{
+    internal Phone(string value, IValidator<string> validator) : base(value, validator)
+    {
+    }
+
+    public Phone(string phone) : base(phone, new PhoneValidator())
+    {
+        
+    }
+}

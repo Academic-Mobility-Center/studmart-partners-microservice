@@ -8,7 +8,7 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Phon
 public class CorrectPhoneTestsData : IEnumerable<object[]>
 {
     /// <summary>
-    /// Correct mobile phone numbers to test base ValueObject class logic
+    /// Correct mobile phone numbers to test base SingleParameterValueObjectBase class logic
     /// </summary>
     public static readonly IEnumerable<object[]> CorrectPhones = 
     [

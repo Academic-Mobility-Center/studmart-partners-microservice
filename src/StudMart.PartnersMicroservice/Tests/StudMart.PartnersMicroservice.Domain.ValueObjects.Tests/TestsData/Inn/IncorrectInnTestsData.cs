@@ -8,7 +8,7 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Inn;
 public class IncorrectInnTestData : IEnumerable<object[]>
 {
     /// <summary>
-    /// Incorrect Correct INNs of organizations to test base ValueObject class logic
+    /// Incorrect Correct INNs of organizations to test base SingleParameterValueObjectBase class logic
     /// </summary>
     private static readonly IEnumerable<object[]> IncorrectInns =
     [

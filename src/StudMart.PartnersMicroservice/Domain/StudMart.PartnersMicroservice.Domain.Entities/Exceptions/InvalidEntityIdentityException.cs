@@ -1,4 +1,4 @@
-namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions;
+namespace StudMart.PartnersMicroservice.Domain.Entities.Exceptions;
 
 /// <summary>
 /// Represents Exception that occurs if Id is incorrect

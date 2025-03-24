@@ -6,7 +6,7 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Validators;
 /// <summary>
 /// Class that helps validate INN of organization inn
 /// </summary>
-internal class InnValidator : IValidator<long>
+public class InnValidator : IValidator<long>
 {
     /// <summary>
     /// Method that validates INN of company

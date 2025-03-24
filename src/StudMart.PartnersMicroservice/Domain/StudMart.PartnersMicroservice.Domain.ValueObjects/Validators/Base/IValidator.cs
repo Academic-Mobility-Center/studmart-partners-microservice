@@ -7,7 +7,7 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Validators.Base;
 public interface IValidator<in T>
 {
     /// <summary>
-    /// Method that validates simple type value of ValueObject
+    /// Method that validates simple type value of SingleParameterValueObjectBase
     /// </summary>
     /// <param name="value">Simple type value to validate</param>
     public void Validate(T value);

@@ -1,147 +1,69 @@
 using FluentAssertions;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Base;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Inn;
+using StudMart.PartnersMicroservice.Tests.Common.Attributes;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests;
 
-/// <summary>
-/// Class that contains all unit tests to verify INN Correction
-/// </summary>
-public class InnTests
+public class InnTests : LongValueObjectTestsBase<Inn, InvalidInnException>
 {
-
-    /// <summary>
-    /// Verify real INN correction
-    /// </summary>
     [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void InnShouldBeCreated(long inn) => FluentActions.Invoking(() => new Inn(inn)).Should().NotThrow();
+    [GenericClassData<CorrectInnTestsData>]
+    public override void ValueObjectShouldBeCreated(long value) => base.ValueObjectShouldBeCreated(value);
 
-    /// <summary>
-    /// Test that verify multiple incorrect INNs
-    /// </summary>
-    /// <param name="inn">INN that is incorrect</param>
     [Theory]
-    [ClassData(typeof(IncorrectInnTestData))]
-    public void InnShouldNotBeCreated(long inn)
-    {
+    [GenericClassData<IncorrectInnTestData>]
+    public override void ValueObjectShouldNotBeCreated(long value) => base.ValueObjectShouldNotBeCreated(value);
 
-        var exception = FluentActions.Invoking(() => new Inn(inn)).Should().Throw<InvalidInnException>()
-            .WithMessage($"INN {inn} is incorrect").Which;
-        exception.Inn.Should().Be(inn);
-    }
 
-    /// <summary>
-    /// Method verifies that hash code of object equals hash code of value
-    /// </summary>
-    /// <param name="inn">Inn to verify hash codes</param>
     [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void HashCodeOfInnShouldEqualsHashCodeOfInnObject(long inn)
-    {
-        var mail = new Inn(inn);
-        inn.GetHashCode().Should().Be(mail.GetHashCode());
-    }
+    [GenericClassData<CorrectInnTestsData>]
+    public override void HashCodeOfValueObjectShouldBeEqualToHashCodeOfValue(long value) =>
+        base.HashCodeOfValueObjectShouldBeEqualToHashCodeOfValue(value);
 
-    /// <summary>
-    /// Method verifies that string value of object equals simple type string value
-    /// </summary>
-    /// <param name="inn">Inn to verify string equity</param>
-    [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void StringValueOfObjectShouldEqualsSimpleTypeValue(long inn)
-    {
-        var mail = new Inn(inn);
-        var address = mail.ToString();
-        address.Should().Be(inn.ToString());
-    }
 
-    /// <summary>
-    /// Verify that Value property of object equals simple type value
-    /// </summary>
-    /// <param name="inn">Inn to verify Value property equity</param>
     [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void ValueOfObjectShouldEqualsSimpleTypeStringValue(long inn)
-    {
-        var mail = new Inn(inn);
-        mail.Value.Should().Be(inn);
-    }
+    [GenericClassData<CorrectInnTestsData>]
+    public override void StringValueOfObjectShouldEqualsSimpleTypeValue(long value) =>
+        base.StringValueOfObjectShouldEqualsSimpleTypeValue(value);
 
-    /// <summary>
-    /// Validates that Inns with same reference are equals
-    /// </summary>
-    /// <param name="inn">Inn inn to validate</param>
     [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void InnsWithSameReferencesShouldEqualsByOperator(long inn)
-    {
-        var first = new Inn(inn);
-        var second = first;
-        Assert.True(first == second);
-    }
+    [GenericClassData<CorrectInnTestsData>]
+    public override void ValueOfObjectShouldEqualsSimpleTypeStringValue(long value) =>
+        base.ValueOfObjectShouldEqualsSimpleTypeStringValue(value);
 
-    /// <summary>
-    /// Inn objects with the same simple type value must be equals
-    /// </summary>
-    /// <param name="inn">Inn inn to validate</param>
     [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void InnsWithSameValuesShouldBeEqualsByOperator(long inn)
-    {
-        var first = new Inn(inn);
-        var second = new Inn(inn);
-        Assert.True(first == second);
-    }
+    [GenericClassData<CorrectInnTestsData>]
+    public override void ValueObjectsWithSameReferencesShouldEqualsByOperator(long value) =>
+        base.ValueObjectsWithSameReferencesShouldEqualsByOperator(value);
 
-    /// <summary>
-    /// Validates that Inns with same reference are equals
-    /// </summary>
-    /// <param name="inn">Inn inn to validate</param>
-    [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void InnsWithSameReferencesShouldEqualsByEqualsMethod(long inn)
-    {
-        var first = new Inn(inn);
-        var second = first;
-        Assert.True(first.Equals(second));
-    }
 
-    /// <summary>
-    /// Inn objects with the same simple type value must be equals
-    /// </summary>
-    /// <param name="inn">Inn to validate</param>
     [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void InnsWithSameValuesShouldBeEqualsByEqualsMethod(long inn)
-    {
-        var first = new Inn(inn);
-        var second = new Inn(inn);
-        Assert.True(first.Equals(second));
-    }
+    [GenericClassData<CorrectInnTestsData>]
+    public override void ValueObjectsWithSameValuesShouldBeEqualsByOperator(long value) =>
+        base.ValueObjectsWithSameValuesShouldBeEqualsByOperator(value);
 
-    /// <summary>
-    /// Inn objects with the same simple type value must be equals
-    /// </summary>
-    /// <param name="inn">Inn inn to validate</param>
-    [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void InnsWithSameValuesShouldBeEqualsByEqualsMethodT(long inn)
-    {
-        var first = new Inn(inn);
-        Assert.True(first.Equals(inn));
-    }
 
-    /// <summary>
-    /// Validates that different Inns are not equal
-    /// </summary>
-    /// <param name="inn">Inn to validate</param>
     [Theory]
-    [ClassData(typeof(CorrectInnTestsData))]
-    public void InnsShouldNotBeEqualsByOperator(long inn)
-    {
-        var first = new Inn(inn);
-        var second = new Inn(5404227535);
-        Assert.True(first != second);
-    }
+    [GenericClassData<CorrectInnTestsData>]
+    public override void ValueObjectsWithSameReferencesShouldEqualsByEqualsMethod(long value) =>
+        base.ValueObjectsWithSameReferencesShouldEqualsByEqualsMethod(value);
+
+
+    [Theory]
+    [GenericClassData<CorrectInnTestsData>]
+    public override void ValueObjectsWithSameValuesShouldBeEqualsByEqualsMethod(long value) =>
+        base.ValueObjectsWithSameValuesShouldBeEqualsByEqualsMethod(value);
+
+
+    [Theory]
+    [GenericClassData<CorrectInnTestsData>]
+    public override void ValueObjectsWithSameValuesShouldBeEqualsByEqualsMethodWithValue(long value) =>
+        base.ValueObjectsWithSameValuesShouldBeEqualsByEqualsMethodWithValue(value);
+
+    [Theory]
+    [GenericClassData<CorrectInnTestsData>]
+    public override void ValueObjectsShouldNotBeEqualsByOperator(long value) =>
+        base.ValueObjectsShouldNotBeEqualsByOperator(value);
 }

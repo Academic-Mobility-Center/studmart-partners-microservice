@@ -1,10 +1,20 @@
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Base;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects;
 
 /// <summary>
 /// Class that represents email address
 /// </summary>
-/// <param name="value">Email string</param>
-public class Email(string value) : ValueObject<string>(value, new EmailValidator());
+public class Email : SingleParameterValueObjectBase<string>
+{
+    internal Email(string value, IValidator<string> validator) : base(value, validator)
+    {
+    }
+
+    public Email(string email) : this(email, new EmailValidator())
+    {
+        
+    }
+}

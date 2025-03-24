@@ -6,7 +6,7 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Base;
 /// Class that represents base class of domain value object
 /// </summary>
 /// <typeparam name="T">Simple type of value object result</typeparam>
-public abstract class ValueObject<T> : IEquatable<T>
+public abstract class SingleParameterValueObjectBase<T> : IValueObject, IEquatable<T>
 {
     /// <summary>
     /// Value of domain value object
@@ -17,7 +17,7 @@ public abstract class ValueObject<T> : IEquatable<T>
     /// </summary>
     /// <param name="value">Value of value type object to validate</param>
     /// <param name="validator">Validator object that helps validate simple type value</param>
-    protected ValueObject(T value, IValidator<T> validator)
+    internal SingleParameterValueObjectBase(T value, IValidator<T> validator)
     {
         validator.Validate(value);
         Value = value;
@@ -32,7 +32,7 @@ public abstract class ValueObject<T> : IEquatable<T>
     /// </summary>
     /// <param name="other">other value object to verify equity</param>
     /// <returns>True if object are equal otherwise </returns>
-    private bool Equals(ValueObject<T> other) => EqualityComparer<T>.Default.Equals(Value, other.Value);
+    private bool Equals(SingleParameterValueObjectBase<T> other) => EqualityComparer<T>.Default.Equals(Value, other.Value);
     /// <summary>
     /// Method to count hash sum of value
     /// </summary>
@@ -50,7 +50,7 @@ public abstract class ValueObject<T> : IEquatable<T>
     /// <param name="first">first value to compare</param>
     /// <param name="second">second value to compare</param>
     /// <returns>True if objects are the same otherwise false</returns>
-    public static bool operator==(ValueObject<T> first, ValueObject<T> second)
+    public static bool operator==(SingleParameterValueObjectBase<T> first, SingleParameterValueObjectBase<T> second)
     {
         if (ReferenceEquals(first, second))
             return true;
@@ -62,12 +62,12 @@ public abstract class ValueObject<T> : IEquatable<T>
     /// <param name="first">First value to compare</param>
     /// <param name="second">Second value to compare</param>
     /// <returns>True if objects are different otherwise false</returns>
-    public static bool operator!=(ValueObject<T> first, ValueObject<T> second) => !(first==second);
+    public static bool operator!=(SingleParameterValueObjectBase<T> first, SingleParameterValueObjectBase<T> second) => !(first==second);
     
     /// <summary>
     /// Method that verify equity of value objects
     /// </summary>
     /// <param name="obj">Object to verify equity with this</param>
     /// <returns>True if object are equal otherwise - false</returns>
-    public override bool Equals(object? obj) => obj?.GetType() == GetType() && Equals((ValueObject<T>)obj);
+    public override bool Equals(object? obj) => obj?.GetType() == GetType() && Equals((SingleParameterValueObjectBase<T>)obj);
 }

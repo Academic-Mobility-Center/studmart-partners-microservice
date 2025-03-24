@@ -1,37 +1,68 @@
-using FluentAssertions;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions;
-using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Phone;
-using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Base;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Email;
+using StudMart.PartnersMicroservice.Tests.Common.Attributes;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests;
 
-/// <summary>
-/// Class that tests logic of phone validation
-/// </summary>
-public class PhoneValidatorTests
+public class EmailTests : StringValueObjectTestsBase<Email, InvalidEmailException>
 {
-    /// <summary>
-    /// Phone validator object to test logic
-    /// </summary>
-    private readonly PhoneValidator _validator = new();
-    /// <summary>
-    /// Valid mobile phones tests
-    /// </summary>
-    /// <param name="phone">Correct mobile phone of employee</param>
+        [Theory]
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void ValueObjectShouldBeCreated(string value) => base.ValueObjectShouldBeCreated(value);
+
     [Theory]
-    [ClassData(typeof(CorrectPhoneTestsData))]
-    public void PhoneShouldBeValid(string phone) =>
-        FluentActions.Invoking(() => _validator.Validate(phone)).Should().NotThrow();
-    /// <summary>
-    /// Method that validates incorrect mobile phones logic
-    /// </summary>
-    /// <param name="phone">Incorrect mobile phone</param>
+    [GenericClassData<IncorrectEmailTestData>]
+    public override void ValueObjectShouldNotBeCreated(string value) => base.ValueObjectShouldNotBeCreated(value);
+
+
     [Theory]
-    [ClassData(typeof(IncorrectPhoneTestsData))]
-    public void PhoneShouldBeInvalid(string phone)
-    {
-        var exception = FluentActions.Invoking(() => _validator.Validate(phone)).Should()
-            .Throw<InvalidPhoneNumberException>().WithMessage($"Phone {phone} is incorrect").Which;
-        exception.Phone.Should().Be(phone);
-    }
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void HashCodeOfValueObjectShouldBeEqualToHashCodeOfValue(string value) =>
+        base.HashCodeOfValueObjectShouldBeEqualToHashCodeOfValue(value);
+
+
+    [Theory]
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void StringValueOfObjectShouldEqualsSimpleTypeValue(string value) =>
+        base.StringValueOfObjectShouldEqualsSimpleTypeValue(value);
+
+    [Theory]
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void ValueOfObjectShouldEqualsSimpleTypeStringValue(string value) =>
+        base.ValueOfObjectShouldEqualsSimpleTypeStringValue(value);
+
+    [Theory]
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void ValueObjectsWithSameReferencesShouldEqualsByOperator(string value) =>
+        base.ValueObjectsWithSameReferencesShouldEqualsByOperator(value);
+
+
+    [Theory]
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void ValueObjectsWithSameValuesShouldBeEqualsByOperator(string value) =>
+        base.ValueObjectsWithSameValuesShouldBeEqualsByOperator(value);
+
+
+    [Theory]
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void ValueObjectsWithSameReferencesShouldEqualsByEqualsMethod(string value) =>
+        base.ValueObjectsWithSameReferencesShouldEqualsByEqualsMethod(value);
+
+
+    [Theory]
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void ValueObjectsWithSameValuesShouldBeEqualsByEqualsMethod(string value) =>
+        base.ValueObjectsWithSameValuesShouldBeEqualsByEqualsMethod(value);
+
+
+    [Theory]
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void ValueObjectsWithSameValuesShouldBeEqualsByEqualsMethodWithValue(string value) =>
+        base.ValueObjectsWithSameValuesShouldBeEqualsByEqualsMethodWithValue(value);
+
+    [Theory]
+    [GenericClassData<CorrectEmailTestsData>]
+    public override void ValueObjectsShouldNotBeEqualsByOperator(string value) =>
+        base.ValueObjectsShouldNotBeEqualsByOperator(value);
 }

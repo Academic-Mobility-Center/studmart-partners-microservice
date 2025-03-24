@@ -14,10 +14,23 @@ public  static class RegexValidationRules
     /// Regex rule for Russian mobile phone number validation
     /// </summary>
     public const string PhoneValidationRegex = @"^(\+7|8)?[\s-]?\(?9\d{2}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$";
+
     /// <summary>
-    /// Regex rule for Telegram nickname validation
+    /// Regex rule for company names with english and russian letters
     /// </summary>
-    public const string TelegramUsernameValidationRegex =
-        @"^(?=.{5,32}$)(?!.*__)(?!^(telegram|admin|support))[a-z][a-z0-9_]*[a-z0-9]$";
+    public const string CompanyNameValidationRegex = @"^[a-zA-Zа-яА-Я0-9\s\'-]+$";
+    
+    /// <summary>
+    /// Regex rule for country names with english and russian letters
+    /// </summary>
+    public const string CountryNameValidationRegex = @"^[а-яА-Я\s\'’\-]+$";
+    /// <summary>
+    /// Regex rule for person last name
+    /// </summary>
+    public const string NamePartValidationRegex = @"^[а-яА-Я\s\'’-]+$";
+    /// <summary>
+    /// Regex rule for region of country
+    /// </summary>
+    public const string RegionNameValidationRegex = @"^[а-яА-Я\s\'’-]+$";
 
 }
