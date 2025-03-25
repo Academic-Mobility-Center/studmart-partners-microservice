@@ -2,4 +2,4 @@ using StudMart.PartnersMicroservice.Domain.Factories.Contracts.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 
-public record CountryContract(string Name) : AbstractNamedContract(Name);
+public record RegionFactoryContract(string Name, int CountryId) : AbstractNamedContract(Name);

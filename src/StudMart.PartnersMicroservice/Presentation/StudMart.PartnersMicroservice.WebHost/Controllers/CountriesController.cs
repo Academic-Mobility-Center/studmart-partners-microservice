@@ -1,12 +1,15 @@
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Country;
 using StudMart.PartnersMicroservice.WebHost.Requests.Country;
 using StudMart.PartnersMicroservice.WebHost.Responses.Country;
 
 namespace StudMart.PartnersMicroservice.WebHost.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class CountriesController(IMapper mapper) : ControllerBase
+public class CountriesController(IMapper mapper, IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public IEnumerable<CountryShortResponse> GetAll()
@@ -19,14 +22,9 @@ public class CountriesController(IMapper mapper) : ControllerBase
         return Ok();
     }
     [HttpPost]
-    public IActionResult Add(CountryAddRequest request)
+    public async Task<IActionResult> Add(CountryAddRequest request, CancellationToken cancellationToken)
     {
-        int id = 0;
-        return Created(nameof(GetById), new[] { id });
-    }
-    [HttpDelete("{id:int}")]
-    public IActionResult Remove(int id)
-    {
-        return NoContent();
+        var country = await mediator.Send(new CreateCountryCommand(mapper.Map<CountryAddModel>(request)), cancellationToken);
+        return Created(nameof(GetById), new[] { country.Id });
     }
 }

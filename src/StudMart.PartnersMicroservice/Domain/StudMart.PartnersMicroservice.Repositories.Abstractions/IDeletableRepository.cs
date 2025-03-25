@@ -6,5 +6,5 @@ public interface IDeletableRepository<TEntity, in TId> : IRepository<TEntity, TI
     where TEntity : class, IEntity<TId> where TId : struct
 
 {
-    Task<bool> DeleteAsync(TEntity entity);
+    Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
 }

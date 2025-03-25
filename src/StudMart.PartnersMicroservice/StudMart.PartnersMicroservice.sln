@@ -42,6 +42,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Tests.Common", "Tests\StudMart.PartnersMicroservice.Tests.Common\StudMart.PartnersMicroservice.Tests.Common.csproj", "{485DCABB-7C5B-4F81-9650-80EC19816A27}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.BusinessLogic.Commands", "BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Commands\StudMart.PartnersMicroservice.BusinessLogic.Commands.csproj", "{AC20D1AC-901E-43B2-83C8-6F807C19079A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.BusinessLogic.Queries", "BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Queries\StudMart.PartnersMicroservice.BusinessLogic.Queries.csproj", "{6B287A54-863C-458E-B1CD-15419BB4E32B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.BusinessLogic.Mapping", "BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Mapping\StudMart.PartnersMicroservice.BusinessLogic.Mapping.csproj", "{2C237A24-6AB1-46D7-9043-9F2F4D2FAD20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +114,18 @@ Global
 		{485DCABB-7C5B-4F81-9650-80EC19816A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{485DCABB-7C5B-4F81-9650-80EC19816A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{485DCABB-7C5B-4F81-9650-80EC19816A27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC20D1AC-901E-43B2-83C8-6F807C19079A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC20D1AC-901E-43B2-83C8-6F807C19079A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC20D1AC-901E-43B2-83C8-6F807C19079A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC20D1AC-901E-43B2-83C8-6F807C19079A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B287A54-863C-458E-B1CD-15419BB4E32B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B287A54-863C-458E-B1CD-15419BB4E32B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B287A54-863C-458E-B1CD-15419BB4E32B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B287A54-863C-458E-B1CD-15419BB4E32B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C237A24-6AB1-46D7-9043-9F2F4D2FAD20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C237A24-6AB1-46D7-9043-9F2F4D2FAD20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C237A24-6AB1-46D7-9043-9F2F4D2FAD20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C237A24-6AB1-46D7-9043-9F2F4D2FAD20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C833E55D-B67C-470C-B9B4-4538A130DAAA} = {7136AC2C-ED87-4C19-B3CB-28BCFD6E193A}
@@ -125,5 +143,8 @@ Global
 		{8A6C4512-9FCF-4959-A920-6304489CDB03} = {132F3D7D-0F6F-4D89-A085-592042916B94}
 		{AC2F0F5C-60B4-4C5D-9DC6-7117DAEB50EC} = {C17BA2E4-00F1-49E0-82C0-BC35AF1887E1}
 		{485DCABB-7C5B-4F81-9650-80EC19816A27} = {A3A0A0E3-A6C5-45A7-B488-AD7BC00D7EF9}
+		{AC20D1AC-901E-43B2-83C8-6F807C19079A} = {203668B2-CC5B-4BAB-B247-06A1E21FE865}
+		{6B287A54-863C-458E-B1CD-15419BB4E32B} = {203668B2-CC5B-4BAB-B247-06A1E21FE865}
+		{2C237A24-6AB1-46D7-9043-9F2F4D2FAD20} = {203668B2-CC5B-4BAB-B247-06A1E21FE865}
 	EndGlobalSection
 EndGlobal

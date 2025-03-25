@@ -9,13 +9,13 @@ public class EfUpdatableRepositoryBase<TEntity, TId>(DataContext context) : EfRe
 {
     private readonly DataContext _context = context;
 
-    public async Task<bool> UpdateAsync(TEntity entity)
+    public async Task<bool> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        var find = await GetByIdAsync(entity.Id);
+        var find = await GetByIdAsync(entity.Id, cancellationToken);
         if (find is null)
             return false;
         _context.Update(entity);
-        var count = await _context.SaveChangesAsync();
+        var count = await _context.SaveChangesAsync(cancellationToken);
         return count > 0;
     }
 }

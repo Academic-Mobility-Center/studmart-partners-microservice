@@ -8,13 +8,13 @@ public class EfDeletableRepositoryBase<TEntity, TId>(DataContext context) : EfRe
 {
     private readonly DataContext _context = context;
 
-    public async Task<bool> DeleteAsync(TEntity entity)
+    public async Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        var find = await GetByIdAsync(entity.Id);
+        var find = await GetByIdAsync(entity.Id, cancellationToken);
         if (find is null)
             return false;
         _context.Remove(entity);
-        var count = await _context.SaveChangesAsync();
+        var count = await _context.SaveChangesAsync(cancellationToken);
         return count > 0;
     }
 }

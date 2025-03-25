@@ -15,7 +15,6 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
             .HasConversion(name => name.Value, name => new CountryName(name));
         builder.HasIndex(country => country.Name).IsUnique();
         builder.HasMany(country => country.Regions).WithOne();
-        builder.Navigation(country => country.Regions).AutoInclude();
-        builder.HasData(new Country(new CountryName("Россия")));
+      
     }
 }

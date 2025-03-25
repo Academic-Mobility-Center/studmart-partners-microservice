@@ -11,7 +11,17 @@
         <PackageReference Include="AutoMapper" Version="14.0.0" />
         <PackageReference Include="FluentValidation" Version="12.0.0-preview1" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+        <PackageReference Include="MediatR" Version="12.4.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-rc.2.24474.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="8.0.0" />
     </ItemGroup>
 
@@ -22,8 +32,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Commands\StudMart.PartnersMicroservice.BusinessLogic.Commands.csproj" />
       <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Models\StudMart.PartnersMicroservice.BusinessLogic.Models.csproj" />
       <ProjectReference Include="..\..\Common\StudMart.PartnersMicroservice.Common.Helpers\StudMart.PartnersMicroservice.Common.Helpers.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation\StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.csproj" />
     </ItemGroup>
 
 </Project>

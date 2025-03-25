@@ -4,7 +4,7 @@ namespace StudMart.PartnersMicroservice.Repositories.Abstractions;
 
 public interface IRepository<TEntity, in TId> where TEntity : class, IEntity<TId> where TId : struct
 {
-    Task<TEntity?> AddAsync(TEntity entity);
-    Task<IEnumerable<TEntity>> GetAllAsync();
-    Task<TEntity?> GetByIdAsync(TId id);
+    Task<TEntity?> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
+    Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<TEntity?> GetByIdAsync(TId id, CancellationToken cancellationToken = default);
 }

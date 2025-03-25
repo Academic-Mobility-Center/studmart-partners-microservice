@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 
 namespace StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 
-public interface IRegionFactory : IEntityFactory<Region, int, RegionContract>
+public interface IRegionFactory : IEntityFactory<Region, int, RegionFactoryContract>
 {
     
 }

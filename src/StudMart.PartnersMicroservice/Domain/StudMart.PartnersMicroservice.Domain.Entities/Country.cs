@@ -5,14 +5,14 @@ namespace StudMart.PartnersMicroservice.Domain.Entities;
 
 public class Country : IntegerIdentifierNamedEntity<CountryName>
 {
-    private readonly ICollection<Region> _regions;
+    private readonly ICollection<Region> _regions = [];
     public IReadOnlyCollection<Region> Regions => _regions.ToList().AsReadOnly();
-    public Country(int id, CountryName countryName, ICollection<Region> regions) : base(id, countryName)
+    protected Country(int id, CountryName name) : base(id, name)
     {
-        _regions = regions;
+       
     }
 
-    public Country(CountryName countryName) : this(0, countryName, new List<Region>())
+    public Country(CountryName name) : this(0, name)
     {
         
     }

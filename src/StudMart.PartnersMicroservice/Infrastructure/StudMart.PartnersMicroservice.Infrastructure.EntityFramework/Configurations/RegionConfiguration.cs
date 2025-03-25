@@ -15,6 +15,5 @@ public class RegionConfiguration : IEntityTypeConfiguration<Region>
             .HasConversion(name => name.Value, name => new RegionName(name));
         builder.HasIndex(region => region.Name).IsUnique();
         builder.HasOne<Country>(region => region.Country).WithMany();
-        builder.Navigation(region => region.Country).AutoInclude();
     }
 }

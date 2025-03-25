@@ -6,12 +6,14 @@ using StudMart.PartnersMicroservice.Repositories.Abstractions;
 
 namespace StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.Base;
 
-public class EfNamedEntityRepository<TEntity, TId, TName>(DataContext context) : EfRepositoryBase<TEntity, TId>(context),
-    INamedEntityRepository<TEntity, TId, TName> where TEntity : class, INamedEntity<TId, TName>
+public class EfNamedEntityRepositoryBase<TEntity, TId, TName>(DataContext context)
+    : EfRepositoryBase<TEntity, TId>(context),
+        INamedEntityRepository<TEntity, TId, TName> where TEntity : class, INamedEntity<TId, TName>
     where TId : struct
     where TName : INamedValueObject<string>
 {
     private readonly DataContext _context = context;
-    public Task<TEntity?> GetByNameAsync(TName name) => _context.Set<TEntity>().FirstOrDefaultAsync(entity => entity.Name.Equals(name));
 
+    public Task<TEntity?> GetByNameAsync(string name, CancellationToken cancellationToken) => _context.Set<TEntity>()
+        .FirstOrDefaultAsync(entity => entity.Name.ToString() == name, cancellationToken: cancellationToken);
 }

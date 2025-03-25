@@ -6,7 +6,7 @@ namespace SudMart.PartnersMicroservice.Domain.Factories.Implementations;
 
 public class RegionFactory : IRegionFactory
 {
-    public Region Create(RegionContract contract)
+    public Task<Region> Create(RegionFactoryContract factoryContract)
     {
         throw new NotImplementedException();
     }

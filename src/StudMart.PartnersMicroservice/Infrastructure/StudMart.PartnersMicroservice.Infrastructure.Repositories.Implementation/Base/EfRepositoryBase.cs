@@ -8,18 +8,19 @@ namespace StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementati
 public class EfRepositoryBase<TEntity, TId>(DataContext context)
     : IRepository<TEntity, TId>, IDisposable, IAsyncDisposable where TEntity : class, IEntity<TId> where TId : struct
 {
-    public async Task<TEntity?> AddAsync(TEntity entity)
+    public async Task<TEntity?> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await context.AddAsync(entity);
-        var count = await context.SaveChangesAsync();
+        await context.AddAsync(entity, cancellationToken);
+        var count = await context.SaveChangesAsync(cancellationToken);
         return count > 0 ? entity : null;
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync() =>
-        (await context.Set<TEntity>().ToListAsync()).AsEnumerable();
+    public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
+        (await context.Set<TEntity>().ToListAsync(cancellationToken)).AsEnumerable();
 
 
-    public virtual async Task<TEntity?> GetByIdAsync(TId id) => await context.Set<TEntity>().FindAsync(id);
+    public virtual async Task<TEntity?> GetByIdAsync(TId id, CancellationToken cancellationToken = default) =>
+        await context.Set<TEntity>().FindAsync([id], cancellationToken: cancellationToken);
 
     public void Dispose()
     {
@@ -27,6 +28,7 @@ public class EfRepositoryBase<TEntity, TId>(DataContext context)
     }
 
     public async ValueTask DisposeAsync()
-    {        await context.DisposeAsync();
+    {
+        await context.DisposeAsync();
     }
 }
