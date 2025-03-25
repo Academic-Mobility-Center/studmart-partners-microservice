@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Repositories.Abstractions\StudMart.PartnersMicroservice.Repositories.Abstractions.csproj" />
+      <ProjectReference Include="..\StudMart.PartnersMicroservice.Infrastructure.EntityFramework\StudMart.PartnersMicroservice.Infrastructure.EntityFramework.csproj" />
+    </ItemGroup>
+
 </Project>

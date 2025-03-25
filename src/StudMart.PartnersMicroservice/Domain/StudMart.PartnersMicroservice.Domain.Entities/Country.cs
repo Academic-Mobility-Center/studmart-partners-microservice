@@ -3,14 +3,12 @@ using StudMart.PartnersMicroservice.Domain.ValueObjects;
 
 namespace StudMart.PartnersMicroservice.Domain.Entities;
 
-public class Country : IntegerIdentifierEntity
+public class Country : IntegerIdentifierNamedEntity<CountryName>
 {
-    public CountryName Name { get;  }
     private readonly ICollection<Region> _regions;
     public IReadOnlyCollection<Region> Regions => _regions.ToList().AsReadOnly();
-    public Country(int id, CountryName countryName, ICollection<Region> regions) : base(id)
+    public Country(int id, CountryName countryName, ICollection<Region> regions) : base(id, countryName)
     {
-        Name = countryName ?? throw new ArgumentNullException(nameof(countryName));
         _regions = regions;
     }
 

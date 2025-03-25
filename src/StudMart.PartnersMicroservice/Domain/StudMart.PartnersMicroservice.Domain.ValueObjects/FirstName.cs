@@ -4,7 +4,7 @@ using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects;
 
-public class FirstName : SingleParameterValueObjectBase<string>
+public class FirstName : NamedValueObject<string>
 {
     internal FirstName(string value, IValidator<string> validator) : base(value, validator)
     {

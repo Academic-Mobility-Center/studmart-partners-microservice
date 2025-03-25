@@ -5,7 +5,7 @@ using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects;
 
-public class RegionName : SingleParameterValueObjectBase<string>
+public class RegionName : NamedValueObject<string>
 {
     internal RegionName(string value, IValidator<string> validator) : base(value, validator)
     {

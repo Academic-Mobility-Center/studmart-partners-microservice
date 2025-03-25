@@ -6,7 +6,7 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Base;
 /// Class that represents base class of domain value object
 /// </summary>
 /// <typeparam name="T">Simple type of value object result</typeparam>
-public abstract class SingleParameterValueObjectBase<T> : IValueObject, IEquatable<T>
+public abstract class SingleParameterValueObjectBase<T> : IEquatableValueObject
 {
     /// <summary>
     /// Value of domain value object
@@ -38,6 +38,8 @@ public abstract class SingleParameterValueObjectBase<T> : IValueObject, IEquatab
     /// </summary>
     /// <returns>Hash sum of value</returns>
     public override int GetHashCode() => EqualityComparer<T>.Default.GetHashCode(Value!);
+    
+
     /// <summary>
     /// Method that verify equity of value objects
     /// </summary>
@@ -63,7 +65,15 @@ public abstract class SingleParameterValueObjectBase<T> : IValueObject, IEquatab
     /// <param name="second">Second value to compare</param>
     /// <returns>True if objects are different otherwise false</returns>
     public static bool operator!=(SingleParameterValueObjectBase<T> first, SingleParameterValueObjectBase<T> second) => !(first==second);
+
+    public bool Equals(IEquatableValueObject? other)
+    {
+        if (other is null)
+            return false;
+        return Value != null && Value.Equals(other);
+    }
     
+
     /// <summary>
     /// Method that verify equity of value objects
     /// </summary>
