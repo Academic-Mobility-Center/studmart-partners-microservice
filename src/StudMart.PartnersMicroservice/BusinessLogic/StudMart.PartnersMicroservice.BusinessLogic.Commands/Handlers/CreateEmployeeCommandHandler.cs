@@ -1,7 +1,7 @@
 using AutoMapper;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers.Base;
-using StudMart.PartnersMicroservice.BusinessLogic.Models.Region;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Employee;
 using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
@@ -10,12 +10,11 @@ using SudMart.PartnersMicroservice.Domain.Factories.Implementations;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 
-public class CreateRegionCommandHandler(
-    IRegionsRepository repository,
-    IRegionFactory factory,
+public class CreateEmployeeCommandHandler(
+    IEmployeesRepository repository,
+    IEmployeeFactory factory,
     IMapper mapper)
-    : CreateCommandHandler<CreateRegionCommand, RegionModel, RegionAddModel, Region, int, RegionFactory,
-        RegionFactoryContract>(repository, factory, mapper)
+    : CreateCommandHandlerBase<CreateEmployeeCommand, EmployeeModel, EmployeeAddModel, Employee, Guid, EmployeeFactory,
+        EmployeeFactoryContract>(repository, factory, mapper)
 {
-    
 }

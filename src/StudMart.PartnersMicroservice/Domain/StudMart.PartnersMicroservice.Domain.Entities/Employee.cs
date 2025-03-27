@@ -11,7 +11,7 @@ public class Employee : GuidIdentifierEntity
     public Email Email { get; set; }
     public Partner Partner { get; set; }
 
-    public Employee(Guid id, FirstName firstName, LastName lastName, Email email, Partner partner) : base(id)
+    protected Employee(Guid id, FirstName firstName, LastName lastName, Email email, Partner partner) : base(id)
     {
         FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
         LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
@@ -21,5 +21,10 @@ public class Employee : GuidIdentifierEntity
     public Employee(FirstName firstName, LastName lastName, Email email, Partner partner) : this(Guid.NewGuid(), firstName, lastName, email, partner)
     {
 
+    }
+
+    protected Employee(Guid id) : base(id)
+    {
+        
     }
 }

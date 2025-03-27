@@ -17,4 +17,8 @@
       <ProjectReference Include="..\StudMart.PartnersMicroservice.BusinessLogic.Models\StudMart.PartnersMicroservice.BusinessLogic.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Employee\" />
+    </ItemGroup>
+
 </Project>

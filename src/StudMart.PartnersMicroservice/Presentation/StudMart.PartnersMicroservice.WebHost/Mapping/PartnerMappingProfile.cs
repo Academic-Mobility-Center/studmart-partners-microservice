@@ -1,0 +1,29 @@
+using AutoMapper;
+using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Partner;
+using StudMart.PartnersMicroservice.WebHost.Requests.Partner;
+using StudMart.PartnersMicroservice.WebHost.Responses.Partner;
+
+namespace StudMart.PartnersMicroservice.WebHost.Mapping;
+
+public class PartnerMappingProfile : Profile
+{
+    public PartnerMappingProfile()
+    {
+        
+        CreateMap<PartnerPaymentInformationRequest, PaymentInformationModel>();
+        CreateMap<PaymentInformationModel, PartnerPaymentInformationResponse>();
+        CreateMap<PartnerAddRequest, CreatePartnerCommand>().ReverseMap();
+        CreateMap<PartnerAddRequest, PartnerAddModel>()
+            .ForCtorParam("CompanyName", opt => opt.MapFrom(src => src.CompanyName))
+            .ForCtorParam("Site", opt => opt.MapFrom(src => src.Site))
+            .ForCtorParam("Email", opt => opt.MapFrom(src => src.Email))
+            .ForCtorParam("Phone", expression => expression.MapFrom(request => request.Phone))
+            .ForCtorParam("Inn", expression => expression.MapFrom(request => request.Inn)).ForCtorParam("CountryId",
+                expression => expression.MapFrom(request => request.CountryId)).ForCtorParam("PaymentInformation",
+                expression => expression.MapFrom(request => request.PaymentInformation));
+        CreateMap<PartnerShortModel, PartnerShortResponse>();
+        CreateMap<PartnerModel, PartnerResponse>();
+        CreateMap<PartnerModel, PartnerShortResponse>();
+    }
+}

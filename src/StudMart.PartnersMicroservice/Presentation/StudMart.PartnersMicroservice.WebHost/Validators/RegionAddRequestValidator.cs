@@ -4,9 +4,9 @@ using StudMart.PartnersMicroservice.WebHost.Requests.Region;
 
 namespace StudMart.PartnersMicroservice.WebHost.Validators;
 
-public class RegionAddValidator : AbstractValidator<RegionAddRequest>
+public class RegionAddRequestValidator : AbstractValidator<RegionAddRequest>
 {
-    public RegionAddValidator()
+    public RegionAddRequestValidator()
     {
         RuleFor(request => request.Name).NotEmpty().WithMessage("Название региона не может быть пустым");
         RuleFor(request => request.Name).NotNull().WithMessage("Название региона не может быть пустым");

@@ -10,7 +10,7 @@ public class LastName : NamedValueObject<string>
     {
     }
 
-    internal LastName(string name) : base(name, new LastNameValidator())
+    public LastName(string name) : base(name, new LastNameValidator())
     {
         
     }

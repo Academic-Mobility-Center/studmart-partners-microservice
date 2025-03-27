@@ -1,4 +1,5 @@
 using StudMart.PartnersMicroservice.Domain.Entities.Base;
+using StudMart.PartnersMicroservice.Domain.Entities.Exceptions;
 using StudMart.PartnersMicroservice.Domain.ValueObjects;
 
 namespace StudMart.PartnersMicroservice.Domain.Entities.Aggregates;
@@ -12,8 +13,8 @@ public class Partner : SoftDeletableGuidIdentifierEntity
     public Phone Phone { get; set; }
     public Email Email { get; set; }
     public PaymentInformation PaymentInformation { get; set; }
-    private readonly ICollection<Employee> _employees;
-    public IReadOnlyCollection<Employee> Employees => _employees.ToList().AsReadOnly();
+    private readonly ICollection<Employee> _employees = [];
+    public IReadOnlyCollection<Employee> Employees => [.._employees];
     
 
     public Partner(Guid id, CompanyName companyName, Phone phone, Email email, Country country, Site site, Inn inn, PaymentInformation paymentInformation, ICollection<Employee> employees) : base(id)
@@ -33,16 +34,29 @@ public class Partner : SoftDeletableGuidIdentifierEntity
         
     }
 
-    public void Hire(Employee employee)
+    protected Partner(Guid id) : base(id)
     {
-        
-            
         
     }
 
-    public void File(Employee employee)
+    public bool Hire(Employee employee)
     {
-        
+        if (employee.Partner.Equals(this) == false)
+            throw new AnotherPartnerException(employee, this);
+        if(_employees.Contains(employee))
+            return false;
+        _employees.Add(employee);
+        return true;
+    }
+
+    public bool Fire(Employee employee)
+    {
+        if (employee.Partner.Equals(this) == false)
+            throw new AnotherPartnerException(employee, this);
+        if(!_employees.Contains(employee))
+            return false;
+        _employees.Remove(employee);
+        return true;
     }
     
 }

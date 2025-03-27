@@ -11,6 +11,7 @@ public class CountryMappingProfile : Profile
     {
         CreateMap<CountryAddRequest, CountryAddModel>();
         CreateMap<CountryModel, CountryResponse>();
+        CreateMap<CountryShortModel, CountryShortResponse>();
         CreateMap<CountryModel, CountryShortResponse>();
     }
 }

@@ -34,8 +34,8 @@ public class PaymentInformation : IValueObject
     public AccountNumber CorrespondentAccountNumber { get; set; }
     public PaymentInformation(Bik bik, AccountNumber accountNumber, AccountNumber correspondentAccountNumber)
     {
-        ValidateCorrespondentAccountNumberWithBik(correspondentAccountNumber.Value, bik.Value );
-        ValidateAccountNumberWithBik(accountNumber.Value, bik.Value);
+        //ValidateCorrespondentAccountNumberWithBik(correspondentAccountNumber.Value, bik.Value );
+        //ValidateAccountNumberWithBik(accountNumber.Value, bik.Value);
         Bik = bik;
         AccountNumber = accountNumber;
         CorrespondentAccountNumber = correspondentAccountNumber;

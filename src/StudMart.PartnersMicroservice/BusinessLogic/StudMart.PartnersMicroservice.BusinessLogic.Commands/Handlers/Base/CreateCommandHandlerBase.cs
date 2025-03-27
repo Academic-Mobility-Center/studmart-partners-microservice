@@ -11,7 +11,7 @@ using StudMart.PartnersMicroservice.Repositories.Abstractions;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers.Base;
 
-public abstract class CreateCommandHandler<TCreateCommand, TModel, TAddModel, TEntity, TId, TFactory, TContract>(
+public abstract class CreateCommandHandlerBase<TCreateCommand, TModel, TAddModel, TEntity, TId, TFactory, TContract>(
     IRepository<TEntity, TId> repository,
     IEntityFactory<TEntity, TId, TContract> factory,
     IMapper mapper) : IRequestHandler<TCreateCommand, TModel>

@@ -52,7 +52,10 @@ builder.Services.AddSingleton<ICountryFactory, CountryFactory>();
 
 builder.Services.AddScoped<IEntityFactory<Region, int, RegionFactoryContract>, RegionFactory>();
 builder.Services.AddScoped<IRegionFactory, RegionFactory>();
-
+builder.Services.AddScoped<IPartnersRepository, PartnersRepository>();
+builder.Services.AddScoped<IPartnerFactory, PartnerFactory>();
+builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
+builder.Services.AddScoped<IEmployeeFactory, EmployeeFactory>();
 
 builder.Services.AddMediatR(configuration =>
 {

@@ -1,23 +1,20 @@
 using AutoMapper;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers.Base;
-using StudMart.PartnersMicroservice.BusinessLogic.Models.Country;
-using StudMart.PartnersMicroservice.Domain.Entities;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Partner;
+using StudMart.PartnersMicroservice.Domain.Entities.Aggregates;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
-using StudMart.PartnersMicroservice.Domain.ValueObjects;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using SudMart.PartnersMicroservice.Domain.Factories.Implementations;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 
-public class CreateCountryCommandHandler(
-    ICountriesRepository repository,
-    ICountryFactory factory,
+public class CreatePartnerCommandHandler(
+    IPartnersRepository repository,
+    IPartnerFactory factory,
     IMapper mapper)
-    : CreateCommandHandlerBase<CreateCountryCommand, CountryModel, CountryAddModel, Country, int, CountryFactory,
-        CountryFactoryContract>(
-        repository, factory, mapper)
+    : CreateCommandHandlerBase<CreatePartnerCommand, PartnerModel, PartnerAddModel, Partner, Guid, PartnerFactory,
+        PartnerFactoryContract>(repository, factory, mapper)
 {
-    
 }
