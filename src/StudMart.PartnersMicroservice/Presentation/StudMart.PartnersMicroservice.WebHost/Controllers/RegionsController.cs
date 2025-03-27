@@ -1,6 +1,9 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Region;
+using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Region;
 using StudMart.PartnersMicroservice.WebHost.Requests.Region;
 using StudMart.PartnersMicroservice.WebHost.Responses.Region;
 
@@ -10,19 +13,23 @@ namespace StudMart.PartnersMicroservice.WebHost.Controllers;
 public class RegionsController(IMapper mapper, IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public IEnumerable<RegionShortResponse> GetAll()
+    public async Task<IEnumerable<RegionShortResponse>> GetAll(CancellationToken cancellationToken)
     {
-        return [];
+        var result = await mediator.Send(new GetAllRegionsRequest(), cancellationToken);
+        return result.Select(mapper.Map<RegionShortResponse>);
     }
     [HttpGet("{id:int}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        return Ok();
+        var result = await mediator.Send(new GetRegionByIdRequest(id), cancellationToken);
+        return Ok(mapper.Map<RegionResponse>(result));
     }
     [HttpPost]
-    public IActionResult Add(RegionAddRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Add(RegionAddRequest request, CancellationToken cancellationToken)
     {
-        int id = 0;
+        var model = mapper.Map<RegionAddModel>(request);
+        var result = await mediator.Send(new CreateRegionCommand(model), cancellationToken);
+        int id = result.Id;
         return Created(nameof(GetById), new[] { id });
     }
     

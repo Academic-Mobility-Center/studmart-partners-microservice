@@ -33,7 +33,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Commands\StudMart.PartnersMicroservice.BusinessLogic.Commands.csproj" />
+      <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Mapping\StudMart.PartnersMicroservice.BusinessLogic.Mapping.csproj" />
       <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Models\StudMart.PartnersMicroservice.BusinessLogic.Models.csproj" />
+      <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Queries\StudMart.PartnersMicroservice.BusinessLogic.Queries.csproj" />
       <ProjectReference Include="..\..\Common\StudMart.PartnersMicroservice.Common.Helpers\StudMart.PartnersMicroservice.Common.Helpers.csproj" />
       <ProjectReference Include="..\..\Infrastructure\StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation\StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.csproj" />
     </ItemGroup>

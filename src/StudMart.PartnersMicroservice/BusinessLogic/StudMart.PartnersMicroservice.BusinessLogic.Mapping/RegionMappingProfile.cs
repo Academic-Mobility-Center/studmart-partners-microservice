@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.BusinessLogic.Models.Region;
 using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 
-namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Mapping;
+namespace StudMart.PartnersMicroservice.BusinessLogic.Mapping;
 
 public class RegionMappingProfile : Profile
 {

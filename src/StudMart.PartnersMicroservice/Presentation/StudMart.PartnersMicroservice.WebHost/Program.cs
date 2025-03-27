@@ -1,14 +1,17 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
+using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
 using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 using StudMart.PartnersMicroservice.Domain.ValueObjects;
 using StudMart.PartnersMicroservice.Infrastructure.EntityFramework;
+using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.Base;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using StudMart.PartnersMicroservice.WebHost.Helpers;
+using StudMart.PartnersMicroservice.WebHost.Mapping;
 using SudMart.PartnersMicroservice.Domain.Factories.Implementations;
 
 
@@ -23,23 +26,38 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(connectionString,
         optionsBuilder =>
             optionsBuilder.MigrationsAssembly("StudMart.PartnersMicroservice.Infrastructure.EntityFramework"));
-    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
 builder.Services.AddOpenApi();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddAutoMapper(typeof(ICreateCommand<,>).Assembly);
+builder.Services.AddAutoMapper(typeof(StudMart.PartnersMicroservice.BusinessLogic.Mapping.CountryMappingProfile).Assembly);
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services
     .AddScoped<INamedEntityRepository<Country, int, CountryName>,
         EfNamedEntityRepositoryBase<Country, int, CountryName>>();
 builder.Services
     .AddScoped<IRepository<Country, int>, EfRepositoryBase<Country, int>>();
+builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
+
+builder.Services
+    .AddScoped<INamedEntityRepository<Region, int, RegionName>,
+        EfNamedEntityRepositoryBase<Region, int, RegionName>>();
+builder.Services
+    .AddScoped<IRepository<Region, int>, EfRepositoryBase<Region, int>>();
+builder.Services.AddScoped<IRegionsRepository, RegionsRepository>();
+
 builder.Services.AddScoped<IEntityFactory<Country, int, CountryFactoryContract>, CountryFactory>();
 builder.Services.AddSingleton<ICountryFactory, CountryFactory>();
+
+builder.Services.AddScoped<IEntityFactory<Region, int, RegionFactoryContract>, RegionFactory>();
+builder.Services.AddScoped<IRegionFactory, RegionFactory>();
+
+
 builder.Services.AddMediatR(configuration =>
 {
     configuration.RegisterServicesFromAssembly(typeof(ICreateCommand<,>).Assembly);
+    configuration.RegisterServicesFromAssembly(typeof(IGetAllRequest<>).Assembly);
     configuration.Lifetime = ServiceLifetime.Scoped;
 });
 builder.Services.AddControllers();

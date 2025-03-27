@@ -19,8 +19,4 @@
       <ProjectReference Include="..\StudMart.PartnersMicroservice.BusinessLogic.Models\StudMart.PartnersMicroservice.BusinessLogic.Models.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Mapping\" />
-    </ItemGroup>
-
 </Project>

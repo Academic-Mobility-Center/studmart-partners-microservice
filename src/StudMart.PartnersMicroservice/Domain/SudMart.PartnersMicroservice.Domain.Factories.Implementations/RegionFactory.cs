@@ -1,13 +1,20 @@
 using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
+using StudMart.PartnersMicroservice.Domain.ValueObjects;
+using StudMart.PartnersMicroservice.Repositories.Abstractions;
 
 namespace SudMart.PartnersMicroservice.Domain.Factories.Implementations;
 
-public class RegionFactory : IRegionFactory
+public class RegionFactory(IRepository<Country, int> countryRepository, IRepository<Region, int> regionRepository) : IRegionFactory
 {
-    public Task<Region> Create(RegionFactoryContract factoryContract)
+    public async Task<Region> Create(RegionFactoryContract factoryContract)
     {
-        throw new NotImplementedException();
+        var country = await countryRepository.GetByIdAsync(factoryContract.CountryId);
+        if (country is null)
+            throw new NullReferenceException();
+        var region = new Region(country, new RegionName(factoryContract.Name));
+        country.AddRegion(region);
+        return region;
     }
 }

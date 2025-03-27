@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Country;
+using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests;
+using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Country;
 using StudMart.PartnersMicroservice.WebHost.Requests.Country;
 using StudMart.PartnersMicroservice.WebHost.Responses.Country;
 
@@ -12,14 +14,16 @@ namespace StudMart.PartnersMicroservice.WebHost.Controllers;
 public class CountriesController(IMapper mapper, IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public IEnumerable<CountryShortResponse> GetAll()
+    public async Task<IEnumerable<CountryShortResponse>> GetAll(CancellationToken cancellationToken)
     {
-        return [];
+        var result = await mediator.Send(new GetAllCountriesRequest(), cancellationToken);
+        return result.Select(mapper.Map<CountryShortResponse>);
     }
     [HttpGet("{id:int}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        return Ok();
+        var result = await mediator.Send(new GetCountryRequest(id), cancellationToken);
+        return Ok(mapper.Map<CountryResponse>(result));
     }
     [HttpPost]
     public async Task<IActionResult> Add(CountryAddRequest request, CancellationToken cancellationToken)

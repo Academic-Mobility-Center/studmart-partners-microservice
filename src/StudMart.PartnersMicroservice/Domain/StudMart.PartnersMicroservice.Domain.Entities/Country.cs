@@ -6,7 +6,7 @@ namespace StudMart.PartnersMicroservice.Domain.Entities;
 public class Country : IntegerIdentifierNamedEntity<CountryName>
 {
     private readonly ICollection<Region> _regions = [];
-    public IReadOnlyCollection<Region> Regions => _regions.ToList().AsReadOnly();
+    public IReadOnlyCollection<Region> Regions => [.._regions];
     protected Country(int id, CountryName name) : base(id, name)
     {
        
@@ -17,20 +17,21 @@ public class Country : IntegerIdentifierNamedEntity<CountryName>
         
     }
 
-    public void AddRegion(Region region)
+    public bool AddRegion(Region region)
     {
         if (_regions.Any(r => r == region))
-            return;
+            return false;
         _regions.Add(region);
+        return true;
     }
 
-    public void RemoveRegion(Region region)
+    public bool RemoveRegion(Region region)
     {
         var found = _regions.FirstOrDefault(r => r== region);
         if (found is null)
-            return;
+            return false;
         _regions.Remove(region);
-
+        return true;
     }
     
 }
