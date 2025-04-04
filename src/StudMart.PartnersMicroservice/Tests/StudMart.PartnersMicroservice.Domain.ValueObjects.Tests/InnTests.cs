@@ -1,4 +1,3 @@
-using FluentAssertions;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Base;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Inn;

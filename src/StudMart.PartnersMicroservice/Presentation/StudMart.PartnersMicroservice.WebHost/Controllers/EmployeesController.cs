@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Employee;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Employee;
-using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.WebHost.Requests.Employee;
 using StudMart.PartnersMicroservice.WebHost.Responses.Employee;
 

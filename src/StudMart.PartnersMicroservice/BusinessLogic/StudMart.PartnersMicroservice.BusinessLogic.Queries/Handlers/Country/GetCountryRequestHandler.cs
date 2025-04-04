@@ -1,7 +1,6 @@
 using AutoMapper;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Country;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Handlers.Base;
-using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Country;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 

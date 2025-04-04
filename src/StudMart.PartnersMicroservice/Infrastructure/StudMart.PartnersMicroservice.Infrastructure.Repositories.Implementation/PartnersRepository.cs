@@ -11,7 +11,17 @@ public class PartnersRepository(DataContext context)
 {
     private readonly DataContext _context1 = context;
 
-    public override Task<Partner?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => _context1.Partners
-        .Include(partner => partner.Country).Include(partner => partner.Employees)
+    public override Task<IEnumerable<Partner>> GetAllAsync(CancellationToken cancellationToken = default) =>
+        Task.FromResult(_context1.Partners
+            .Include(partner => partner.Country)
+            .Include(partner => partner.Category)
+            .ToList().AsEnumerable());
+
+
+    public override Task<Partner?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => _context1
+        .Partners
+        .Include(partner => partner.Category)
+        .Include(partner => partner.Country)
+        .Include(partner => partner.Employees)
         .FirstOrDefaultAsync(partner => partner.Id == id, cancellationToken);
 }

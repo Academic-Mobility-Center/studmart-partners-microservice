@@ -7,10 +7,13 @@ public record PaymentInfoContract(string Bik, string AccountNumber, string Corre
 
 public record PartnerFactoryContract(
     string CompanyName,
+    string Subtitle,
+    int Priority,
     string Site,
     long Inn,
     string Email,
     string Phone,
     int CountryId,
+    int CategoryId,
     PaymentInfoContract PaymentInformation)
     : IFactoryContract;

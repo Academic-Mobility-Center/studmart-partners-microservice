@@ -1,4 +1,3 @@
-using System.Collections;
 using StudMart.PartnersMicroservice.Tests.Common.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Inn;

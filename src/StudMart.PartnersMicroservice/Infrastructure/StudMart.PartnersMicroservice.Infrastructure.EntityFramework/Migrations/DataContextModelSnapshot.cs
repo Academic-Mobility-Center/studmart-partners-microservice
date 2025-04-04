@@ -28,9 +28,13 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("CountryId")
                         .HasColumnType("integer");
@@ -47,17 +51,57 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Site")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Subtitle")
+                        .IsRequired()
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("CountryId");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Inn")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
                     b.ToTable("Partners");
+                });
+
+            modelBuilder.Entity("StudMart.PartnersMicroservice.Domain.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("StudMart.PartnersMicroservice.Domain.Entities.Country", b =>
@@ -142,6 +186,12 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
 
             modelBuilder.Entity("StudMart.PartnersMicroservice.Domain.Entities.Aggregates.Partner", b =>
                 {
+                    b.HasOne("StudMart.PartnersMicroservice.Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("StudMart.PartnersMicroservice.Domain.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
@@ -175,6 +225,8 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                             b1.WithOwner()
                                 .HasForeignKey("PartnerId");
                         });
+
+                    b.Navigation("Category");
 
                     b.Navigation("Country");
 

@@ -14,8 +14,8 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Domain.Entities\StudMart.PartnersMicroservice.Domain.Entities.csproj" />
       <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Domain.Factories.Abstractions\StudMart.PartnersMicroservice.Domain.Factories.Abstractions.csproj" />
-      <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Repositories.Abstractions\StudMart.PartnersMicroservice.Repositories.Abstractions.csproj" />
-      <ProjectReference Include="..\..\Domain\SudMart.PartnersMicroservice.Domain.Factories.Implementations\SudMart.PartnersMicroservice.Domain.Factories.Implementations.csproj" />
+      <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions.csproj" />
+      <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Domain.Factories.Implementations\StudMart.PartnersMicroservice.Domain.Factories.Implementations.csproj" />
       <ProjectReference Include="..\StudMart.PartnersMicroservice.BusinessLogic.Models\StudMart.PartnersMicroservice.BusinessLogic.Models.csproj" />
     </ItemGroup>
 

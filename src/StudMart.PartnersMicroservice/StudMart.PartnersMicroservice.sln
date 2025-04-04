@@ -18,9 +18,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Domain.ValueObjects", "Domain\StudMart.PartnersMicroservice.Domain.ValueObjects\StudMart.PartnersMicroservice.Domain.ValueObjects.csproj", "{51BA91DB-8524-4900-AC3C-7AE624C0FDCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Repositories.Abstractions", "Domain\StudMart.PartnersMicroservice.Repositories.Abstractions\StudMart.PartnersMicroservice.Repositories.Abstractions.csproj", "{F757FA3C-6E78-4B63-9217-0CCBCEBF305C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Domain.Repositories.Abstractions", "Domain\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions.csproj", "{F757FA3C-6E78-4B63-9217-0CCBCEBF305C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudMart.PartnersMicroservice.Domain.Factories.Implementations", "Domain\SudMart.PartnersMicroservice.Domain.Factories.Implementations\SudMart.PartnersMicroservice.Domain.Factories.Implementations.csproj", "{EF791AE9-13BA-495A-A37E-C0086B1A53BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Domain.Factories.Implementations", "Domain\StudMart.PartnersMicroservice.Domain.Factories.Implementations\StudMart.PartnersMicroservice.Domain.Factories.Implementations.csproj", "{EF791AE9-13BA-495A-A37E-C0086B1A53BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Infrastructure.EntityFramework", "Infrastructure\StudMart.PartnersMicroservice.Infrastructure.EntityFramework\StudMart.PartnersMicroservice.Infrastructure.EntityFramework.csproj", "{7EA5B701-5902-400C-8104-E834F3A35381}"
 EndProject

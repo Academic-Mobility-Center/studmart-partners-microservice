@@ -2,10 +2,8 @@ using AutoMapper;
 using MediatR;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Base;
-using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.Domain.Entities.Base;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
-using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts.Base;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 

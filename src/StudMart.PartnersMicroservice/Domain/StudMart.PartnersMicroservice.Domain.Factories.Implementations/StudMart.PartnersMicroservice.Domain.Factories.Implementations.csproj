@@ -9,7 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Infrastructure\StudMart.PartnersMicroservice.Infrastructure.EntityFramework\StudMart.PartnersMicroservice.Infrastructure.EntityFramework.csproj" />
       <ProjectReference Include="..\StudMart.PartnersMicroservice.Domain.Factories.Abstractions\StudMart.PartnersMicroservice.Domain.Factories.Abstractions.csproj" />
-      <ProjectReference Include="..\StudMart.PartnersMicroservice.Repositories.Abstractions\StudMart.PartnersMicroservice.Repositories.Abstractions.csproj" />
+      <ProjectReference Include="..\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions.csproj" />
     </ItemGroup>
 
 </Project>

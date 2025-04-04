@@ -1,5 +1,3 @@
-using StudMart.PartnersMicroservice.Domain.Entities.Exceptions;
-
 namespace StudMart.PartnersMicroservice.Domain.Entities.Base;
 
 /// <summary>

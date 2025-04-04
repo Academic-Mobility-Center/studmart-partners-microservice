@@ -15,7 +15,7 @@ public class EfRepositoryBase<TEntity, TId>(DataContext context)
         return count > 0 ? entity : null;
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
         (await context.Set<TEntity>().ToListAsync(cancellationToken)).AsEnumerable();
 
 

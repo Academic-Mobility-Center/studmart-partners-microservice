@@ -1,5 +1,4 @@
 using StudMart.PartnersMicroservice.Domain.Entities.Base;
-using StudMart.PartnersMicroservice.Domain.ValueObjects.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.Entities.Exceptions;
 

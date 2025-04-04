@@ -4,7 +4,7 @@ using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 using StudMart.PartnersMicroservice.Domain.ValueObjects;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 
-namespace SudMart.PartnersMicroservice.Domain.Factories.Implementations;
+namespace StudMart.PartnersMicroservice.Domain.Factories.Implementations;
 
 public class RegionFactory(IRepository<Country, int> countryRepository, IRepository<Region, int> regionRepository) : IRegionFactory
 {

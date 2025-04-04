@@ -13,7 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Domain.Entities\StudMart.PartnersMicroservice.Domain.Entities.csproj" />
-      <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Repositories.Abstractions\StudMart.PartnersMicroservice.Repositories.Abstractions.csproj" />
+      <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions.csproj" />
       <ProjectReference Include="..\StudMart.PartnersMicroservice.BusinessLogic.Models\StudMart.PartnersMicroservice.BusinessLogic.Models.csproj" />
     </ItemGroup>
 

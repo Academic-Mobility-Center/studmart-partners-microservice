@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Country;
-using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Country;
 using StudMart.PartnersMicroservice.WebHost.Requests.Country;
 using StudMart.PartnersMicroservice.WebHost.Responses.Country;

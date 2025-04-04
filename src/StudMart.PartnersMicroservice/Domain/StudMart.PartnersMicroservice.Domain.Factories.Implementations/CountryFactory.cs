@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 using StudMart.PartnersMicroservice.Domain.ValueObjects;
 
-namespace SudMart.PartnersMicroservice.Domain.Factories.Implementations;
+namespace StudMart.PartnersMicroservice.Domain.Factories.Implementations;
 
 public class CountryFactory : ICountryFactory
 {

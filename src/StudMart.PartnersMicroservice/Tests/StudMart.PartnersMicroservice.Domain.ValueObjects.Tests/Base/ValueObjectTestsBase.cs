@@ -3,11 +3,7 @@ using FakeItEasy;
 using FluentAssertions;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Base;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions.Base;
-using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.CountryName;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators.Base;
-using StudMart.PartnersMicroservice.Tests.Common.Attributes;
-using StudMart.PartnersMicroservice.Tests.Common.Helpers;
-
 using StudMart.PartnersMicroservice.Tests.Common.Helpers;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Base;

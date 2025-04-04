@@ -1,5 +1,4 @@
 using AutoMapper;
-using StudMart.PartnersMicroservice.BusinessLogic.Models.Country;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Partner;
 using StudMart.PartnersMicroservice.Domain.Entities.Aggregates;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
@@ -14,8 +13,12 @@ public class PartnerMappingProfile : Profile
         CreateMap<PaymentInformationModel, PaymentInfoContract>();
         CreateMap<PartnerAddModel, PartnerFactoryContract>();
         CreateMap<PaymentInformation, PaymentInformationModel>().ReverseMap();
-        CreateMap<Partner, PartnerModel>().ForCtorParam("Id", expression => expression.MapFrom(partner => partner.Id))
+        CreateMap<Partner, PartnerModel>()
+            .ForCtorParam("Id", expression => expression.MapFrom(partner => partner.Id))
             .ForCtorParam("CompanyName", opt => opt.MapFrom(src => src.CompanyName.Name))
+            .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category))
+            .ForCtorParam("Subtitle", opt => opt.MapFrom(src => src.Subtitle))
+            .ForCtorParam("Priority", opt => opt.MapFrom(src => src.Priority.Value))
             .ForCtorParam("Site", opt => opt.MapFrom(src => src.Site))
             .ForCtorParam("Email", opt => opt.MapFrom(src => src.Email))
             .ForCtorParam("Phone", expression => expression.MapFrom(partner => partner.Phone.Value))
@@ -24,6 +27,9 @@ public class PartnerMappingProfile : Profile
         CreateMap<Partner, PartnerShortModel>()
             .ForCtorParam("Id", expression => expression.MapFrom(partner => partner.Id))
             .ForCtorParam("CompanyName", opt => opt.MapFrom(src => src.CompanyName.Name))
+            .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category.Name))
+            .ForCtorParam("Subtitle", opt => opt.MapFrom(src => src.Subtitle))
+            .ForCtorParam("Priority", opt => opt.MapFrom(src => src.Priority.Value))
             .ForCtorParam("Site", opt => opt.MapFrom(src => src.Site))
             .ForCtorParam("Email", opt => opt.MapFrom(src => src.Email))
             .ForCtorParam("Phone", expression => expression.MapFrom(partner => partner.Phone.Value))

@@ -6,7 +6,7 @@ using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
-using SudMart.PartnersMicroservice.Domain.Factories.Implementations;
+using StudMart.PartnersMicroservice.Domain.Factories.Implementations;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 

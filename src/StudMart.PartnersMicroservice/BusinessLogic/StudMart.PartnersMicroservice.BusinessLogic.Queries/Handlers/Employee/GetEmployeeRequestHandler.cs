@@ -1,7 +1,6 @@
 using AutoMapper;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Employee;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Handlers.Base;
-using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Employee;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 

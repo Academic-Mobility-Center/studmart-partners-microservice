@@ -5,14 +5,13 @@ using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
 using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
+using StudMart.PartnersMicroservice.Domain.Factories.Implementations;
 using StudMart.PartnersMicroservice.Domain.ValueObjects;
 using StudMart.PartnersMicroservice.Infrastructure.EntityFramework;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.Base;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using StudMart.PartnersMicroservice.WebHost.Helpers;
-using StudMart.PartnersMicroservice.WebHost.Mapping;
-using SudMart.PartnersMicroservice.Domain.Factories.Implementations;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,7 +55,8 @@ builder.Services.AddScoped<IPartnersRepository, PartnersRepository>();
 builder.Services.AddScoped<IPartnerFactory, PartnerFactory>();
 builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddScoped<IEmployeeFactory, EmployeeFactory>();
-
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+builder.Services.AddScoped<ICategoryFactory, CategoryFactory>();
 builder.Services.AddMediatR(configuration =>
 {
     configuration.RegisterServicesFromAssembly(typeof(ICreateCommand<,>).Assembly);
