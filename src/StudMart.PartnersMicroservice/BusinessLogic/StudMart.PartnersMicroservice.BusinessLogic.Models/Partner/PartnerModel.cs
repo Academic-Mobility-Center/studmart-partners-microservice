@@ -2,6 +2,7 @@ using StudMart.PartnersMicroservice.BusinessLogic.Models.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Category;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Country;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Employee;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Region;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Models.Partner;
 
@@ -17,4 +18,6 @@ public record PartnerModel(
     CountryShortModel Country,
     CategoryModel Category,
     PaymentInformationModel PaymentInformation,
-    IEnumerable<EmployeeModel> Employees) : IModel;
+    IEnumerable<EmployeeModel> Employees,
+    bool HasAllRegions,
+    IEnumerable<RegionModel> Regions) : IModel;

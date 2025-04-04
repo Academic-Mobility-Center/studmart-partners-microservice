@@ -1,5 +1,6 @@
 using StudMart.PartnersMicroservice.WebHost.Responses.Base;
 using StudMart.PartnersMicroservice.WebHost.Responses.Country;
+using StudMart.PartnersMicroservice.WebHost.Responses.Region;
 
 namespace StudMart.PartnersMicroservice.WebHost.Responses.Partner;
 
@@ -13,4 +14,6 @@ public record PartnerShortResponse(
     long Inn,
     string Phone,
     CountryShortResponse Country,
-    PartnerPaymentInformationResponse PaymentInformation) : IResponse;
+    PartnerPaymentInformationResponse PaymentInformation,
+    bool HasAllRegions,
+    IEnumerable<RegionShortResponse> Regions) : IResponse;

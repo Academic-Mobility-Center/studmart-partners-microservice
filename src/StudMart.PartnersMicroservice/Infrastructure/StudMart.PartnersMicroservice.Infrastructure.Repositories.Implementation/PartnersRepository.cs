@@ -15,6 +15,7 @@ public class PartnersRepository(DataContext context)
         Task.FromResult(_context1.Partners
             .Include(partner => partner.Country)
             .Include(partner => partner.Category)
+            .Include(partner => partner.Regions)
             .ToList().AsEnumerable());
 
 
@@ -23,5 +24,6 @@ public class PartnersRepository(DataContext context)
         .Include(partner => partner.Category)
         .Include(partner => partner.Country)
         .Include(partner => partner.Employees)
+        .Include(partner => partner.Regions)
         .FirstOrDefaultAsync(partner => partner.Id == id, cancellationToken);
 }

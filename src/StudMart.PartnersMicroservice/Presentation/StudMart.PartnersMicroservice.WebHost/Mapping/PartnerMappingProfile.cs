@@ -25,7 +25,9 @@ public class PartnerMappingProfile : Profile
             .ForCtorParam("CountryId",
                 expression => expression.MapFrom(request => request.CountryId))
             .ForCtorParam("PaymentInformation",
-                expression => expression.MapFrom(request => request.PaymentInformation));
+                expression => expression.MapFrom(request => request.PaymentInformation))
+            .ForCtorParam("HasAllRegions", expression => expression.MapFrom(request => request.HasAllRegions))
+            .ForCtorParam("RegionIds", expression => expression.MapFrom(request => request.RegionIds));
         CreateMap<PartnerShortModel, PartnerShortResponse>();
         CreateMap<PartnerModel, PartnerResponse>();
         CreateMap<PartnerModel, PartnerShortResponse>();

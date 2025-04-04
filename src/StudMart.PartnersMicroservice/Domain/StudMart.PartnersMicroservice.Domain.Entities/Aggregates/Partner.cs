@@ -18,12 +18,15 @@ public class Partner : SoftDeletableGuidIdentifierEntity
     public PaymentInformation PaymentInformation { get; set; }
     private readonly ICollection<Employee> _employees = [];
     public IReadOnlyCollection<Employee> Employees => [.._employees];
+    public bool HasAllRegions { get; set; }
+    private readonly ICollection<Region> _regions = [];
+    public IReadOnlyCollection<Region> Regions => [.._regions];
 
 
     public Partner(Guid id, CompanyName companyName, Category category, Subtitle subtitle, Priority priority,
         Phone phone, Email email,
         Country country, Site site, Inn inn, PaymentInformation paymentInformation,
-        ICollection<Employee> employees) : base(id)
+        ICollection<Employee> employees, bool hasAllRegions, ICollection<Region> regions) : base(id)
     {
         CompanyName = companyName ?? throw new ArgumentNullException(nameof(companyName));
         Phone = phone ?? throw new ArgumentNullException(nameof(phone));
@@ -35,15 +38,18 @@ public class Partner : SoftDeletableGuidIdentifierEntity
         Subtitle = subtitle ?? throw new ArgumentNullException(nameof(subtitle));
         Priority = priority ?? throw new ArgumentNullException(nameof(priority));
         Category = category ?? throw new ArgumentNullException(nameof(category));
+        HasAllRegions = hasAllRegions;
+        _regions = regions ?? throw new ArgumentNullException(nameof(regions));
         _employees = employees ?? throw new ArgumentNullException(nameof(employees));
     }
 
     public Partner(CompanyName companyName, Category category, Subtitle subtitle, Priority priority, Phone phone,
         Email email,
-        Country country, Site site, Inn inn, PaymentInformation paymentInformation) : this(Guid.NewGuid(), companyName,
+        Country country, Site site, Inn inn, PaymentInformation paymentInformation, bool hasAllRegions,
+        ICollection<Region> regions) : this(Guid.NewGuid(), companyName,
         category,
         subtitle, priority,
-        phone, email, country, site, inn, paymentInformation, new List<Employee>())
+        phone, email, country, site, inn, paymentInformation, new List<Employee>(), hasAllRegions, regions)
     {
     }
 

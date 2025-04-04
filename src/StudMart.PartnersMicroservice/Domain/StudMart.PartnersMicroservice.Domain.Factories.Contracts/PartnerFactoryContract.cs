@@ -15,5 +15,7 @@ public record PartnerFactoryContract(
     string Phone,
     int CountryId,
     int CategoryId,
-    PaymentInfoContract PaymentInformation)
+    PaymentInfoContract PaymentInformation,
+    bool HasAllRegions,
+    IEnumerable<int> RegionIds)
     : IFactoryContract;

@@ -12,4 +12,6 @@ public record PartnerAddModel(
     int CountryId,
     string Site,
     int CategoryId,
-    PaymentInformationModel PaymentInformation) : IAddModel;
+    PaymentInformationModel PaymentInformation,
+    bool HasAllRegions,
+    IEnumerable<int> RegionIds) : IAddModel;

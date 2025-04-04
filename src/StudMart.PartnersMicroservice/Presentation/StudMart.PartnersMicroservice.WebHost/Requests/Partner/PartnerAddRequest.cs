@@ -12,4 +12,6 @@ public record PartnerAddRequest(
     int CountryId,
     string Site,
     int CategoryId,
-    PartnerPaymentInformationRequest PaymentInformation) : IRequest;
+    PartnerPaymentInformationRequest PaymentInformation,
+    bool HasAllRegions,
+    IEnumerable<int> RegionIds) : IRequest;

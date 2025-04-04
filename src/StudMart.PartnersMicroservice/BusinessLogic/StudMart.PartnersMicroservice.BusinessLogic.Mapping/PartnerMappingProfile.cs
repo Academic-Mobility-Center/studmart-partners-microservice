@@ -22,8 +22,12 @@ public class PartnerMappingProfile : Profile
             .ForCtorParam("Site", opt => opt.MapFrom(src => src.Site))
             .ForCtorParam("Email", opt => opt.MapFrom(src => src.Email))
             .ForCtorParam("Phone", expression => expression.MapFrom(partner => partner.Phone.Value))
-            .ForCtorParam("Inn", expression => expression.MapFrom(partner => partner.Inn.Value)).ForCtorParam("Country",
-                expression => expression.MapFrom(partner => partner.Country));
+            .ForCtorParam("Inn", expression => expression.MapFrom(partner => partner.Inn.Value))
+            .ForCtorParam("Country",
+                expression => expression.MapFrom(partner => partner.Country))
+            .ForCtorParam("HasAllRegions", expression => expression.MapFrom(partner => partner.HasAllRegions))
+            .ForCtorParam("Regions", expression => expression.MapFrom(partner => partner.Regions));
+            
         CreateMap<Partner, PartnerShortModel>()
             .ForCtorParam("Id", expression => expression.MapFrom(partner => partner.Id))
             .ForCtorParam("CompanyName", opt => opt.MapFrom(src => src.CompanyName.Name))
@@ -34,6 +38,8 @@ public class PartnerMappingProfile : Profile
             .ForCtorParam("Email", opt => opt.MapFrom(src => src.Email))
             .ForCtorParam("Phone", expression => expression.MapFrom(partner => partner.Phone.Value))
             .ForCtorParam("Inn", expression => expression.MapFrom(partner => partner.Inn.Value)).ForCtorParam("Country",
-                expression => expression.MapFrom(partner => partner.Country));
+                expression => expression.MapFrom(partner => partner.Country))
+            .ForCtorParam("HasAllRegions", expression => expression.MapFrom(partner => partner.HasAllRegions))
+            .ForCtorParam("Regions", expression => expression.MapFrom(partner => partner.Regions));
     }
 }

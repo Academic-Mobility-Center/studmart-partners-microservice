@@ -40,5 +40,6 @@ public class PartnerConfiguration : IEntityTypeConfiguration<Partner>
         builder.HasIndex(partner => partner.Email).IsUnique();
         builder.HasIndex(partner => partner.Phone).IsUnique();
         builder.HasMany(partner => partner.Employees).WithOne(employee => employee.Partner);
+        builder.HasMany(partner => partner.Regions).WithMany();
     }
 }
