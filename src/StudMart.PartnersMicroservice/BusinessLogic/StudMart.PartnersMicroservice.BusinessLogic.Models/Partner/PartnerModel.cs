@@ -10,6 +10,7 @@ public record PartnerModel(
     Guid Id,
     string CompanyName,
     string Subtitle,
+    string Description,
     int Priority,
     string Email,
     string Phone,

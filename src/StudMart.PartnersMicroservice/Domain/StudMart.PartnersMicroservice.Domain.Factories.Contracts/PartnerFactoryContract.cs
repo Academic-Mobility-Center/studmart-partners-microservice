@@ -8,6 +8,7 @@ public record PaymentInfoContract(string Bik, string AccountNumber, string Corre
 public record PartnerFactoryContract(
     string CompanyName,
     string Subtitle,
+    string Description,
     int Priority,
     string Site,
     long Inn,

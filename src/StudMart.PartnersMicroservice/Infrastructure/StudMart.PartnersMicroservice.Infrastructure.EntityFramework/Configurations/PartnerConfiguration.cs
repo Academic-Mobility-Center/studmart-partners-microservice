@@ -16,6 +16,9 @@ public class PartnerConfiguration : IEntityTypeConfiguration<Partner>
         builder.Property(partner => partner.Subtitle)
             .HasConversion(subtitle => subtitle.Value, subtitle => new Subtitle(subtitle)).HasMaxLength(35)
             .IsRequired();
+        builder.Property(partner => partner.Description)
+            .HasConversion(description => description.Value, description => new Description(description))
+            .HasMaxLength(1200).IsRequired();
         builder.Property(partner => partner.Priority)
             .HasConversion(priority => priority.Value, priority => new Priority(priority)).IsRequired();
         builder.Property(partner => partner.Inn).HasConversion(name => name.Value, name => new Inn(name)).IsRequired();

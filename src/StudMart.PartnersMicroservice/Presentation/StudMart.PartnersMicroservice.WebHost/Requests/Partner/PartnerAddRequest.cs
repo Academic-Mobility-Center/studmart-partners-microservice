@@ -5,6 +5,7 @@ namespace StudMart.PartnersMicroservice.WebHost.Requests.Partner;
 public record PartnerAddRequest(
     string CompanyName,
     string Subtitle,
+    string Description,
     int Priority,
     string Email,
     string Phone,

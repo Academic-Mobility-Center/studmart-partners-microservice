@@ -15,6 +15,7 @@ public class Partner : SoftDeletableGuidIdentifierEntity
     public Subtitle Subtitle { get; set; }
     public Priority Priority { get; set; }
     public Category Category { get; set; }
+    public Description Description { get; set; }
     public PaymentInformation PaymentInformation { get; set; }
     private readonly ICollection<Employee> _employees = [];
     public IReadOnlyCollection<Employee> Employees => [.._employees];
@@ -23,12 +24,14 @@ public class Partner : SoftDeletableGuidIdentifierEntity
     public IReadOnlyCollection<Region> Regions => [.._regions];
 
 
-    public Partner(Guid id, CompanyName companyName, Category category, Subtitle subtitle, Priority priority,
+    public Partner(Guid id, CompanyName companyName, Category category, Subtitle subtitle, Description description,
+        Priority priority,
         Phone phone, Email email,
         Country country, Site site, Inn inn, PaymentInformation paymentInformation,
         ICollection<Employee> employees, bool hasAllRegions, ICollection<Region> regions) : base(id)
     {
         CompanyName = companyName ?? throw new ArgumentNullException(nameof(companyName));
+        Description = description ?? throw new ArgumentNullException(nameof(description));
         Phone = phone ?? throw new ArgumentNullException(nameof(phone));
         Country = country ?? throw new ArgumentNullException(nameof(country));
         Site = site ?? throw new ArgumentNullException(nameof(site));
@@ -43,12 +46,12 @@ public class Partner : SoftDeletableGuidIdentifierEntity
         _employees = employees ?? throw new ArgumentNullException(nameof(employees));
     }
 
-    public Partner(CompanyName companyName, Category category, Subtitle subtitle, Priority priority, Phone phone,
+    public Partner(CompanyName companyName, Category category, Subtitle subtitle, Description description, Priority priority, Phone phone,
         Email email,
         Country country, Site site, Inn inn, PaymentInformation paymentInformation, bool hasAllRegions,
         ICollection<Region> regions) : this(Guid.NewGuid(), companyName,
         category,
-        subtitle, priority,
+        subtitle, description, priority,
         phone, email, country, site, inn, paymentInformation, new List<Employee>(), hasAllRegions, regions)
     {
     }

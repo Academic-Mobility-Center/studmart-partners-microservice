@@ -26,7 +26,7 @@ public class PartnerFactory(ICountriesRepository countriesRepository, ICategorie
                 continue;
             regions.Add(region);
         }
-        var partner = new Partner(new CompanyName(contract.CompanyName), category, new Subtitle(contract.Subtitle),
+        var partner = new Partner(new CompanyName(contract.CompanyName), category, new Subtitle(contract.Subtitle), new Description(contract.Description),
             new Priority(contract.Priority), new Phone(contract.Phone),
             new Email(contract.Email), country, new Site(contract.Site), new Inn(contract.Inn),
             new PaymentInformation(new Bik(contract.PaymentInformation.Bik),

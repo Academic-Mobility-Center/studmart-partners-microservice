@@ -15,6 +15,7 @@ public class PartnerMappingProfile : Profile
         CreateMap<PartnerAddRequest, CreatePartnerCommand>().ReverseMap();
         CreateMap<PartnerAddRequest, PartnerAddModel>()
             .ForCtorParam("CompanyName", opt => opt.MapFrom(src => src.CompanyName))
+            .ForCtorParam("Description", opt => opt.MapFrom(src => src.Description))
             .ForCtorParam("CategoryId", expression => expression.MapFrom(request => request.CategoryId ))
             .ForCtorParam("Subtitle", opt => opt.MapFrom(src => src.Subtitle))
             .ForCtorParam("Priority", opt => opt.MapFrom(src => src.Priority))

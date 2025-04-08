@@ -5,6 +5,7 @@ namespace StudMart.PartnersMicroservice.BusinessLogic.Models.Partner;
 public record PartnerAddModel(
     string CompanyName,
     string Subtitle,
+    string Description,
     int Priority,
     string Email,
     string Phone,
