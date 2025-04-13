@@ -1,6 +1,10 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Category;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Country;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Partner;
+using StudMart.PartnersMicroservice.BusinessLogic.Models.Region;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
 using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
@@ -8,9 +12,12 @@ using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 using StudMart.PartnersMicroservice.Domain.Factories.Implementations;
 using StudMart.PartnersMicroservice.Domain.ValueObjects;
 using StudMart.PartnersMicroservice.Infrastructure.EntityFramework;
+using StudMart.PartnersMicroservice.Infrastructure.RabbitMq;
+using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Helpers;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.Base;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
+using StudMart.PartnersMicroservice.Synchronization.Abstractions;
 using StudMart.PartnersMicroservice.WebHost.Helpers;
 
 
@@ -18,7 +25,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-var connectionString = $"Host=localhost;Port=5432;Username=postgres;Password=postgres";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var rabbitSettings = builder.Configuration.GetSection("RabbitMq");
+builder.Services.Configure<RabbitSettings>(rabbitSettings);
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
@@ -31,6 +40,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddOpenApi();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddAutoMapper(typeof(StudMart.PartnersMicroservice.BusinessLogic.Mapping.CountryMappingProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Mapping.RegionMappingProfile).Assembly);
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services
     .AddScoped<INamedEntityRepository<Country, int, CountryName>,
@@ -63,6 +73,10 @@ builder.Services.AddMediatR(configuration =>
     configuration.RegisterServicesFromAssembly(typeof(IGetAllRequest<>).Assembly);
     configuration.Lifetime = ServiceLifetime.Scoped;
 });
+builder.Services.AddSingleton<ISynchronizationService<PartnerModel>, PartnerSynchronizationService>();
+builder.Services.AddSingleton<ISynchronizationService<RegionModel>, RegionSynchronizationService>();
+builder.Services.AddSingleton<ISynchronizationService<CategoryModel>, CategorySynchronizationService>();
+builder.Services.AddSingleton<ISynchronizationService<CountryModel>, CountrySynchronizationService>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();

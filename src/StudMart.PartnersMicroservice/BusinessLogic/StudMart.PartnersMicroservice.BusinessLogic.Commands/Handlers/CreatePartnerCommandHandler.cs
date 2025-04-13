@@ -7,14 +7,15 @@ using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Implementations;
+using StudMart.PartnersMicroservice.Synchronization.Abstractions;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 
 public class CreatePartnerCommandHandler(
     IPartnersRepository repository,
     IPartnerFactory factory,
-    IMapper mapper)
-    : CreateCommandHandlerBase<CreatePartnerCommand, PartnerModel, PartnerAddModel, Partner, Guid, PartnerFactory,
-        PartnerFactoryContract>(repository, factory, mapper)
+    IMapper mapper, ISynchronizationService<PartnerModel> synchronizationService)
+    : CreateCommandHandlerWithNotificationBase<CreatePartnerCommand, PartnerModel, PartnerAddModel, Partner, Guid, PartnerFactory,
+        PartnerFactoryContract>(repository, factory, mapper, synchronizationService)
 {
 }

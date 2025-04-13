@@ -7,15 +7,16 @@ using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Implementations;
+using StudMart.PartnersMicroservice.Synchronization.Abstractions;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 
 public class CreateRegionCommandHandlerBase(
     IRegionsRepository repository,
     IRegionFactory factory,
-    IMapper mapper)
-    : CreateCommandHandlerBase<CreateRegionCommand, RegionModel, RegionAddModel, Region, int, RegionFactory,
-        RegionFactoryContract>(repository, factory, mapper)
+    IMapper mapper, ISynchronizationService<RegionModel> synchronizationService)
+    : CreateCommandHandlerWithNotificationBase<CreateRegionCommand, RegionModel, RegionAddModel, Region, int, RegionFactory,
+        RegionFactoryContract>(repository, factory, mapper, synchronizationService)
 {
     
 }

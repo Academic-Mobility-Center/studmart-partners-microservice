@@ -7,16 +7,17 @@ using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Contracts;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using StudMart.PartnersMicroservice.Domain.Factories.Implementations;
+using StudMart.PartnersMicroservice.Synchronization.Abstractions;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 
 public class CreateCountryCommandHandler(
     ICountriesRepository repository,
     ICountryFactory factory,
-    IMapper mapper)
-    : CreateCommandHandlerBase<CreateCountryCommand, CountryModel, CountryAddModel, Country, int, CountryFactory,
+    IMapper mapper, ISynchronizationService<CountryModel> synchronizationService)
+    : CreateCommandHandlerWithNotificationBase<CreateCountryCommand, CountryModel, CountryAddModel, Country, int, CountryFactory,
         CountryFactoryContract>(
-        repository, factory, mapper)
+        repository, factory, mapper, synchronizationService)
 {
     
 }

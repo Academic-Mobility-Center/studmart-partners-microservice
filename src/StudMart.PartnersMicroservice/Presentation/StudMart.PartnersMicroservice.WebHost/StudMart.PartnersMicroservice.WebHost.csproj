@@ -37,6 +37,7 @@
       <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Models\StudMart.PartnersMicroservice.BusinessLogic.Models.csproj" />
       <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Queries\StudMart.PartnersMicroservice.BusinessLogic.Queries.csproj" />
       <ProjectReference Include="..\..\Common\StudMart.PartnersMicroservice.Common.Helpers\StudMart.PartnersMicroservice.Common.Helpers.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\StudMart.PartnersMicroservice.Infrastructure.RabbitMq\StudMart.PartnersMicroservice.Infrastructure.RabbitMq.csproj" />
       <ProjectReference Include="..\..\Infrastructure\StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation\StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.csproj" />
     </ItemGroup>
 
