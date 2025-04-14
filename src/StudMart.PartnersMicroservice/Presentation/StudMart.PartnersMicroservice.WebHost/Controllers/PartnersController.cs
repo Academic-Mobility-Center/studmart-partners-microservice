@@ -28,7 +28,7 @@ public class PartnersController(IMediator mediator, IMapper mapper) : Controller
     public async Task<IActionResult> AddPartnerAsync(PartnerAddRequest request, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new CreatePartnerCommand(mapper.Map<PartnerAddModel>(request)), cancellationToken);
-        return Created(nameof(GetPartnerByIdAsync), new { id = result.Id });
+        return CreatedAtAction("GetPartnerById", new { id = result.Id }, mapper.Map<PartnerResponse>(result));
         
     }
     
