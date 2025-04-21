@@ -10,7 +10,7 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Base;
 
 public abstract class ValueObjectTestsBase<TValueObject, TException, TValue>
     where TValueObject : SingleParameterValueObjectBase<TValue>
-    where TException: InvalidValueObjectValueFormatException
+    where TException: InvalidValueObjectValueFormatExceptionBase
 {
     private readonly IValidator<TValue> _validator = A.Fake<IValidator<TValue>>();
 

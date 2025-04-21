@@ -13,3 +13,29 @@ services:
       retries: 5
     ports:
       - "5432:5432"
+  rabbit:
+    image: rabbitmq:3.12-management
+    restart: unless-stopped
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 30s
+      timeout: 30s
+      retries: 10
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+  service:
+    env_file:
+      - service.env
+    restart: unless-stopped
+    depends_on:
+      rabbit:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    build:
+      context: ./src/StudMart.PartnersMicroservice
+      dockerfile: Presentation/StudMart.PartnersMicroservice.Presentation.WebHost/Dockerfile
+

@@ -10,7 +10,7 @@ public class Region : IntegerIdentifierNamedEntity<RegionName>
         Country = country;
     }
 
-    public Region(Country country, RegionName name) : this(0, country, name)
+    internal Region(Country country, RegionName name) : this(0, country, name)
     {
         
     }

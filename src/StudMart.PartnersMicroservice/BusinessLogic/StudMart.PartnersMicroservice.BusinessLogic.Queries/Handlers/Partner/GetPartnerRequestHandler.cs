@@ -7,7 +7,7 @@ using StudMart.PartnersMicroservice.Repositories.Abstractions;
 namespace StudMart.PartnersMicroservice.BusinessLogic.Queries.Handlers.Partner;
 
 public class GetPartnerRequestHandler(IPartnersRepository repository, IMapper mapper)
-    : GetByIdRequestHandlerBase<GetPartnerRequest, PartnerModel, Guid, Domain.Entities.Aggregates.Partner>(repository,
+    : GetByIdRequestHandlerBase<GetPartnerByIdRequest, PartnerModel, Guid, Domain.Entities.Aggregates.Partner>(repository,
         mapper)
 {
 }

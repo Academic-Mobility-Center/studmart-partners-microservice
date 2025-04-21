@@ -12,7 +12,7 @@ public abstract class ValidatorTestsBase<TValidator, TValidation, TException>(
     string message,
     Expression<Func<TException, TValidation>> propertyExpression)
     where TValidator : IValidator<TValidation>
-    where TException : InvalidValueObjectValueFormatException
+    where TException : InvalidValueObjectValueFormatExceptionBase
 {
     private readonly TValidator _validator = validator;
     

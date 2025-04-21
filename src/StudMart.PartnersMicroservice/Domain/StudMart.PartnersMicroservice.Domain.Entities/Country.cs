@@ -12,7 +12,7 @@ public class Country : IntegerIdentifierNamedEntity<CountryName>
        
     }
 
-    public Country(CountryName name) : this(0, name)
+    internal Country(CountryName name) : this(0, name)
     {
         
     }

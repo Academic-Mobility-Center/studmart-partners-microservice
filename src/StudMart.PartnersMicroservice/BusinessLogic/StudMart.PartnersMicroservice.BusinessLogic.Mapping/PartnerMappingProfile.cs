@@ -15,7 +15,7 @@ public class PartnerMappingProfile : Profile
         CreateMap<PaymentInformation, PaymentInformationModel>().ReverseMap();
         CreateMap<Partner, PartnerModel>()
             .ForCtorParam("Id", expression => expression.MapFrom(partner => partner.Id))
-            .ForCtorParam("CompanyName", opt => opt.MapFrom(src => src.CompanyName.Name))
+            .ForCtorParam("Name", opt => opt.MapFrom(src => src.Name.Name))
             .ForCtorParam("Description", opt => opt.MapFrom(src => src.Description))
             .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category))
             .ForCtorParam("Subtitle", opt => opt.MapFrom(src => src.Subtitle))
@@ -31,7 +31,7 @@ public class PartnerMappingProfile : Profile
             
         CreateMap<Partner, PartnerShortModel>()
             .ForCtorParam("Id", expression => expression.MapFrom(partner => partner.Id))
-            .ForCtorParam("CompanyName", opt => opt.MapFrom(src => src.CompanyName.Name))
+            .ForCtorParam("Name", opt => opt.MapFrom(src => src.Name.Name))
             .ForCtorParam("Description", opt => opt.MapFrom(src => src.Description))
             .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category.Name))
             .ForCtorParam("Subtitle", opt => opt.MapFrom(src => src.Subtitle))

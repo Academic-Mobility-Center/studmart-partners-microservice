@@ -6,7 +6,7 @@ public record PaymentInfoContract(string Bik, string AccountNumber, string Corre
     : IFactoryContract;
 
 public record PartnerFactoryContract(
-    string CompanyName,
+    string Name,
     string Subtitle,
     string Description,
     int Priority,

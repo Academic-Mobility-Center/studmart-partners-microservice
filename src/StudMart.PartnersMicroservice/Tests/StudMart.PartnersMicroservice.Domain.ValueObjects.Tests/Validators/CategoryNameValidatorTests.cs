@@ -1,4 +1,5 @@
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions.CategoryName;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.CategoryName;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Validators.Base;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators;
@@ -8,7 +9,7 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Validators;
 
 public class CategoryNameValidatorTests()
     : ValidatorTestsBase<CategoryNameValidator, string, InvalidCategoryNameException>(new CategoryNameValidator(),
-        "Category name '{0}' is invalid", exception => exception.Name)
+        "Category name '{0}' is invalid", exception => exception.Value)
 {
     [Theory]
     [GenericClassData<CorrectCategoryNameTestsData>]

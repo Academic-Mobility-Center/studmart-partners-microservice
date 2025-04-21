@@ -5,4 +5,4 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Base;
 
 public class LongValueObjectTestsBase<TValueObject, TException> : ValueObjectTestsBase<TValueObject, TException, long>
 where TValueObject : SingleParameterValueObjectBase<long>
-where TException : InvalidValueObjectValueFormatException;
+where TException : InvalidValueObjectValueFormatExceptionBase;

@@ -1,4 +1,5 @@
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions.Email;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Email;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Validators.Base;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators;

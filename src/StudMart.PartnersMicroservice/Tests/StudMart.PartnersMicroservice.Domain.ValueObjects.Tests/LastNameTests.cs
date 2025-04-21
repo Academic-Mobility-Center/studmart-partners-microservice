@@ -1,4 +1,5 @@
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions.LastName;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Base;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.LastName;
 using StudMart.PartnersMicroservice.Tests.Common.Attributes;

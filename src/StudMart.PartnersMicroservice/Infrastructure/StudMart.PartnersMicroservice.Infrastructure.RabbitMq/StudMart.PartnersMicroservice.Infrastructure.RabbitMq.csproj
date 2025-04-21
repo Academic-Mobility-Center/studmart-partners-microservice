@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.Synchronization.Abstractions\StudMart.PartnersMicroservice.Synchronization.Abstractions.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="AutoMapper" Version="14.0.0" />
       <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
     </ItemGroup>
@@ -19,6 +15,14 @@
       <Reference Include="Microsoft.Extensions.Options">
         <HintPath>..\..\..\..\..\..\.nuget\packages\microsoft.extensions.options\9.0.3\lib\net9.0\Microsoft.Extensions.Options.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Models\StudMart.PartnersMicroservice.BusinessLogic.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Base\" />
     </ItemGroup>
 
 </Project>

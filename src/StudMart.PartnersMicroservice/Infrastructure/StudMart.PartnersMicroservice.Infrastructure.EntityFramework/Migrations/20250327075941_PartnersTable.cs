@@ -19,7 +19,7 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                     CountryId = table.Column<int>(type: "integer", nullable: false),
                     Site = table.Column<string>(type: "text", nullable: false),
                     Inn = table.Column<long>(type: "bigint", nullable: false),
-                    CompanyName = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Phone = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     PaymentInformation_Bik = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),

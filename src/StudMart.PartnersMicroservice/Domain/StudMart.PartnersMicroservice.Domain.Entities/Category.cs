@@ -10,7 +10,7 @@ public class Category : IntegerIdentifierNamedEntity<CategoryName>
         
     }
 
-    public Category(CategoryName name) : this(0, name)
+    internal Category(CategoryName name) : this(0, name)
     {
         
     }

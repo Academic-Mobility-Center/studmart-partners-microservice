@@ -30,7 +30,7 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                 oldType: "text");
 
             migrationBuilder.AlterColumn<string>(
-                name: "CompanyName",
+                name: "Name",
                 table: "Partners",
                 type: "character varying(50)",
                 maxLength: 50,
@@ -139,7 +139,7 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                 oldMaxLength: 12);
 
             migrationBuilder.AlterColumn<string>(
-                name: "CompanyName",
+                name: "Name",
                 table: "Partners",
                 type: "text",
                 nullable: false,

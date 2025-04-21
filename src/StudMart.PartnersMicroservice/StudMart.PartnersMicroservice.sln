@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{7136AC2C-ED87-4C19-B3CB-28BCFD6E193A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.WebHost", "Presentation\StudMart.PartnersMicroservice.WebHost\StudMart.PartnersMicroservice.WebHost.csproj", "{C833E55D-B67C-470C-B9B4-4538A130DAAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Presentation.WebHost", "Presentation\StudMart.PartnersMicroservice.Presentation.WebHost\StudMart.PartnersMicroservice.Presentation.WebHost.csproj", "{C833E55D-B67C-470C-B9B4-4538A130DAAA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{C17BA2E4-00F1-49E0-82C0-BC35AF1887E1}"
 EndProject
@@ -49,8 +49,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.BusinessLogic.Mapping", "BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Mapping\StudMart.PartnersMicroservice.BusinessLogic.Mapping.csproj", "{2C237A24-6AB1-46D7-9043-9F2F4D2FAD20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Infrastructure.RabbitMq", "Infrastructure\StudMart.PartnersMicroservice.Infrastructure.RabbitMq\StudMart.PartnersMicroservice.Infrastructure.RabbitMq.csproj", "{479DE046-1129-4ED2-8EC1-B874391E9566}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Synchronization.Abstractions", "BusinessLogic\StudMart.PartnersMicroservice.Synchronization.Abstractions\StudMart.PartnersMicroservice.Synchronization.Abstractions.csproj", "{7895743D-EE8E-4C7E-8257-7391838A32F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -134,10 +132,6 @@ Global
 		{479DE046-1129-4ED2-8EC1-B874391E9566}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{479DE046-1129-4ED2-8EC1-B874391E9566}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{479DE046-1129-4ED2-8EC1-B874391E9566}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7895743D-EE8E-4C7E-8257-7391838A32F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7895743D-EE8E-4C7E-8257-7391838A32F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7895743D-EE8E-4C7E-8257-7391838A32F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7895743D-EE8E-4C7E-8257-7391838A32F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C833E55D-B67C-470C-B9B4-4538A130DAAA} = {7136AC2C-ED87-4C19-B3CB-28BCFD6E193A}
@@ -159,6 +153,5 @@ Global
 		{6B287A54-863C-458E-B1CD-15419BB4E32B} = {203668B2-CC5B-4BAB-B247-06A1E21FE865}
 		{2C237A24-6AB1-46D7-9043-9F2F4D2FAD20} = {203668B2-CC5B-4BAB-B247-06A1E21FE865}
 		{479DE046-1129-4ED2-8EC1-B874391E9566} = {F9C2ED18-63CA-4C5A-9D7C-3F71EFBB0C1B}
-		{7895743D-EE8E-4C7E-8257-7391838A32F7} = {203668B2-CC5B-4BAB-B247-06A1E21FE865}
 	EndGlobalSection
 EndGlobal

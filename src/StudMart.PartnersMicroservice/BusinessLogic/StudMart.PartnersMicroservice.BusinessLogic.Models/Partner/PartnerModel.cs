@@ -8,7 +8,7 @@ namespace StudMart.PartnersMicroservice.BusinessLogic.Models.Partner;
 
 public record PartnerModel(
     Guid Id,
-    string CompanyName,
+    string Name,
     string Subtitle,
     string Description,
     int Priority,

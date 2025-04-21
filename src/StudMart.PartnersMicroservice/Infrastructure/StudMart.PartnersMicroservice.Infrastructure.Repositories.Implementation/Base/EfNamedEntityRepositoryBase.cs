@@ -10,10 +10,10 @@ public class EfNamedEntityRepositoryBase<TEntity, TId, TName>(DataContext contex
     : EfRepositoryBase<TEntity, TId>(context),
         INamedEntityRepository<TEntity, TId, TName> where TEntity : class, INamedEntity<TId, TName>
     where TId : struct
-    where TName : INamedValueObject<string>
+    where TName : class, INamedValueObject<string>
 {
     private readonly DataContext _context = context;
 
-    public Task<TEntity?> GetByNameAsync(string name, CancellationToken cancellationToken) => _context.Set<TEntity>()
-        .FirstOrDefaultAsync(entity => entity.Name.ToString() == name, cancellationToken: cancellationToken);
+    public Task<TEntity?> GetByNameAsync(TName name, CancellationToken cancellationToken) =>_context.Set<TEntity>()
+            .FirstOrDefaultAsync(entity => entity.Name == name, cancellationToken: cancellationToken);
 }

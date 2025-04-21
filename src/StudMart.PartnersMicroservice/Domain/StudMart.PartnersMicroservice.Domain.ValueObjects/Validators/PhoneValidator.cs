@@ -1,5 +1,5 @@
 using StudMart.PartnersMicroservice.Common.Helpers;
-using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions.Phone;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Validators.Base;
 
 namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Validators;
@@ -8,4 +8,6 @@ namespace StudMart.PartnersMicroservice.Domain.ValueObjects.Validators;
 /// Class that helps validate mobile phone number of Employee
 /// </summary>
 public class PhoneValidator()
-    : StringValidatorBase<InvalidPhoneNumberException>(RegexValidationRules.PhoneValidationRegex);
+    : StringValidatorBase<InvalidPhoneNumberException, InvalidLengthPhoneException, EmptyPhoneException>(
+        RegexValidationRules.PhoneValidationRegex, ValueObjectsLengthRules.MinPhoneNumberLength,
+        ValueObjectsLengthRules.MaxPhoneNumberLength);

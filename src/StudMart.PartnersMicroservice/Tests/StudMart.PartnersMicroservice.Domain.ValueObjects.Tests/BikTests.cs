@@ -1,4 +1,5 @@
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions;
+using StudMart.PartnersMicroservice.Domain.ValueObjects.Exceptions.Bik;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.Base;
 using StudMart.PartnersMicroservice.Domain.ValueObjects.Tests.TestsData.Bik;
 using StudMart.PartnersMicroservice.Tests.Common.Attributes;

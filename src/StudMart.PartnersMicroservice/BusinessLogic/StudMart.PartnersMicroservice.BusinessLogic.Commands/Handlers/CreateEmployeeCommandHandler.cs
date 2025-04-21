@@ -1,6 +1,8 @@
 using AutoMapper;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
+using StudMart.PartnersMicroservice.BusinessLogic.Commands.ErrorResultsProcessors;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers.Base;
+using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Employee;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Employee;
 using StudMart.PartnersMicroservice.Domain.Entities;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
@@ -15,6 +17,6 @@ public class CreateEmployeeCommandHandler(
     IEmployeeFactory factory,
     IMapper mapper)
     : CreateCommandHandlerBase<CreateEmployeeCommand, EmployeeModel, EmployeeAddModel, Employee, Guid, EmployeeFactory,
-        EmployeeFactoryContract>(repository, factory, mapper)
+        EmployeeFactoryContract, EmployeeCreatedResult>(repository, factory, mapper, new EmployeeErrorsResultProcessor())
 {
 }

@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.BusinessLogic.Models.Category;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 
-public class CreateCategoryCommand(CategoryAddModel model) : CreateCommandBase<CategoryModel, CategoryAddModel>(model)
+public class CreateCategoryCommand(CategoryAddModel model) : CreateCommandBase<CategoryAddModel>(model)
 {
     
 }

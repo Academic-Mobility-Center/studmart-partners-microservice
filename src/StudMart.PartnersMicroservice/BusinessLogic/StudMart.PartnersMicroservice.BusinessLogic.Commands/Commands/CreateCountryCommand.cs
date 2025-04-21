@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.BusinessLogic.Models.Country;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 
-public class CreateCountryCommand(CountryAddModel model) : CreateCommandBase<CountryModel, CountryAddModel>(model)
+public class CreateCountryCommand(CountryAddModel model) : CreateCommandBase<CountryAddModel>(model)
 {
     
 }

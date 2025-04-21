@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StudMart.PartnersMicroservice.Domain.Entities.Aggregates;
+using StudMart.PartnersMicroservice.Domain.ValueObjects;
 using StudMart.PartnersMicroservice.Infrastructure.EntityFramework;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.Base;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
@@ -26,4 +27,16 @@ public class PartnersRepository(DataContext context)
         .Include(partner => partner.Employees)
         .Include(partner => partner.Regions)
         .FirstOrDefaultAsync(partner => partner.Id == id, cancellationToken);
+    
+    public Task<Partner?> GetByInnAsync(long inn, CancellationToken cancellationToken) 
+        => _context1.Partners.FirstOrDefaultAsync(partner => partner.Inn.Value == inn, cancellationToken );
+
+    public Task<Partner?> GetByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken) 
+        => _context1.Partners.FirstOrDefaultAsync(partner => partner.Phone.Value == phoneNumber, cancellationToken );
+
+    public Task<Partner?> GetByEmailAsync(string email, CancellationToken cancellationToken) 
+        => _context1.Partners.FirstOrDefaultAsync(partner => partner.Email.Value == email, cancellationToken );
+
+    public Task<Partner?> GetByNameAsync(CompanyName name, CancellationToken cancellationToken = default) =>
+        _context1.Partners.FirstOrDefaultAsync(partner => partner.Name == name, cancellationToken);
 }

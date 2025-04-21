@@ -6,5 +6,5 @@ namespace StudMart.PartnersMicroservice.Repositories.Abstractions;
 public interface INamedEntityRepository<TEntity, in TId, in TName> : IRepository<TEntity, TId>
     where TEntity : class, INamedEntity<TId, TName> where TId : struct where TName : INamedValueObject<string>
 {
-    Task<TEntity?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
+    Task<TEntity?> GetByNameAsync(TName name, CancellationToken cancellationToken = default);
 }

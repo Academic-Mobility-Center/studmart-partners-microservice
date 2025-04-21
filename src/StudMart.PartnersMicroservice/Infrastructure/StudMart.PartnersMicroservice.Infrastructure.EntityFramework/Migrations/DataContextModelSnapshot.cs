@@ -46,11 +46,6 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.Property<int>("CountryId")
                         .HasColumnType("integer");
 
@@ -61,7 +56,8 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(70)
+                        .HasColumnType("character varying(70)");
 
                     b.Property<bool>("HasAllRegions")
                         .HasColumnType("boolean");
@@ -72,18 +68,23 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("character varying(12)");
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
 
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
 
                     b.Property<string>("Site")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Subtitle")
                         .IsRequired()
@@ -100,6 +101,9 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                         .IsUnique();
 
                     b.HasIndex("Inn")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
                         .IsUnique();
 
                     b.HasIndex("Phone")
@@ -123,6 +127,9 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                         .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Category");
                 });
@@ -156,15 +163,18 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(70)
+                        .HasColumnType("character varying(70)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<Guid>("PartnerId")
                         .HasColumnType("uuid");
@@ -192,8 +202,8 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
 
                     b.HasKey("Id");
 
@@ -227,13 +237,13 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                     b.HasOne("StudMart.PartnersMicroservice.Domain.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("StudMart.PartnersMicroservice.Domain.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.OwnsOne("StudMart.PartnersMicroservice.Domain.ValueObjects.PaymentInformation", "PaymentInformation", b1 =>
@@ -277,7 +287,7 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                     b.HasOne("StudMart.PartnersMicroservice.Domain.Entities.Aggregates.Partner", "Partner")
                         .WithMany("Employees")
                         .HasForeignKey("PartnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Partner");
@@ -287,12 +297,13 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                 {
                     b.HasOne("StudMart.PartnersMicroservice.Domain.Entities.Country", null)
                         .WithMany("Regions")
-                        .HasForeignKey("CountryId");
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("StudMart.PartnersMicroservice.Domain.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId1")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Country");

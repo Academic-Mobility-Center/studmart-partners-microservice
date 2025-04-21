@@ -7,6 +7,6 @@ using StudMart.PartnersMicroservice.Repositories.Abstractions;
 namespace StudMart.PartnersMicroservice.BusinessLogic.Queries.Handlers.Country;
 
 public class GetCountryRequestHandler(ICountriesRepository repository, IMapper mapper)
-    : GetByIdRequestHandlerBase<GetCountryRequest, CountryModel, int, Domain.Entities.Country>(repository, mapper)
+    : GetByIdRequestHandlerBase<GetCountryByIdRequest, CountryModel, int, Domain.Entities.Country>(repository, mapper)
 {
 }

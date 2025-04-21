@@ -14,4 +14,7 @@ public class EmployeesRepository(DataContext context)
     public override Task<Employee?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => _context1
         .Employees.Include(employee => employee.Partner)
         .FirstOrDefaultAsync(employee => employee.Id == id, cancellationToken);
+
+    public Task<Employee?> GetByEmailAsync(string email, CancellationToken cancellationToken = default) =>
+        _context1.Employees.FirstOrDefaultAsync(employee => employee.Email.Value == email, cancellationToken);
 }

@@ -7,6 +7,6 @@ using StudMart.PartnersMicroservice.Repositories.Abstractions;
 namespace StudMart.PartnersMicroservice.BusinessLogic.Queries.Handlers.Employee;
 
 public class GetEmployeesRequestHandler(IEmployeesRepository repository, IMapper mapper)
-    : GetAllRequestHandlerBase<GetEmployeesRequest, Guid, EmployeeModel, Domain.Entities.Employee>(repository, mapper)
+    : GetAllRequestHandlerBase<GetAllEmployeesRequest, Guid, EmployeeModel, Domain.Entities.Employee>(repository, mapper)
 {
 }

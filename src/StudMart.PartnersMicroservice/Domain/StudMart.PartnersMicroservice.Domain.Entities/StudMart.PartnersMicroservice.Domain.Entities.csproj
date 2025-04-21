@@ -9,5 +9,8 @@
     <ItemGroup>
       <ProjectReference Include="..\StudMart.PartnersMicroservice.Domain.ValueObjects\StudMart.PartnersMicroservice.Domain.ValueObjects.csproj" />
     </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="StudMart.PartnersMicroservice.Domain.Factories.Implementations" />
+    </ItemGroup>
 
 </Project>

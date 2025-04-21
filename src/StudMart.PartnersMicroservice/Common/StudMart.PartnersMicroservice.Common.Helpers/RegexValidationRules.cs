@@ -44,6 +44,18 @@ public  static class RegexValidationRules
     /// Regex rule for account number
     /// </summary>
     public const string BikValidationRegex = @"^\d{9}$";
-    
+    /// <summary>
+    /// Regex rule for category name
+    /// </summary>
+    public const string CategoryNameValidationRegex = @"^[А-Яа-яЁёA-Za-z\s\-]+$";
+    /// <summary>
+    /// Regex rule for subtitle
+    /// </summary>
+    public const string SubtitleValidationRegex = @"^[А-Яа-яЁёA-Za-z\s\-,]+$";
+    /// <summary>
+    /// Regex rule for company description
+    /// </summary>
+    public const string DescriptionValidationRegex = @"^[\w\d\s.,:;!?()«»\[\]{}\-—_•*#+=/\\`'""<>|@&^~%\r\n\[\]()]*$";
+
 
 }

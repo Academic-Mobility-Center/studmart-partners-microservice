@@ -8,7 +8,7 @@ using StudMart.PartnersMicroservice.Repositories.Abstractions;
 namespace StudMart.PartnersMicroservice.BusinessLogic.Queries.Handlers.Base;
 
 public class GetAllRequestHandlerBase<TRequest, TId, TModel, TEntity>(IRepository<TEntity, TId> repository, IMapper mapper)
-    : IRequestHandler<TRequest, IEnumerable<TModel>>
+    : IRequestHandler<TRequest, IEnumerable<TModel>>, IDisposable, IAsyncDisposable
     where TRequest : IGetAllRequest<TModel>
     where TModel : class, IModel
     where TEntity : class, IEntity<TId>
@@ -18,5 +18,15 @@ public class GetAllRequestHandlerBase<TRequest, TId, TModel, TEntity>(IRepositor
     {
         var entities = await repository.GetAllAsync(cancellationToken);
         return entities.Select(mapper.Map<TEntity, TModel>);
+    }
+
+    public void Dispose()
+    {
+        repository.Dispose();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await repository.DisposeAsync();
     }
 }

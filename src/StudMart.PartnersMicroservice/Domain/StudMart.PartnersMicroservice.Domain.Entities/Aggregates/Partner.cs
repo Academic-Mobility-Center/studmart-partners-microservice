@@ -4,12 +4,12 @@ using StudMart.PartnersMicroservice.Domain.ValueObjects;
 
 namespace StudMart.PartnersMicroservice.Domain.Entities.Aggregates;
 
-public class Partner : SoftDeletableGuidIdentifierEntity
+public class Partner : SoftDeletableGuidIdentifierEntity, INamedEntity<Guid, CompanyName>
 {
     public Country Country { get; set; }
     public Site Site { get; set; }
     public Inn Inn { get; set; }
-    public CompanyName CompanyName { get; set; }
+    public CompanyName Name { get; set; }
     public Phone Phone { get; set; }
     public Email Email { get; set; }
     public Subtitle Subtitle { get; set; }
@@ -30,7 +30,7 @@ public class Partner : SoftDeletableGuidIdentifierEntity
         Country country, Site site, Inn inn, PaymentInformation paymentInformation,
         ICollection<Employee> employees, bool hasAllRegions, ICollection<Region> regions) : base(id)
     {
-        CompanyName = companyName ?? throw new ArgumentNullException(nameof(companyName));
+        Name = companyName ?? throw new ArgumentNullException(nameof(companyName));
         Description = description ?? throw new ArgumentNullException(nameof(description));
         Phone = phone ?? throw new ArgumentNullException(nameof(phone));
         Country = country ?? throw new ArgumentNullException(nameof(country));
@@ -46,7 +46,7 @@ public class Partner : SoftDeletableGuidIdentifierEntity
         _employees = employees ?? throw new ArgumentNullException(nameof(employees));
     }
 
-    public Partner(CompanyName companyName, Category category, Subtitle subtitle, Description description, Priority priority, Phone phone,
+    internal Partner(CompanyName companyName, Category category, Subtitle subtitle, Description description, Priority priority, Phone phone,
         Email email,
         Country country, Site site, Inn inn, PaymentInformation paymentInformation, bool hasAllRegions,
         ICollection<Region> regions) : this(Guid.NewGuid(), companyName,
@@ -79,4 +79,5 @@ public class Partner : SoftDeletableGuidIdentifierEntity
         _employees.Remove(employee);
         return true;
     }
+    
 }
