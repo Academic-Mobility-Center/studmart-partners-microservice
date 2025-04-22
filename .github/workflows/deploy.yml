@@ -123,6 +123,14 @@ jobs:
             --push \
             -f ${{ env.DOCKERFILE_PATH }} ${{ env.CONTEXT_PATH }} 2>&1 | tee build.log
           
+          if [ $? -ne 0 ]; then
+            echo "::error::❌ Сборка Docker образа завершилась с ошибкой"
+            echo "::group::📄 Логи сборки Docker"
+            cat build.log
+            echo "::endgroup::"
+            exit 1
+          fi
+
           echo "📝 Логи сборки сохранены в build.log"
           echo "::group::📄 Логи сборки Docker"
           cat build.log
