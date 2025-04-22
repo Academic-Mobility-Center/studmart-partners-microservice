@@ -25,15 +25,16 @@ public class RegionsController(IMapper mapper, IMediator mediator) : ControllerB
     [HttpGet]
     public async Task<IActionResult> GetAsync([FromQuery]RegionQueryParameters queryParameters, CancellationToken cancellationToken = default)
     {
-        if (queryParameters.name is null && queryParameters.id is null)
-            return Ok(await GetAllCategoriesAsync(cancellationToken));
-        if (queryParameters.id is not null && queryParameters.name is not null)
+        if (queryParameters.id is not null && queryParameters.name is not null && queryParameters.countryId is not null)
             return BadRequest("It must contains only one filter");
+        if (queryParameters.name is null && queryParameters.id is null && queryParameters.countryId is null)
+            return Ok(await GetAllCategoriesAsync(cancellationToken));
+
         if (queryParameters.name is not null)
         {
             var region = await mediator.Send(new GetRegionByNameRequest(queryParameters.name), cancellationToken);
             if(region is null)
-                return NotFound(queryParameters.name);
+                return NotFound($"Region with name {queryParameters.name} is not found");
             return Ok(mapper.Map<RegionResponse>(region));
         }
 
@@ -41,8 +42,16 @@ public class RegionsController(IMapper mapper, IMediator mediator) : ControllerB
         {
             var region = await mediator.Send(new GetRegionByIdRequest(queryParameters.id ?? 0), cancellationToken);
             if(region is null)
-                return NotFound(queryParameters.id);
+                return NotFound($"Region with id {queryParameters.id} is not found");
             return Ok(mapper.Map<RegionResponse>(region));
+        }
+
+        if (queryParameters.countryId is not null)
+        {
+            var regions = await mediator.Send(new GetRegionsByCountryRequest(queryParameters.countryId ?? 0), cancellationToken);
+            if(regions is null)
+                return NotFound("Country with id {countryId} is not found");
+            return Ok(regions.Select(mapper.Map<RegionShortResponse>));
         }
         return BadRequest();
     }

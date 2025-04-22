@@ -14,4 +14,7 @@ public class RegionsRepository(DataContext context) : EfNamedEntityRepositoryBas
 
     public override Task<Region?> GetByIdAsync(int id, CancellationToken cancellationToken = default) => _context.Regions
         .Include(region => region.Country).FirstOrDefaultAsync(region => region.Id == id, cancellationToken);
+
+    public Task<IEnumerable<Region>> GetAllRegionsByCountryAsync(Country country, CancellationToken cancellationToken = default)
+    => Task.FromResult(_context.Regions.Where(region => region.Country == country).AsEnumerable());
 }
