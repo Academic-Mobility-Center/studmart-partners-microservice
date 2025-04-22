@@ -11,7 +11,6 @@ using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Helpers;
 
-static string BuildSslPart(bool hasSsl) => hasSsl ? "VerifyFull" : "Disable";
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
@@ -25,7 +24,7 @@ builder.Configuration.AddEnvironmentVariables();
 var settings = dbSettings.Get<DatabaseSettings>();
 if(settings is null)
     throw new NullReferenceException("Database settings not found");
-var connectionString = $"Host={settings.Host};Port={settings.Port};Database={settings.Db};Username={settings.Username};Password={settings.Password};Ssl Mode={BuildSslPart(settings.UseSsl)};";
+var connectionString = $"Host={settings.Host};Port={settings.Port};Database={settings.Db};Username={settings.Username};Password={settings.Password}";
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseNpgsql(connectionString,
