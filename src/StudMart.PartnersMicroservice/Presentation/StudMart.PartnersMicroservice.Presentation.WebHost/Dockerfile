@@ -10,7 +10,7 @@ WORKDIR /src
 COPY ["Presentation/StudMart.PartnersMicroservice.Presentation.WebHost/StudMart.PartnersMicroservice.Presentation.WebHost.csproj", "Presentation/StudMart.PartnersMicroservice.Presentation.WebHost/"]
 RUN dotnet restore "Presentation/StudMart.PartnersMicroservice.Presentation.WebHost/StudMart.PartnersMicroservice.Presentation.WebHost.csproj"
 COPY . .
-WORKDIR /src/Presentation/StudMart.PartnersMicroservice.Presentation.WebHost/
+WORKDIR /src/Presentation/StudMart.PartnersMicroservice.Presentation.WebHost
 RUN dotnet build "StudMart.PartnersMicroservice.Presentation.WebHost.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
