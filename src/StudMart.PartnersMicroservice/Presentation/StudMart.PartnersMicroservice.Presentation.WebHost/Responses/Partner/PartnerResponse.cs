@@ -8,7 +8,7 @@ namespace StudMart.PartnersMicroservice.Presentation.WebHost.Responses.Partner;
 
 public record PartnerResponse(
     Guid id,
-    string CompanyName,
+    string Name,
     string Subtitle,
     string Description,
     int Priority,
