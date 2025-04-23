@@ -25,7 +25,7 @@ builder.Configuration.AddEnvironmentVariables();
 var settings = dbSettings.Get<DatabaseSettings>();
 if(settings is null)
     throw new NullReferenceException("Database settings not found");
-var connectionString = $"Host={settings.Host};Port={settings.Port};Database={settings.Db};Username={settings.Username};Password={settings.Password};Ssl Mode={BuildSslPart(settings.UseSsl)};";
+var connectionString = $"Host={settings.Host};Port={settings.Port};Database={settings.Db};Username={settings.Username};Password={settings.Password};";
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseNpgsql(connectionString,
