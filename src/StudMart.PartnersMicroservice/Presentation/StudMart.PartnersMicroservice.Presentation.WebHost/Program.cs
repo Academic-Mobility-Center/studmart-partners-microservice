@@ -24,7 +24,7 @@ builder.Configuration.AddEnvironmentVariables();
 var settings = dbSettings.Get<DatabaseSettings>();
 if(settings is null)
     throw new NullReferenceException("Database settings not found");
-var connectionString = $"Host=192.168.99.12;Port=5432;Database=Partners;Username=postgres;Password=postgres;sslmode=disable";
+var connectionString = $"Host={settings.Host};Port={settings.Port};Database={settings.Db};Username={settings.Username};Password={settings.Password};sslmode=disable";
 Console.WriteLine(connectionString);
 builder.Services.AddDbContext<DataContext>(options =>
 {

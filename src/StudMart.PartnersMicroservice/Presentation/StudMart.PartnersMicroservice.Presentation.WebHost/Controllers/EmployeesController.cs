@@ -23,6 +23,9 @@ public class EmployeesController(IMediator mediator, IMapper mapper) : Controlle
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(EmployeeResponse),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string),StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Guid),StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAsync([FromQuery] EmployeeQueryParameters queryParameters,
         CancellationToken cancellationToken = default)
     {
