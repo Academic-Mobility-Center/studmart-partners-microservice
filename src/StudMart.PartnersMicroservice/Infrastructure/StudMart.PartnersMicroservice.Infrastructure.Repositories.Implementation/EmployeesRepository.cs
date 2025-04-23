@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StudMart.PartnersMicroservice.Domain.Entities;
+using StudMart.PartnersMicroservice.Domain.ValueObjects;
 using StudMart.PartnersMicroservice.Infrastructure.EntityFramework;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation.Base;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
@@ -15,6 +16,6 @@ public class EmployeesRepository(DataContext context)
         .Employees.Include(employee => employee.Partner)
         .FirstOrDefaultAsync(employee => employee.Id == id, cancellationToken);
 
-    public Task<Employee?> GetByEmailAsync(string email, CancellationToken cancellationToken = default) =>
-        _context1.Employees.FirstOrDefaultAsync(employee => employee.Email.Value == email, cancellationToken);
+    public Task<Employee?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default) =>
+        _context1.Employees.FirstOrDefaultAsync(employee => employee.Email == email, cancellationToken);
 }

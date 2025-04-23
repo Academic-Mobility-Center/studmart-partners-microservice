@@ -12,9 +12,9 @@ public class EmployeeFactory(IPartnersRepository partnersRepository, IEmployeesR
 {
     public async Task<IResult> Create(EmployeeFactoryContract contract, CancellationToken cancellationToken = default)
     {
-        /* var verification = await employeesRepository.GetByEmailAsync(contract.Email, cancellationToken);
+         var verification = await employeesRepository.GetByEmailAsync(new Email(contract.Email), cancellationToken);
         if(verification is not null)
-            return new EmailAlreadyRegisteredResult(contract.Email);*/
+            return new EmailAlreadyRegisteredResult(contract.Email);
         var partner = await partnersRepository.GetByIdAsync(contract.PartnerId, cancellationToken);
         if(partner is null)
             return new PartnerNotFoundResult(contract.PartnerId);

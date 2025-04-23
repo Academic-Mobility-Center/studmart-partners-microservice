@@ -28,14 +28,14 @@ public class PartnersRepository(DataContext context)
         .Include(partner => partner.Regions)
         .FirstOrDefaultAsync(partner => partner.Id == id, cancellationToken);
     
-    public Task<Partner?> GetByInnAsync(long inn, CancellationToken cancellationToken) 
-        => _context1.Partners.FirstOrDefaultAsync(partner => partner.Inn.Value == inn, cancellationToken );
+    public Task<Partner?> GetByInnAsync(Inn inn, CancellationToken cancellationToken) 
+        => _context1.Partners.FirstOrDefaultAsync(partner => partner.Inn == inn, cancellationToken );
 
-    public Task<Partner?> GetByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken) 
-        => _context1.Partners.FirstOrDefaultAsync(partner => partner.Phone.Value == phoneNumber, cancellationToken );
+    public Task<Partner?> GetByPhoneNumberAsync(Phone phoneNumber, CancellationToken cancellationToken) 
+        => _context1.Partners.FirstOrDefaultAsync(partner => partner.Phone == phoneNumber, cancellationToken );
 
-    public Task<Partner?> GetByEmailAsync(string email, CancellationToken cancellationToken) 
-        => _context1.Partners.FirstOrDefaultAsync(partner => partner.Email.Value == email, cancellationToken );
+    public Task<Partner?> GetByEmailAsync(Email email, CancellationToken cancellationToken) 
+        => _context1.Partners.FirstOrDefaultAsync(partner => partner.Email == email, cancellationToken );
 
     public Task<Partner?> GetByNameAsync(CompanyName name, CancellationToken cancellationToken = default) =>
         _context1.Partners.FirstOrDefaultAsync(partner => partner.Name == name, cancellationToken);

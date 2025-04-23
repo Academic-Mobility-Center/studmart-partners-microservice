@@ -13,6 +13,9 @@ public class PartnerErrorsResultProcessor : IErrorsResultProcessor
             CountryNotFoundResult countryNotFound => new Results.Region.CountryNotFoundResult(
                 countryNotFound.NotFoundId),
             CategoryNotFoundResult categoryNotFound => new Results.Partner.CategoryNotFoundResult(categoryNotFound.NotFoundId),
+            PartnerAlreadyRegisteredResult partnerAlreadyRegistered => new Results.Partner.PartnerAlreadyRegisteredResult(partnerAlreadyRegistered.Inn),
+            PartnerEmailAlreadyRegisteredResult partnerEmailAlreadyRegistered => new Results.Partner.PartnerEmailAlreadyRegisteredResult(partnerEmailAlreadyRegistered.Email),
+            PartnerPhoneAlreadyRegisteredResult partnerPhoneAlreadyRegistered => new Results.Partner.PartnerPhoneAlreadyRegisteredResult(partnerPhoneAlreadyRegistered.Phone),
             _ => new InternalErrorResult()
 
         };

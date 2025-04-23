@@ -95,6 +95,12 @@ public class PartnersController(IMediator mediator, IMapper mapper) : Controller
                 return NotFound($"Country with Id {countryNotFoundResult.NotFoundId} not found.");
             case CategoryNotFoundResult categoryNotFound:
                 return NotFound($"Category with Id {categoryNotFound.NotFoundId} not found.");
+            case PartnerAlreadyRegisteredResult partnerAlreadyRegisteredResult:
+                return BadRequest($"Partner with inn {partnerAlreadyRegisteredResult.Inn} already registered.");
+            case PartnerPhoneAlreadyRegisteredResult partnerPhoneAlreadyRegisteredResult:
+                return BadRequest($"Partner with Phone {partnerPhoneAlreadyRegisteredResult.Phone} already registered.");
+            case  PartnerEmailAlreadyRegisteredResult partnerEmailAlreadyRegisteredResult:
+                return BadRequest($"Partner with Email {partnerEmailAlreadyRegisteredResult.Email} already registered.");
             default:
                 return BadRequest();
         }
