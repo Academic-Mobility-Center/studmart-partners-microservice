@@ -2,6 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{7136AC2C-ED87-4C19-B3CB-28BCFD6E193A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8F070231-F179-4017-9546-6B19E12A5933}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = ../../docker-compose.yaml
+		database.env = ../../database.env
+		service.env = ../../service.env
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudMart.PartnersMicroservice.Presentation.WebHost", "Presentation\StudMart.PartnersMicroservice.Presentation.WebHost\StudMart.PartnersMicroservice.Presentation.WebHost.csproj", "{C833E55D-B67C-470C-B9B4-4538A130DAAA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{C17BA2E4-00F1-49E0-82C0-BC35AF1887E1}"
