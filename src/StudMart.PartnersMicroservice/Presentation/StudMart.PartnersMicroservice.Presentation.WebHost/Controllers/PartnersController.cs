@@ -58,7 +58,7 @@ public class PartnersController(IMediator mediator, IMapper mapper) : Controller
 
         if (queryParameters.phone is not null)
         {
-            var partner = await mediator.Send(new GetPartnerByPhoneRequest(queryParameters.phone), cancellationToken);
+            var partner = await mediator.Send(new GetPartnerByPhoneRequest(queryParameters.phone.Trim()[0]== '+' ? queryParameters.phone.Trim() : $"+{queryParameters.phone.Trim()}"), cancellationToken);
             if(partner is null)
                 return NotFound($"Partner with phone {queryParameters.phone} is not found");
             return Ok(mapper.Map<PartnerResponse>(partner));
@@ -101,6 +101,8 @@ public class PartnersController(IMediator mediator, IMapper mapper) : Controller
                 return BadRequest($"Partner with Phone {partnerPhoneAlreadyRegisteredResult.Phone} already registered.");
             case  PartnerEmailAlreadyRegisteredResult partnerEmailAlreadyRegisteredResult:
                 return BadRequest($"Partner with Email {partnerEmailAlreadyRegisteredResult.Email} already registered.");
+            case PartnerNameAlreadyRegisteredResult partnerNameAlreadyRegisteredResult:
+                return BadRequest($"Partner with Name {partnerNameAlreadyRegisteredResult.Name} already registered.");
             default:
                 return BadRequest();
         }

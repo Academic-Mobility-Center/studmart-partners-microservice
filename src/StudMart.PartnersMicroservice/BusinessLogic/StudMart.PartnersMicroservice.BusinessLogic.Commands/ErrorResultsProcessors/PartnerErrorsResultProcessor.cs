@@ -16,6 +16,7 @@ public class PartnerErrorsResultProcessor : IErrorsResultProcessor
             PartnerAlreadyRegisteredResult partnerAlreadyRegistered => new Results.Partner.PartnerAlreadyRegisteredResult(partnerAlreadyRegistered.Inn),
             PartnerEmailAlreadyRegisteredResult partnerEmailAlreadyRegistered => new Results.Partner.PartnerEmailAlreadyRegisteredResult(partnerEmailAlreadyRegistered.Email),
             PartnerPhoneAlreadyRegisteredResult partnerPhoneAlreadyRegistered => new Results.Partner.PartnerPhoneAlreadyRegisteredResult(partnerPhoneAlreadyRegistered.Phone),
+            PartnerNameAlreadyRegisteredResult  partnerNameAlreadyRegistered => new Results.Partner.PartnerNameAlreadyRegisteredResult(partnerNameAlreadyRegistered.Name),
             _ => new InternalErrorResult()
 
         };

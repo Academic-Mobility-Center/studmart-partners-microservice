@@ -7,6 +7,26 @@ namespace StudMart.PartnersMicroservice.Presentation.WebHost.Validators;
 
 public class PartnerAddRequestValidator : AbstractValidator<PartnerAddRequest>
 {
+    private static bool ValidateInn(long value)
+    {
+        var inn = value.ToString();
+        if (string.IsNullOrEmpty(inn) || inn.Length != 10)
+            return false;
+        int[] coefficients = [2, 4, 10, 3, 5, 9, 4, 6, 8];
+        var controlSum = 0;
+        for (var i = 0; i < 9; i++)
+        {
+            controlSum += coefficients[i] * int.Parse(inn[i].ToString());
+        }
+
+        var controlDigit = controlSum % 11;
+        if (controlDigit == 10)
+        {
+            controlDigit = 0;
+        }
+        return controlDigit == int.Parse(inn[9].ToString());
+    }
+    
     public PartnerAddRequestValidator()
     {
         RuleFor(x => x.Name).NotNull().NotEmpty().WithMessage("Название компании обязательно");
@@ -73,5 +93,7 @@ public class PartnerAddRequestValidator : AbstractValidator<PartnerAddRequest>
             .WithMessage("Если партнёр находится по всей стране, то представленные регионы должны быть пустыми");
         RuleFor(x => x.RegionIds).NotNull().NotEmpty().When(x => !x.HasAllRegions).WithMessage(
             "Если партнёр представлен не по всей стране, то должен быть указан хотя бы 1 регион, где он пресдатвлен");
+        RuleFor(x => x.Inn.ToString()).NotNull().NotEmpty().Length(9).WithMessage("ИНН должен содержать 9 цифр");
+        
     }
 }
