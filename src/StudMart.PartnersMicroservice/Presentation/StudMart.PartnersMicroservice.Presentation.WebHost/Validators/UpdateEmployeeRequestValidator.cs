@@ -1,13 +1,15 @@
 using FluentValidation;
+using FluentValidation.Validators;
 using StudMart.PartnersMicroservice.Common.Helpers;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Requests.Employee;
 
 namespace StudMart.PartnersMicroservice.Presentation.WebHost.Validators;
 
-public class EmployeeAddRequestValidator : AbstractValidator<EmployeeAddRequest>
+public class UpdateEmployeeRequestValidator : AbstractValidator<UpdateEmployeeRequest>
 {
-    public EmployeeAddRequestValidator()
+    public UpdateEmployeeRequestValidator()
     {
+        RuleFor(x => x.Id).NotNull().NotEmpty().NotEqual(Guid.Empty).WithMessage("Id сотрудника обязательно");
         RuleFor(x => x.Email)
             .NotNull()
             .NotEmpty()

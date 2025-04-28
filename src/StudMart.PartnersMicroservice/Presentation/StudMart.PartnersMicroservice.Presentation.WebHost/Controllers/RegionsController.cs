@@ -1,3 +1,4 @@
+using System.Text.Json;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ using StudMart.PartnersMicroservice.Presentation.WebHost.Responses.Region;
 namespace StudMart.PartnersMicroservice.Presentation.WebHost.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class RegionsController(IMapper mapper, IMediator mediator) : ControllerBase
+public class RegionsController(IMapper mapper, IMediator mediator, ILogger<RegionsController> logger) : ControllerBase
 {
     
     private async Task<IEnumerable<RegionShortResponse>> GetAllCategoriesAsync(CancellationToken cancellationToken)
@@ -25,8 +26,13 @@ public class RegionsController(IMapper mapper, IMediator mediator) : ControllerB
     [HttpGet]
     public async Task<IActionResult> GetAsync([FromQuery]RegionQueryParameters queryParameters, CancellationToken cancellationToken = default)
     {
+        logger.LogInformation(JsonSerializer.Serialize(queryParameters));
         if (queryParameters.id is not null && queryParameters.name is not null && queryParameters.countryId is not null)
+        {
+            logger.LogError("It must contains only one filter for region");
             return BadRequest("It must contains only one filter");
+        }
+
         if (queryParameters.name is null && queryParameters.id is null && queryParameters.countryId is null)
             return Ok(await GetAllCategoriesAsync(cancellationToken));
 
@@ -41,8 +47,12 @@ public class RegionsController(IMapper mapper, IMediator mediator) : ControllerB
         if (queryParameters.id is not null)
         {
             var region = await mediator.Send(new GetRegionByIdRequest(queryParameters.id ?? 0), cancellationToken);
-            if(region is null)
+            if (region is null)
+            {
+                logger.LogWarning("Region with id {QueryParametersId} is not found", queryParameters.id);
                 return NotFound($"Region with id {queryParameters.id} is not found");
+            }
+
             return Ok(mapper.Map<RegionResponse>(region));
         }
 
@@ -68,16 +78,27 @@ public class RegionsController(IMapper mapper, IMediator mediator) : ControllerB
         {
             case ICreatedResult<RegionModel> createdResult:
             {
+                
                 var region = createdResult.CreatedModel;
+                logger.LogInformation("Region with id {RegionId} created", region.Id);
                 await mediator.Publish(new RegionCreatedNotification(region), cancellationToken);
                 return CreatedAtAction("Get", new { id = region.Id }, mapper.Map<RegionResponse>(region));
             }
-            case CountryNotFoundResult  partnerNotFoundResult:
-                return NotFound(partnerNotFoundResult.NotFoundId);
+            case CountryNotFoundResult countryNotFoundResult:
+            {
+                logger.LogWarning("Country with Id {NotFoundId} not found", countryNotFoundResult.NotFoundId);
+                return NotFound(countryNotFoundResult.NotFoundId);
+            }
             case RegionAlreadyExistsResult regionAlreadyExistsResult:
+            {
+                logger.LogWarning("Region with name {Name} already exists.", regionAlreadyExistsResult.Name);
                 return BadRequest($"Region with name {regionAlreadyExistsResult.Name} already exists.");
+            }
             default:
+            {
+                logger.LogError("Error creating region");
                 return BadRequest();
+            }
         }
     }
     

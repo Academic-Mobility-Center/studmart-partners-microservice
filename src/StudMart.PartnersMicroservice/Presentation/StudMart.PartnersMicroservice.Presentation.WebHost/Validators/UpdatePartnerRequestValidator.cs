@@ -1,11 +1,10 @@
-using System.Data;
 using FluentValidation;
 using StudMart.PartnersMicroservice.Common.Helpers;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Requests.Partner;
 
 namespace StudMart.PartnersMicroservice.Presentation.WebHost.Validators;
 
-public class PartnerAddRequestValidator : AbstractValidator<PartnerAddRequest>
+public class UpdatePartnerRequestValidator : AbstractValidator<UpdatePartnerRequest>
 {
     private static bool ValidateInn(long value)
     {
@@ -26,9 +25,9 @@ public class PartnerAddRequestValidator : AbstractValidator<PartnerAddRequest>
         }
         return controlDigit == int.Parse(inn[9].ToString());
     }
-    
-    public PartnerAddRequestValidator()
+    public UpdatePartnerRequestValidator()
     {
+        RuleFor(x => x.Id).NotNull().NotEmpty().NotEqual(Guid.Empty).WithMessage("Id сотрудника обязательно");
         RuleFor(x => x.Name).NotNull().NotEmpty().WithMessage("Название компании обязательно");
         RuleFor(x => x.Name)
             .Length(ValueObjectsLengthRules.MinCompanyNameLength, ValueObjectsLengthRules.MaxCompanyNameLength)
@@ -95,6 +94,5 @@ public class PartnerAddRequestValidator : AbstractValidator<PartnerAddRequest>
             "Если партнёр представлен не по всей стране, то должен быть указан хотя бы 1 регион, где он пресдатвлен");
         RuleFor(x => x.Inn.ToString()).NotNull().NotEmpty().Length(9).WithMessage("ИНН должен содержать 9 цифр");
         RuleFor(x => x.Inn).Must(ValidateInn).WithMessage("ИНН не является ИНН юридического лица");
-        
     }
 }

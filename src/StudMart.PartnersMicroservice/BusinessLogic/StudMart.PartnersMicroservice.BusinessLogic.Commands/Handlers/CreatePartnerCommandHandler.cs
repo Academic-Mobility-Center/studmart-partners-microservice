@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.ErrorResultsProcessors;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers.Base;
@@ -15,8 +16,8 @@ namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 public class CreatePartnerCommandHandler(
     IPartnersRepository repository,
     IPartnerFactory factory,
-    IMapper mapper)
+    IMapper mapper, ILogger<CreatePartnerCommandHandler> logger)
     : CreateCommandHandlerBase<CreatePartnerCommand, PartnerModel, PartnerAddModel, Partner, Guid, PartnerFactory,
-        PartnerFactoryContract, PartnerCreatedResult>(repository, factory, mapper, new PartnerErrorsResultProcessor())
+        PartnerFactoryContract, PartnerCreatedResult>(repository, factory, mapper, new PartnerErrorsResultProcessor(), logger)
 {
 }

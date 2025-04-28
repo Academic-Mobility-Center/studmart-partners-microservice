@@ -33,7 +33,6 @@ builder.Services.AddDbContext<DataContext>(options =>
             optionsBuilder.MigrationsAssembly("StudMart.PartnersMicroservice.Infrastructure.EntityFramework"));
 }); 
 
-Console.WriteLine(connectionString);
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseNpgsql(connectionString,
@@ -57,6 +56,7 @@ builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
 builder.Services.AddScoped<IEmployeeFactory, EmployeeFactory>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<ICategoryFactory, CategoryFactory>();
+builder.Services.AddHealthChecks().AddDbContextCheck<DataContext>();
 builder.Services.AddMediatR(configuration =>
 {
     configuration.RegisterServicesFromAssembly(typeof(ICreateCommand<>).Assembly);

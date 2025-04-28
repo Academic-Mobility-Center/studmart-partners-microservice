@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.ErrorResultsProcessors;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers.Base;
@@ -15,9 +16,9 @@ namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 public class CreateRegionCommandHandler(
     IRegionsRepository repository,
     IRegionFactory factory,
-    IMapper mapper)
+    IMapper mapper, ILogger<CreateRegionCommandHandler> logger)
     : CreateCommandHandlerBase<CreateRegionCommand, RegionModel, RegionAddModel, Region, int, RegionFactory,
-        RegionFactoryContract, RegionCreatedResult>(repository, factory, mapper, new RegionErrorsResultProcessor())
+        RegionFactoryContract, RegionCreatedResult>(repository, factory, mapper, new RegionErrorsResultProcessor(), logger)
 {
     
 }

@@ -3,7 +3,4 @@ using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications.Base;
 
 namespace StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications;
 
-public class PartnerCreatedNotification(PartnerModel model) : NotificationBase<PartnerModel>(model)
-{
-    
-}
+public class PartnerUpdatedNotification(PartnerModel model) : NotificationBase<PartnerModel>(model);

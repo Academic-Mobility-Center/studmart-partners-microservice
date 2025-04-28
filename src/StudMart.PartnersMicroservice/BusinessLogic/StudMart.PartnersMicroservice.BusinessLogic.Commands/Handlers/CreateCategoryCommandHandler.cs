@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.ErrorResultsProcessors;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers.Base;
@@ -15,8 +16,8 @@ namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 public class CreateCategoryCommandHandler(
     ICategoriesRepository repository,
     ICategoryFactory factory,
-    IMapper mapper)
+    IMapper mapper, ILogger<CreateCategoryCommandHandler> logger)
     : CreateCommandHandlerBase<CreateCategoryCommand, CategoryModel, CategoryAddModel, Category, int, CategoryFactory,
-        CategoryFactoryContract, CategoryCreatedResult>(repository, factory, mapper, new CategoryErrorResultProcessor())
+        CategoryFactoryContract, CategoryCreatedResult>(repository, factory, mapper, new CategoryErrorResultProcessor(), logger)
 {
 }
