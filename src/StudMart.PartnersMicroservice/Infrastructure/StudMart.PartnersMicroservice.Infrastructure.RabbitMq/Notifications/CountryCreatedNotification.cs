@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications.Base;
 
 namespace StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications;
 
-public class CountryCreatedNotification(CountryModel model) : CreatedNotificationBase<CountryModel>(model)
+public class CountryCreatedNotification(CountryModel model) : NotificationBase<CountryModel>(model)
 {
     
 }

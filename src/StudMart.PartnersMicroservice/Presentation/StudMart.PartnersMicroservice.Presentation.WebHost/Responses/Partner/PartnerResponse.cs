@@ -7,7 +7,7 @@ using StudMart.PartnersMicroservice.Presentation.WebHost.Responses.Region;
 namespace StudMart.PartnersMicroservice.Presentation.WebHost.Responses.Partner;
 
 public record PartnerResponse(
-    Guid id,
+    Guid Id,
     string Name,
     string Subtitle,
     string Description,

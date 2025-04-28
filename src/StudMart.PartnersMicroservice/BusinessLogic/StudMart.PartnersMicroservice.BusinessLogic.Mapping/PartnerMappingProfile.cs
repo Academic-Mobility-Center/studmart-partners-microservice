@@ -27,19 +27,21 @@ public class PartnerMappingProfile : Profile
             .ForCtorParam("Country",
                 expression => expression.MapFrom(partner => partner.Country))
             .ForCtorParam("HasAllRegions", expression => expression.MapFrom(partner => partner.HasAllRegions))
-            .ForCtorParam("Regions", expression => expression.MapFrom(partner => partner.Regions));
-            
+            .ForCtorParam("Regions", expression => expression.MapFrom(partner => partner.Regions))
+            .ForCtorParam("Employees",  expression => expression.MapFrom(partner => partner.Employees));
+
         CreateMap<Partner, PartnerShortModel>()
             .ForCtorParam("Id", expression => expression.MapFrom(partner => partner.Id))
             .ForCtorParam("Name", opt => opt.MapFrom(src => src.Name.Name))
             .ForCtorParam("Description", opt => opt.MapFrom(src => src.Description))
-            .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category.Name))
+            .ForCtorParam("Category", opt => opt.MapFrom(src => src.Category))
             .ForCtorParam("Subtitle", opt => opt.MapFrom(src => src.Subtitle))
             .ForCtorParam("Priority", opt => opt.MapFrom(src => src.Priority.Value))
             .ForCtorParam("Site", opt => opt.MapFrom(src => src.Site))
             .ForCtorParam("Email", opt => opt.MapFrom(src => src.Email))
             .ForCtorParam("Phone", expression => expression.MapFrom(partner => partner.Phone.Value))
-            .ForCtorParam("Inn", expression => expression.MapFrom(partner => partner.Inn.Value)).ForCtorParam("Country",
+            .ForCtorParam("Inn", expression => expression.MapFrom(partner => partner.Inn.Value))
+            .ForCtorParam("Country",
                 expression => expression.MapFrom(partner => partner.Country))
             .ForCtorParam("HasAllRegions", expression => expression.MapFrom(partner => partner.HasAllRegions))
             .ForCtorParam("Regions", expression => expression.MapFrom(partner => partner.Regions));

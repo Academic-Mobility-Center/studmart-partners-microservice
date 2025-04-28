@@ -1,3 +1,4 @@
+using System.Text.Json;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -14,7 +15,7 @@ using StudMart.PartnersMicroservice.Presentation.WebHost.Responses.Category;
 namespace StudMart.PartnersMicroservice.Presentation.WebHost.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class CategoriesController(IMediator mediator, IMapper mapper) : ControllerBase
+public class CategoriesController(IMediator mediator, IMapper mapper, ILogger<CategoriesController> logger) : ControllerBase
 {
     private async Task<IEnumerable<CategoryResponse>> GetAllCategoriesAsync(CancellationToken cancellationToken)
     {
@@ -25,6 +26,7 @@ public class CategoriesController(IMediator mediator, IMapper mapper) : Controll
     [HttpGet]
     public async Task<IActionResult> GetAsync([FromQuery]CategoryQueryParameters queryParameters, CancellationToken cancellationToken = default)
     {
+        logger.LogInformation(JsonSerializer.Serialize(queryParameters));
         if (queryParameters.name is null && queryParameters.id is null)
             return Ok(await GetAllCategoriesAsync(cancellationToken));
         if (queryParameters.id is not null && queryParameters.name is not null)
@@ -40,10 +42,15 @@ public class CategoriesController(IMediator mediator, IMapper mapper) : Controll
         if (queryParameters.id is not null)
         {
             var category = await mediator.Send(new GetCategoryByIdRequest(queryParameters.id ?? 0), cancellationToken);
-            if(category is null)
+            if (category is null)
+            {
+                logger.LogWarning("Category with id  {QueryParametersId} not found", queryParameters.id);
                 return NotFound(queryParameters.id);
+            }
+
             return Ok(mapper.Map<CategoryResponse>(category));
         }
+        logger.LogError("Error was created while get category");
         return BadRequest();
     }
 
@@ -53,19 +60,27 @@ public class CategoriesController(IMediator mediator, IMapper mapper) : Controll
     [ProducesResponseType(typeof(int), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateAsync([FromBody]CategoryAddRequest request, CancellationToken cancellationToken = default)
     {
+        logger.LogInformation(JsonSerializer.Serialize(request));
         var result = await mediator.Send(new CreateCategoryCommand(mapper.Map<CategoryAddModel>(request)), cancellationToken);
         switch (result)
         {
             case ICreatedResult<CategoryModel> createdResult:
             {
                 var category = createdResult.CreatedModel;
+                logger.LogInformation("Category with id  {CategoryId} created", category.Id);
                 await mediator.Publish(new CategoryCreatedNotification(category), cancellationToken);
                 return CreatedAtAction("Get", new { id = category.Id }, mapper.Map<CategoryResponse>(category));
             }
             case CategoryAlreadyExistsResult alreadyExistsResult:
+            {
+                logger.LogError("Category with name {Name} already exists.", alreadyExistsResult.Name);
                 return BadRequest($"Category with name {alreadyExistsResult.Name} already exists.");
+            }
             default:
+            {
+                logger.LogError($"Error was created while create category");
                 return BadRequest();
+            }
         }
         
     }

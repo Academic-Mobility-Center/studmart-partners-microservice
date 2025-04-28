@@ -19,9 +19,12 @@ public class EmployeeMappingProfile : Profile
             .ForCtorParam("LastName", opt => opt.MapFrom(src => src.LastName))
             .ForCtorParam("Email", opt => opt.MapFrom(src => src.Email))
             .ForCtorParam("PartnerId", opt => opt.MapFrom(src => src.PartnerId));
-        CreateMap<Employee, EmployeeModel>().ReverseMap().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(employee => employee.Email, opt => opt.MapFrom(src => src.Email))
-            .ForMember(employee => employee.FirstName, opt => opt.MapFrom(src => src.FirstName))
-            .ForMember(employee => employee.LastName, opt => opt.MapFrom(src => src.LastName));
+        CreateMap<Employee, EmployeeModel>()
+            .ForCtorParam("Id", opt => opt.MapFrom(src => src.Id))
+            .ForCtorParam("FirstName", opt => opt.MapFrom(src => src.FirstName))
+            .ForCtorParam("LastName", opt => opt.MapFrom(src => src.LastName))
+            .ForCtorParam("Email", opt => opt.MapFrom(src => src.Email))
+            .ForCtorParam("Partner",  opt => opt.MapFrom(src => src.Partner));
+
     }
 }

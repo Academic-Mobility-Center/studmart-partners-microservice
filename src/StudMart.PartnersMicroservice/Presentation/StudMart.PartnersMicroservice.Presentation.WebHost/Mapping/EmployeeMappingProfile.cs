@@ -12,5 +12,6 @@ public class EmployeeMappingProfile : Profile
         CreateMap<EmployeeAddRequest, EmployeeAddModel>();
         CreateMap<EmployeeModel, EmployeeShortResponse>();
         CreateMap<EmployeeModel, EmployeeResponse>();
+        CreateMap<UpdateEmployeeRequest, UpdateEmployeeModel>();
     }
 }

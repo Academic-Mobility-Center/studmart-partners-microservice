@@ -8,10 +8,14 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="14.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.4" />
       <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
     </ItemGroup>
 
     <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+        <HintPath>..\..\..\..\..\..\.nuget\packages\microsoft.extensions.logging.abstractions\9.0.3\lib\net9.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      </Reference>
       <Reference Include="Microsoft.Extensions.Options">
         <HintPath>..\..\..\..\..\..\.nuget\packages\microsoft.extensions.options\9.0.3\lib\net9.0\Microsoft.Extensions.Options.dll</HintPath>
       </Reference>
@@ -19,10 +23,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\BusinessLogic\StudMart.PartnersMicroservice.BusinessLogic.Models\StudMart.PartnersMicroservice.BusinessLogic.Models.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Base\" />
     </ItemGroup>
 
 </Project>

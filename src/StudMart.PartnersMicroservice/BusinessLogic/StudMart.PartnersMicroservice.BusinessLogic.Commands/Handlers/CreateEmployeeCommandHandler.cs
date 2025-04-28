@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.ErrorResultsProcessors;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers.Base;
@@ -15,8 +16,8 @@ namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 public class CreateEmployeeCommandHandler(
     IEmployeesRepository repository,
     IEmployeeFactory factory,
-    IMapper mapper)
+    IMapper mapper, ILogger<CreateEmployeeCommandHandler> logger)
     : CreateCommandHandlerBase<CreateEmployeeCommand, EmployeeModel, EmployeeAddModel, Employee, Guid, EmployeeFactory,
-        EmployeeFactoryContract, EmployeeCreatedResult>(repository, factory, mapper, new EmployeeErrorsResultProcessor())
+        EmployeeFactoryContract, EmployeeCreatedResult>(repository, factory, mapper, new EmployeeErrorsResultProcessor(), logger)
 {
 }

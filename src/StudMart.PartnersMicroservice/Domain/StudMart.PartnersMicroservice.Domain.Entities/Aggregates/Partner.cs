@@ -6,6 +6,7 @@ namespace StudMart.PartnersMicroservice.Domain.Entities.Aggregates;
 
 public class Partner : SoftDeletableGuidIdentifierEntity, INamedEntity<Guid, CompanyName>
 {
+    private bool _hasAllRegions;
     public Country Country { get; set; }
     public Site Site { get; set; }
     public Inn Inn { get; set; }
@@ -19,7 +20,17 @@ public class Partner : SoftDeletableGuidIdentifierEntity, INamedEntity<Guid, Com
     public PaymentInformation PaymentInformation { get; set; }
     private readonly ICollection<Employee> _employees = [];
     public IReadOnlyCollection<Employee> Employees => [.._employees];
-    public bool HasAllRegions { get; set; }
+    public bool HasAllRegions
+    {
+        get => _hasAllRegions;
+        set
+        {
+            _hasAllRegions = value;
+            if(value)
+                _regions.Clear();
+        }
+    }
+
     private readonly ICollection<Region> _regions = [];
     public IReadOnlyCollection<Region> Regions => [.._regions];
 
@@ -78,6 +89,23 @@ public class Partner : SoftDeletableGuidIdentifierEntity, INamedEntity<Guid, Com
             return false;
         _employees.Remove(employee);
         return true;
+    }
+
+    private void ValidateRegionOperation()
+    {
+        if (HasAllRegions)
+            throw new ChangeRegionForAllCountryPartnerException(this);
+    }
+    public void RemoveRegion(Region region)
+    {
+        ValidateRegionOperation();
+        _regions.Remove(region);
+    }
+
+    public void AddRegion(Region region)
+    {
+        ValidateRegionOperation();
+        _regions.Add(region);
     }
     
 }

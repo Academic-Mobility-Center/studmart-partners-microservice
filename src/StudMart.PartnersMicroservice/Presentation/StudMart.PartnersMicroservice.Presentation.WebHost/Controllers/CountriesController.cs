@@ -1,3 +1,4 @@
+using System.Text.Json;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ using StudMart.PartnersMicroservice.Presentation.WebHost.Responses.Country;
 namespace StudMart.PartnersMicroservice.Presentation.WebHost.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class CountriesController(IMapper mapper, IMediator mediator) : ControllerBase
+public class CountriesController(IMapper mapper, IMediator mediator, ILogger<CategoriesController> logger) : ControllerBase
 {
     private async Task<IEnumerable<CountryShortResponse>> GetAllCategoriesAsync(CancellationToken cancellationToken)
     {
@@ -24,10 +25,15 @@ public class CountriesController(IMapper mapper, IMediator mediator) : Controlle
     [HttpGet]
     public async Task<IActionResult> GetAsync([FromQuery]CountryQueryParameters queryParameters, CancellationToken cancellationToken = default)
     {
+        logger.LogInformation(JsonSerializer.Serialize(queryParameters));
         if (queryParameters.name is null && queryParameters.id is null)
             return Ok(await GetAllCategoriesAsync(cancellationToken));
         if (queryParameters.id is not null && queryParameters.name is not null)
+        {
+            logger.LogError("It must contains only one filter");
             return BadRequest("It must contains only one filter");
+        }
+
         if (queryParameters.name is not null)
         {
             var country = await mediator.Send(new GetCountryByNameRequest(queryParameters.name), cancellationToken);
@@ -39,8 +45,12 @@ public class CountriesController(IMapper mapper, IMediator mediator) : Controlle
         if (queryParameters.id is not null)
         {
             var country = await mediator.Send(new GetCountryByIdRequest(queryParameters.id ?? 0), cancellationToken);
-            if(country is null)
+            if (country is null)
+            {
+                logger.LogWarning("Country with id {QueryParametersId} not found", queryParameters.id);
                 return NotFound(queryParameters.id);
+            }
+
             return Ok(mapper.Map<CountryResponse>(country));
         }
         return BadRequest();
@@ -50,19 +60,27 @@ public class CountriesController(IMapper mapper, IMediator mediator) : Controlle
     [ProducesResponseType(typeof(string),StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromBody]CountryAddRequest request, CancellationToken cancellationToken)
     {
+        logger.LogInformation(JsonSerializer.Serialize(request));
         var result = await mediator.Send(new CreateCountryCommand(mapper.Map<CountryAddModel>(request)), cancellationToken);
         switch (result)
         {
             case ICreatedResult<CountryModel> createdResult:
             {
                 var country = createdResult.CreatedModel;
+                logger.LogInformation("Country with id {CountryId} created", country.Id);
                 await mediator.Publish(new CountryCreatedNotification(country), cancellationToken);
                 return CreatedAtAction("Get", new { id = country.Id }, mapper.Map<CountryResponse>(createdResult.CreatedModel));
             }
             case CountryAlreadyExistsResult countyExistsResult:
+            {
+                logger.LogError("Country with name {Name} already exists.", countyExistsResult.Name);
                 return BadRequest($"Country with name {countyExistsResult.Name} already exists.");
+            }
             default:
+            {
+                logger.LogError("Error creating country");
                 return BadRequest();
+            }
         }
     }
 }

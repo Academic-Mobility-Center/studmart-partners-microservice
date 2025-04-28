@@ -28,5 +28,9 @@ public class EmployeeAddRequestValidator : AbstractValidator<EmployeeAddRequest>
             .Length(ValueObjectsLengthRules.MinLastNameLength, ValueObjectsLengthRules.MaxLastNameLength)
             .WithMessage(
                 $"Название должно быть не короче {ValueObjectsLengthRules.MinLastNameLength}х символов и не длиннее {ValueObjectsLengthRules.MaxLastNameLength}");
+        RuleFor(x => x.FirstName).Matches(RegexValidationRules.NamePartValidationRegex)
+            .WithMessage("Имя должно содержать только русские буквы");
+        RuleFor(x => x.LastName).Matches(RegexValidationRules.NamePartValidationRegex)
+            .WithMessage("Фамилия должна содержать только русские буквы");
     }
 }

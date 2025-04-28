@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications.Base;
 
 namespace StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications;
 
-public class PartnerCreatedNotification(PartnerModel model) : CreatedNotificationBase<PartnerModel>(model)
+public class PartnerCreatedNotification(PartnerModel model) : NotificationBase<PartnerModel>(model)
 {
     
 }

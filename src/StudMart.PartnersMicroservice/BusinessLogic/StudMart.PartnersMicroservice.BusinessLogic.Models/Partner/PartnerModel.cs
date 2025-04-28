@@ -19,6 +19,6 @@ public record PartnerModel(
     CountryShortModel Country,
     CategoryModel Category,
     PaymentInformationModel PaymentInformation,
-    IEnumerable<EmployeeModel> Employees,
     bool HasAllRegions,
-    IEnumerable<RegionModel> Regions) : IModel;
+    IEnumerable<RegionModel> Regions,
+    IEnumerable<EmployeeModel> Employees) : IModel;
