@@ -10,14 +10,11 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     public DbSet<Region> Regions { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Partner> Partners { get; set; }
+    public DbSet<Category> Categories { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.EnableSensitiveDataLogging();
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres");
-        }
         base.OnConfiguring(optionsBuilder);
     }
 

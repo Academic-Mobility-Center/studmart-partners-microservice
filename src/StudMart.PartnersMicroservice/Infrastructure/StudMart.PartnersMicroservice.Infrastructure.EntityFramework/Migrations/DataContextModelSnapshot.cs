@@ -17,7 +17,7 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -131,7 +131,7 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("StudMart.PartnersMicroservice.Domain.Entities.Country", b =>

@@ -11,5 +11,6 @@ public class CategoryMappingProfile : Profile
     {
         CreateMap<CategoryAddRequest, CategoryAddModel>();
         CreateMap<CategoryModel, CategoryResponse>();
+        CreateMap<UpdateCategoryRequest, UpdateCategoryModel>();
     }
 }

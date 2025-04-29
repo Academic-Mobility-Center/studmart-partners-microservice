@@ -108,7 +108,6 @@ public class UpdatePartnerCommandHandler(
                 if (!request.Model.RegionIds.Contains(region.Id))
                     partner.RemoveRegion(region);
         }
-        logger.LogInformation(JsonSerializer.Serialize(partner));
         var result = await partnersRepository.UpdateAsync(partner, cancellationToken);
         if (!result)
         {
