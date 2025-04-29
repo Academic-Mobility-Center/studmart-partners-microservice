@@ -43,11 +43,11 @@ public class UpdateEmployeeCommandHandler(
         }
 
         var employee = await employeesRepository.GetByIdAsync(request.Model.Id, cancellationToken);
-        logger.LogInformation(JsonSerializer.Serialize(employee));
+
         employee!.FirstName = new FirstName(request.Model.FirstName);
         employee.LastName = new LastName(request.Model.LastName);
         employee.Email = new Email(request.Model.Email);
-        logger.LogInformation(JsonSerializer.Serialize(employee));
+        
         var result = await employeesRepository.UpdateAsync(employee, cancellationToken);
         if (result)
         {

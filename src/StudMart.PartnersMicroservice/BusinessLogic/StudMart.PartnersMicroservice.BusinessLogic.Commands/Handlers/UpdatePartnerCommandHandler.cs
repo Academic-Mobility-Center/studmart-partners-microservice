@@ -60,7 +60,6 @@ public class UpdatePartnerCommandHandler(
             return new PartnerNameAlreadyRegisteredResult(request.Model.Name);
         }
         var partner = await partnersRepository.GetByIdAsync(request.Model.Id, cancellationToken);
-        logger.LogInformation(JsonSerializer.Serialize(partner));
         partner!.Name = new CompanyName(request.Model.Name);
         partner.Phone = new Phone(request.Model.Phone);
         partner.Inn = new Inn(request.Model.Inn);
