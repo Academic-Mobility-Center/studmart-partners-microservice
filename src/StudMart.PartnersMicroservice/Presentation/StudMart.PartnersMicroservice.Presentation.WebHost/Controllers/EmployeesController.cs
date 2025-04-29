@@ -52,7 +52,7 @@ public class EmployeesController(IMediator mediator, IMapper mapper, ILogger<Emp
             var employee = await mediator.Send(new GetEmployeeByEmailRequest(queryParameters.email), cancellationToken);
             if (employee is null)
                 return NotFound(queryParameters.email);
-            return Ok(mapper.Map<EmployeeShortResponse>(employee));
+            return Ok(mapper.Map<EmployeeResponse>(employee));
         }
 
         if (queryParameters.id is not null)
@@ -65,7 +65,7 @@ public class EmployeesController(IMediator mediator, IMapper mapper, ILogger<Emp
                 return NotFound(queryParameters.id);
             }
 
-            return Ok(mapper.Map<EmployeeShortResponse>(employee));
+            return Ok(mapper.Map<EmployeeResponse>(employee));
         }
 
         return BadRequest();

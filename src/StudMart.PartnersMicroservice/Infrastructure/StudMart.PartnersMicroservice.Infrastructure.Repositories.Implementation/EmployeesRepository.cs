@@ -14,8 +14,12 @@ public class EmployeesRepository(DataContext context)
 
     public override Task<Employee?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => _context1
         .Employees.Include(employee => employee.Partner)
+        .ThenInclude(partner => partner.Regions)
         .FirstOrDefaultAsync(employee => employee.Id == id, cancellationToken);
 
     public Task<Employee?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default) =>
-        _context1.Employees.FirstOrDefaultAsync(employee => employee.Email == email, cancellationToken);
+        _context1.Employees
+            .Include(employee => employee.Partner )
+            .ThenInclude(partner => partner.Regions)
+            .FirstOrDefaultAsync(employee => employee.Email == email, cancellationToken);
 }
