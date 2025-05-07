@@ -12,6 +12,7 @@ public class CategoryMappingProfile : Profile
         CreateMap<CategoryAddModel, CategoryFactoryContract>();
         CreateMap<Category, CategoryModel>()
             .ForCtorParam("Id", opt => opt.MapFrom(src => src.Id))
-            .ForCtorParam("Name", opt => opt.MapFrom(src => src.Name.Name));
+            .ForCtorParam("Name", opt => opt.MapFrom(src => src.Name.Name))
+            .ForCtorParam("Priority", opt => opt.MapFrom(src => src.Priority.Value));
     }
 }

@@ -112,4 +112,25 @@ public class CategoriesController(IMediator mediator, IMapper mapper, ILogger<Ca
         logger.LogWarning(error.Value!.ToString());
         return error;
     }
+    [HttpDelete]
+    [ProducesResponseType(typeof(int), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteAsync([FromQuery] int id, CancellationToken cancellationToken = default)
+    {
+        var category = await mediator.Send(new GetCategoryByIdRequest(id), cancellationToken);
+        if (category is null)
+        {
+            logger.LogWarning("Category with id  {CategoryId} not found", id);
+            return NotFound(id);
+        }
+        var result = await mediator.Send(new DeleteCategoryCommand(id), cancellationToken);
+        if (result is ISuccessResult)
+        {
+            await mediator.Publish(new CategoryDeletedNotification(category), cancellationToken);
+            logger.LogInformation("Category with id {Id} was deleted", id);
+            return NoContent();
+        }
+        logger.LogError("Error while deleting category with Id {Id}", id);
+        return BadRequest();
+    }
 }

@@ -126,6 +126,9 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")

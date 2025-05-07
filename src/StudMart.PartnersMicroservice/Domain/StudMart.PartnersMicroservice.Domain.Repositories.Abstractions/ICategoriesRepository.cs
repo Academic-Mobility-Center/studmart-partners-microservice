@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.Domain.ValueObjects;
 
 namespace StudMart.PartnersMicroservice.Repositories.Abstractions;
 
-public interface ICategoriesRepository : INamedEntityRepository<Category, int, CategoryName>, IUpdatableRepository<Category, int>
+public interface ICategoriesRepository : INamedEntityRepository<Category, int, CategoryName>, IUpdatableRepository<Category, int>, IDeletableRepository<Category, int>
 {
     
 }

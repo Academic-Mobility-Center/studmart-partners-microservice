@@ -17,9 +17,7 @@ public abstract class GetByIdRequestHandlerBase<TRequest, TModel, TId, TEntity>(
     public async Task<TModel?> Handle(TRequest request, CancellationToken cancellationToken)
     {
         var result = await repository.GetByIdAsync(request.Id, cancellationToken);
-        if (result is null)
-            return null;
-        return mapper.Map<TEntity, TModel>(result);
+        return result is null ? null : mapper.Map<TEntity, TModel>(result);
     }
 
     public void Dispose()

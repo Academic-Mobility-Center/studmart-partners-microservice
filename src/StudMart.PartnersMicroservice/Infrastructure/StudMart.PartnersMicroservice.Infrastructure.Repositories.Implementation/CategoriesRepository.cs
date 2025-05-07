@@ -8,7 +8,7 @@ using StudMart.PartnersMicroservice.Repositories.Abstractions;
 namespace StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
 
 public class CategoriesRepository(DataContext context)
-    : EfUpdatableRepositoryBase<Category, int>(context), ICategoriesRepository
+    : EfUpdatableDeletableRepositoryBase<Category, int>(context), ICategoriesRepository
 {
     private readonly DataContext _context1 = context;
 

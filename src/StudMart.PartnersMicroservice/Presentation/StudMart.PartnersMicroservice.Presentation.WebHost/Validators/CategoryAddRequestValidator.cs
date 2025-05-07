@@ -16,5 +16,6 @@ public class CategoryAddRequestValidator : AbstractValidator<CategoryAddRequest>
                 $"Название должно быть не короче {ValueObjectsLengthRules.MinCategoryNameLength}х символов и не длиннее {ValueObjectsLengthRules.MaxCategoryLength}");
         RuleFor(x => x.Name).Matches(RegexValidationRules.CategoryNameValidationRegex)
             .WithMessage("Название категори может содержать только кириллицу, латиницу и пробелы");
+        RuleFor(x => x.Priority).GreaterThan(0).LessThanOrEqualTo(100).WithMessage("Приоритет может принимать значения от 1 до 100");
     }
 }

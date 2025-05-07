@@ -28,6 +28,6 @@ public static class ValueObjectsLengthRules
     public const int MaxSubtitleLength = 35;
     public const int MinCategoryLength = 3;
     public const int MaxCategoryLength = 50;
-    public const int MinDescriptionLength = 600;
+    public const int MinDescriptionLength = 200;
     public const int MaxDescriptionLength = 1200;
 }

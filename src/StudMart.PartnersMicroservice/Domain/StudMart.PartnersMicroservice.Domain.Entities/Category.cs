@@ -5,12 +5,14 @@ namespace StudMart.PartnersMicroservice.Domain.Entities;
 
 public class Category : IntegerIdentifierNamedEntity<CategoryName>
 {
-    protected Category(int id, CategoryName name) : base(id, name)
+    public Priority Priority { get; set; }
+    protected Category(int id, CategoryName name, Priority priority) : base(id, name)
     {
+        Priority = priority;
         
     }
 
-    internal Category(CategoryName name) : this(0, name)
+    internal Category(CategoryName name, Priority priority) : this(0, name, priority)
     {
         
     }

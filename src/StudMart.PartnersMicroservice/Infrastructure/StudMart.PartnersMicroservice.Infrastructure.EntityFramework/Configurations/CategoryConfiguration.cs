@@ -14,6 +14,9 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.Property(c => c.Name).ValueGeneratedOnAdd().IsRequired();
         builder.Property(category => category.Name).HasMaxLength(ValueObjectsLengthRules.MaxCategoryNameLength)
             .HasConversion(name => name.Name, name => new CategoryName(name)).IsRequired();
+        builder.Property(category => category.Priority)
+            .HasConversion(priority => priority.Value, i => new Priority(i))
+            .IsRequired();
         builder.HasIndex(category => category.Name).IsUnique();
     }
 }

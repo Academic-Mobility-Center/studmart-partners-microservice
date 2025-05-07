@@ -21,7 +21,7 @@ public class CategoryFactory(ICategoriesRepository categoriesRepository, ILogger
             logger.LogWarning("Category with name {NameValue} already exists", name.Value);
             return new CategoryAlreadyExistsResult(verification);
         }
-        var category = new Category(name);
+        var category = new Category(name, new Priority(contract.Priority));
         logger.LogInformation(JsonSerializer.Serialize(category));
         return new CategoryCreatedResult(category);
     }

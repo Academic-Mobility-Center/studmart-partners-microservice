@@ -12,7 +12,10 @@ using StudMart.PartnersMicroservice.Repositories.Abstractions;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Handlers;
 
-public class UpdateCategoryCommandHandler(ICategoriesRepository categories, IMapper mapper, ILogger<UpdateCategoryCommandHandler> logger) : IRequestHandler<UpdateCategoryCommand, IResult>
+public class UpdateCategoryCommandHandler(
+    ICategoriesRepository categories,
+    IMapper mapper,
+    ILogger<UpdateCategoryCommandHandler> logger) : IRequestHandler<UpdateCategoryCommand, IResult>
 {
     public async Task<IResult> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -33,9 +36,10 @@ public class UpdateCategoryCommandHandler(ICategoriesRepository categories, IMap
         }
 
         category.Name = name;
-       var result = await  categories.UpdateAsync(category, cancellationToken);
-       if(result)
-           return new CategoryUpdatedResult(mapper.Map<CategoryModel>(category));
-       return new InternalErrorResult();
+        category.Priority = new Priority(request.Model.Priority);
+        var result = await categories.UpdateAsync(category, cancellationToken);
+        if (result)
+            return new CategoryUpdatedResult(mapper.Map<CategoryModel>(category));
+        return new InternalErrorResult();
     }
 }
