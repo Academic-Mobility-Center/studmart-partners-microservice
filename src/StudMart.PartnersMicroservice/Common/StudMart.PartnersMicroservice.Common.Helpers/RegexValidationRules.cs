@@ -13,7 +13,7 @@ public  static class RegexValidationRules
     /// <summary>
     /// Regex rule for Russian mobile phone number validation
     /// </summary>
-    public const string PhoneValidationRegex = @"^(\+7|8)?[\s-]?\(?9\d{2}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$";
+    public const string PhoneValidationRegex = @"^(?:\+7|8)?[\s-]?\(?\d{3,5}\)?[\s-]?\d{1,3}[\s-]?\d{2}[\s-]?\d{2}$";
 
     /// <summary>
     /// Regex rule for company names with english and russian letters

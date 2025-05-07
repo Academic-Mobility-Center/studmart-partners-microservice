@@ -8,7 +8,7 @@ public static class ValueObjectsLengthRules
     public const int MaxBikLength = 10;
     public const int MinCategoryNameLength = 4;
     public const int MaxCategoryNameLength = 50;
-    public const int MinCompanyNameLength = 4;
+    public const int MinCompanyNameLength = 2;
     public const int MaxCompanyNameLength = 50;
     public const int MinCountryNameLength = 3;
     public const int MaxCountryNameLength = 50;
@@ -18,8 +18,8 @@ public static class ValueObjectsLengthRules
     public const int MaxFirstNameLength = 30;
     public const int MinLastNameLength = 3;
     public const int MaxLastNameLength = 30;
-    public const int MinPhoneNumberLength = 11;
-    public const int MaxPhoneNumberLength = 13;
+    public const int MinPhoneNumberLength = 6;
+    public const int MaxPhoneNumberLength = 15;
     public const int MinRegionNameLength = 3;
     public const int MaxRegionNameLength = 80;
     public const int MinSiteLength = 10;
