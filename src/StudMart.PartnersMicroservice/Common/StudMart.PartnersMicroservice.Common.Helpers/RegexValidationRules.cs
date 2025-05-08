@@ -18,7 +18,7 @@ public  static class RegexValidationRules
     /// <summary>
     /// Regex rule for company names with english and russian letters
     /// </summary>
-    public const string CompanyNameValidationRegex = @"^[a-zA-Zа-яА-Я0-9\s\'-]+$";
+    public const string CompanyNameValidationRegex = @"^[a-zA-Zа-яА-Я0-9№\s\'\-«»""]+$";
     
     /// <summary>
     /// Regex rule for country names with english and russian letters
