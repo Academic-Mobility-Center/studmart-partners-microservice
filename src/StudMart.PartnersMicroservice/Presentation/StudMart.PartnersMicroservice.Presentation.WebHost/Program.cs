@@ -6,6 +6,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 using Serilog.Templates;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
@@ -30,7 +32,9 @@ Log.Logger = new LoggerConfiguration()
         outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message}{NewLine}{Exception}"
     )
     .WriteTo.Console(
-        formatter: new ExpressionTemplate("{ @l } | { TraceId } | { SpanId } | { Message }"),
+        formatter: new ExpressionTemplate(
+            "level={@l} trace_id={TraceId} span_id={SpanId} message=\"{Message}\""
+        ),
         restrictedToMinimumLevel: LogEventLevel.Information
     )
     .CreateLogger();
@@ -38,9 +42,23 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 builder.Services.AddOpenTelemetry()
-    .WithMetrics(builder => builder.UseGrafana())
-    .WithTracing(builder => builder.UseGrafana(config =>
-        config.ResourceDetectors.Add(ResourceDetector.Container)));
+    .WithMetrics(metrics =>
+    {
+        metrics.AddAspNetCoreInstrumentation();
+        metrics.AddHttpClientInstrumentation();
+        metrics.UseGrafana();
+    })
+    .WithTracing(tracing =>
+    {
+        tracing.AddAspNetCoreInstrumentation();
+        tracing.AddEntityFrameworkCoreInstrumentation();
+        tracing.AddHttpClientInstrumentation();
+        tracing.UseGrafana(config =>
+        {
+            config.ResourceDetectors.Add(ResourceDetector.Container);
+            config.ServiceName = "partners-microservice";
+        });
+    });
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -113,12 +131,10 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 app.MapHealthChecks("healthz");
-app.UseSerilogRequestLogging(options =>
+builder.Services.AddHttpLogging(logging =>
 {
-    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
-    options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Information;
+    logging.LoggingFields = HttpLoggingFields.All;
 });
-app.UseHttpLogging();
 app.UseHttpsRedirection();
 app.MigrateDatabase<DataContext>();
 app.Run();
