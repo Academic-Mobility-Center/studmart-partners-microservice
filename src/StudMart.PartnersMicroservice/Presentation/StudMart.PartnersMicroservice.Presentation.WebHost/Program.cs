@@ -3,11 +3,9 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Enrichers.Span;
 using FluentValidation;
-using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Trace;
+using OpenTelemetry.Exporter;
 using Serilog.Formatting.Compact;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
@@ -33,30 +31,15 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-builder.Services.AddOpenTelemetry()
-    .WithMetrics(metrics =>
+builder.Services.AddOpenTelemetry().UseGrafana(config => {
+    var agentExporter = new AgentOtlpExporter
     {
-        metrics.AddAspNetCoreInstrumentation();
-        metrics.AddHttpClientInstrumentation();
-        metrics.AddProcessInstrumentation();
-        metrics.AddRuntimeInstrumentation();
-        metrics.UseGrafana(config =>
-        {
-            config.ResourceDetectors.Add(ResourceDetector.Container);
-            config.ServiceName = "partners-microservice";
-        });
-    })
-    .WithTracing(tracing =>
-    {
-        tracing.AddAspNetCoreInstrumentation();
-        tracing.AddEntityFrameworkCoreInstrumentation();
-        tracing.AddHttpClientInstrumentation();
-        tracing.UseGrafana(config =>
-        {
-            config.ResourceDetectors.Add(ResourceDetector.Container);
-            config.ServiceName = "partners-microservice";
-        });
-    });
+        Endpoint = new Uri("http://k8s-monitoring-alloy-receiver.monitoring.svc.cluster.local:4318/"),
+        Protocol = OtlpExportProtocol.HttpProtobuf
+    };
+
+    config.ExporterSettings = agentExporter;
+});
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
