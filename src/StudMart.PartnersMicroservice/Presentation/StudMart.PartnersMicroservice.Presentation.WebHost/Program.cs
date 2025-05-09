@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using Serilog.Templates;
+using Serilog.Formatting.Compact;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
@@ -28,15 +28,7 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .Enrich.FromLogContext()
     .Enrich.WithSpan()
-    .WriteTo.Console(
-        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message}{NewLine}{Exception}"
-    )
-    .WriteTo.Console(
-        formatter: new ExpressionTemplate(
-            "level={@l} trace_id={TraceId} span_id={SpanId} message=\"{Message}\""
-        ),
-        restrictedToMinimumLevel: LogEventLevel.Information
-    )
+    .WriteTo.Console(new RenderedCompactJsonFormatter())
     .CreateLogger();
 
 builder.Host.UseSerilog();
@@ -46,7 +38,13 @@ builder.Services.AddOpenTelemetry()
     {
         metrics.AddAspNetCoreInstrumentation();
         metrics.AddHttpClientInstrumentation();
-        metrics.UseGrafana();
+        metrics.AddProcessInstrumentation();
+        metrics.AddRuntimeInstrumentation();
+        metrics.UseGrafana(config =>
+        {
+            config.ResourceDetectors.Add(ResourceDetector.Container);
+            config.ServiceName = "partners-microservice";
+        });
     })
     .WithTracing(tracing =>
     {
@@ -66,7 +64,7 @@ builder.Services.AddOpenTelemetry()
 var rabbitSettings = builder.Configuration.GetSection("RabbitMq");
 builder.Services.Configure<RabbitSettings>(rabbitSettings);
 var dbSettings = builder.Configuration.GetRequiredSection("Database");
-builder.Configuration.AddEnvironmentVariables();
+
 var settings = dbSettings.Get<DatabaseSettings>();
 if(settings is null)
     throw new NullReferenceException("Database settings not found");
@@ -79,13 +77,6 @@ builder.Services.AddDbContext<DataContext>(options =>
         .LogTo(Log.Logger.Information, LogLevel.Information, 
             DbContextLoggerOptions.SingleLine | DbContextLoggerOptions.UtcTime);
 }); 
-
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseNpgsql(connectionString,
-        optionsBuilder =>
-            optionsBuilder.MigrationsAssembly("StudMart.PartnersMicroservice.Infrastructure.EntityFramework"));
-});
 
 builder.Services.AddOpenApi();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -113,11 +104,6 @@ builder.Services.AddMediatR(configuration =>
 });
 builder.Services.AddControllers();
 
-builder.Services.AddHttpLogging(logging =>
-{
-    logging.LoggingFields = HttpLoggingFields.All;
-});
-
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
@@ -129,12 +115,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseSerilogRequestLogging(options =>
+{
+    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+    options.GetLevel = (_, _, ex) => 
+        ex != null ? LogEventLevel.Error : LogEventLevel.Information;
+});
+
 app.MapControllers();
 app.MapHealthChecks("healthz");
-builder.Services.AddHttpLogging(logging =>
-{
-    logging.LoggingFields = HttpLoggingFields.All;
-});
 app.UseHttpsRedirection();
 app.MigrateDatabase<DataContext>();
 app.Run();
