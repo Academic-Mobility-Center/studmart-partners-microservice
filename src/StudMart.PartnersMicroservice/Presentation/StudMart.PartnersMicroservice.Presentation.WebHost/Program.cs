@@ -1,13 +1,13 @@
-using Grafana.OpenTelemetry;
-using Serilog;
-using Serilog.Events;
-using Serilog.Enrichers.Span;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Serilog;
+using Serilog.Enrichers.Span;
+using Serilog.Events;
 using Serilog.Formatting.Compact;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
@@ -17,8 +17,8 @@ using StudMart.PartnersMicroservice.Infrastructure.EntityFramework;
 using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Helpers;
 using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
-using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Helpers;
+using StudMart.PartnersMicroservice.Repositories.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -34,25 +34,33 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 builder.Services.AddOpenTelemetry()
-    .WithMetrics(metrics =>
-    {
-        metrics.AddAspNetCoreInstrumentation();
-        metrics.AddHttpClientInstrumentation();
-        metrics.UseGrafana(config =>
-        {
-            config.ResourceDetectors.Add(ResourceDetector.Container);
-            config.ServiceName = "partners-microservice";
-        });
-    })
     .WithTracing(tracing =>
     {
-        tracing.AddAspNetCoreInstrumentation();
-        tracing.AddEntityFrameworkCoreInstrumentation();
-        tracing.AddHttpClientInstrumentation();
-        tracing.UseGrafana(config =>
-        {
-            config.ServiceName = "partners-microservice";
-        });
+        tracing
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                .AddService(builder.Environment.ApplicationName))
+            .AddAspNetCoreInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation()
+            .SetSampler(new AlwaysOnSampler())
+            .AddOtlpExporter(options =>
+            {
+                options.Endpoint = new Uri("http://k8s-monitoring-alloy-receiver.monitoring.svc.cluster.local:4317");
+                options.Protocol = OtlpExportProtocol.Grpc;
+            });
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                .AddService(builder.Environment.ApplicationName))
+            .AddAspNetCoreInstrumentation()
+            .AddRuntimeInstrumentation()
+            .AddProcessInstrumentation()
+            .AddOtlpExporter(options =>
+            {
+                options.Endpoint = new Uri("http://k8s-monitoring-alloy-receiver.monitoring.svc.cluster.local:4317");
+                options.Protocol = OtlpExportProtocol.Grpc;
+            });
     });
 
 // Add services to the container.
