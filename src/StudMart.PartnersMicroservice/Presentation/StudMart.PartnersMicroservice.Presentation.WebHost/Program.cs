@@ -1,3 +1,4 @@
+using Grafana.OpenTelemetry;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
@@ -11,9 +12,13 @@ using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Helpers;
 
-static string BuildSslPart(bool hasSsl) => hasSsl ? "VerifyFull" : "Disable";
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
+
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(builder => builder.UseGrafana())
+    .WithTracing(builder => builder.UseGrafana(config =>
+        config.ResourceDetectors.Add(ResourceDetector.Container)));
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -77,6 +82,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+app.MapHealthChecks("healthz");
 app.UseHttpsRedirection();
 app.MigrateDatabase<DataContext>();
 app.Run();
