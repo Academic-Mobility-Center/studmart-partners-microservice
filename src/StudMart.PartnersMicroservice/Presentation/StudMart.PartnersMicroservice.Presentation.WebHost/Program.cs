@@ -30,7 +30,7 @@ Log.Logger = new LoggerConfiguration()
         outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message}{NewLine}{Exception}"
     )
     .WriteTo.Console(
-        formatter: new ExpressionTemplate("{ @l } | { #Properties.TraceId } | { #Properties.SpanId } | { Message }"),
+        formatter: new ExpressionTemplate("{ @l } | { TraceId } | { SpanId } | { Message }"),
         restrictedToMinimumLevel: LogEventLevel.Information
     )
     .CreateLogger();
