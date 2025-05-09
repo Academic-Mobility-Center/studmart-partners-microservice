@@ -6,6 +6,8 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using OpenTelemetry.Exporter;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 using Serilog.Formatting.Compact;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
@@ -31,15 +33,27 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-builder.Services.AddOpenTelemetry().UseGrafana(config => {
-    var agentExporter = new AgentOtlpExporter
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(metrics =>
     {
-        Endpoint = new Uri("http://k8s-monitoring-alloy-receiver.monitoring.svc.cluster.local:4318/"),
-        Protocol = OtlpExportProtocol.HttpProtobuf
-    };
-
-    config.ExporterSettings = agentExporter;
-});
+        metrics.AddAspNetCoreInstrumentation();
+        metrics.AddHttpClientInstrumentation();
+        metrics.UseGrafana(config =>
+        {
+            config.ResourceDetectors.Add(ResourceDetector.Container);
+            config.ServiceName = "partners-microservice";
+        });
+    })
+    .WithTracing(tracing =>
+    {
+        tracing.AddAspNetCoreInstrumentation();
+        tracing.AddEntityFrameworkCoreInstrumentation();
+        tracing.AddHttpClientInstrumentation();
+        tracing.UseGrafana(config =>
+        {
+            config.ServiceName = "partners-microservice";
+        });
+    });
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
