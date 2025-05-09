@@ -1,6 +1,12 @@
 using Grafana.OpenTelemetry;
+using Serilog;
+using Serilog.Events;
+using Serilog.Enrichers.Span;
 using FluentValidation;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Serilog.Templates;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
@@ -14,6 +20,22 @@ using StudMart.PartnersMicroservice.Presentation.WebHost.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .Enrich.FromLogContext()
+    .Enrich.WithSpan()
+    .WriteTo.Console(
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message}{NewLine}{Exception}"
+    )
+    .WriteTo.Console(
+        formatter: new ExpressionTemplate("{ @l } | { #Properties.TraceId } | { #Properties.SpanId } | { Message }"),
+        restrictedToMinimumLevel: LogEventLevel.Information
+    )
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddOpenTelemetry()
     .WithMetrics(builder => builder.UseGrafana())
@@ -35,7 +57,9 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseNpgsql(connectionString,
         optionsBuilder =>
-            optionsBuilder.MigrationsAssembly("StudMart.PartnersMicroservice.Infrastructure.EntityFramework"));
+            optionsBuilder.MigrationsAssembly("StudMart.PartnersMicroservice.Infrastructure.EntityFramework"))
+        .LogTo(Log.Logger.Information, LogLevel.Information, 
+            DbContextLoggerOptions.SingleLine | DbContextLoggerOptions.UtcTime);
 }); 
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -70,6 +94,12 @@ builder.Services.AddMediatR(configuration =>
     configuration.Lifetime = ServiceLifetime.Scoped;
 });
 builder.Services.AddControllers();
+
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = HttpLoggingFields.All;
+});
+
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
@@ -83,6 +113,12 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 app.MapHealthChecks("healthz");
+app.UseSerilogRequestLogging(options =>
+{
+    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+    options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Information;
+});
+app.UseHttpLogging();
 app.UseHttpsRedirection();
 app.MigrateDatabase<DataContext>();
 app.Run();
