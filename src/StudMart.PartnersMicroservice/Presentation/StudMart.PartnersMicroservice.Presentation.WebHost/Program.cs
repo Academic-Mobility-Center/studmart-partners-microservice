@@ -1,10 +1,10 @@
 using FluentValidation;
 using Grafana.OpenTelemetry;
 using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Microsoft.EntityFrameworkCore;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
