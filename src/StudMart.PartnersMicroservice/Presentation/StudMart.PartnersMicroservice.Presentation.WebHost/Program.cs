@@ -1,14 +1,10 @@
 using FluentValidation;
+using Grafana.OpenTelemetry;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Serilog;
-using Serilog.Enrichers.Span;
-using Serilog.Events;
-using Serilog.Formatting.Compact;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
 using StudMart.PartnersMicroservice.Domain.Factories.Abstractions;
@@ -23,17 +19,19 @@ using StudMart.PartnersMicroservice.Repositories.Abstractions;
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-    .Enrich.FromLogContext()
-    .Enrich.WithSpan()
-    .WriteTo.Console(new RenderedCompactJsonFormatter())
-    .CreateLogger();
-
-builder.Host.UseSerilog();
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = HttpLoggingFields.All;
+    options.RequestBodyLogLimit = 4096;
+    options.ResponseBodyLogLimit = 4096;
+});
 
 builder.Services.AddOpenTelemetry()
+    .ConfigureResource(r => r
+        .AddService(
+            serviceName: "partners-microservice",
+            serviceVersion: typeof(Program).Assembly.GetName().Version?.ToString() ?? "unknown",
+            serviceInstanceId: Environment.MachineName))
     .WithTracing(tracing =>
     {
         tracing
@@ -42,11 +40,7 @@ builder.Services.AddOpenTelemetry()
             .AddAspNetCoreInstrumentation()
             .AddEntityFrameworkCoreInstrumentation()
             .SetSampler(new AlwaysOnSampler())
-            .AddOtlpExporter(options =>
-            {
-                options.Endpoint = new Uri("http://k8s-monitoring-alloy-receiver.monitoring.svc.cluster.local:4317");
-                options.Protocol = OtlpExportProtocol.Grpc;
-            });
+            .UseGrafana(config => config.ResourceDetectors.Add(ResourceDetector.Container));
     })
     .WithMetrics(metrics =>
     {
@@ -56,12 +50,17 @@ builder.Services.AddOpenTelemetry()
             .AddAspNetCoreInstrumentation()
             .AddRuntimeInstrumentation()
             .AddProcessInstrumentation()
-            .AddOtlpExporter(options =>
-            {
-                options.Endpoint = new Uri("http://k8s-monitoring-alloy-receiver.monitoring.svc.cluster.local:4317");
-                options.Protocol = OtlpExportProtocol.Grpc;
-            });
+            .UseGrafana(config => config.ResourceDetectors.Add(ResourceDetector.Container));
     });
+
+builder.Logging.ClearProviders();
+builder.Logging.AddJsonConsole(options =>
+{
+    options.IncludeScopes = true;
+    options.TimestampFormat = "yyyy-MM-dd HH:mm:ss";
+});
+
+builder.Logging.AddOpenTelemetry(logging => logging.UseGrafana());
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -78,9 +77,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseNpgsql(connectionString,
         optionsBuilder =>
-            optionsBuilder.MigrationsAssembly("StudMart.PartnersMicroservice.Infrastructure.EntityFramework"))
-        .LogTo(Log.Logger.Information, LogLevel.Information, 
-            DbContextLoggerOptions.SingleLine | DbContextLoggerOptions.UtcTime);
+            optionsBuilder.MigrationsAssembly("StudMart.PartnersMicroservice.Infrastructure.EntityFramework"));
 }); 
 
 builder.Services.AddOpenApi();
@@ -119,14 +116,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseSerilogRequestLogging(options =>
-{
-    options.MessageTemplate = "HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
-    options.GetLevel = (_, _, ex) => 
-        ex != null ? LogEventLevel.Error : LogEventLevel.Information;
-});
-
+app.UseHttpLogging();
 app.MapControllers();
 app.MapHealthChecks("healthz");
 app.UseHttpsRedirection();
