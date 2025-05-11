@@ -1,4 +1,9 @@
 using FluentValidation;
+using Grafana.OpenTelemetry;
+using Microsoft.AspNetCore.HttpLogging;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Microsoft.EntityFrameworkCore;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands.Base;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Base;
@@ -8,12 +13,54 @@ using StudMart.PartnersMicroservice.Infrastructure.EntityFramework;
 using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Helpers;
 using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
-using StudMart.PartnersMicroservice.Repositories.Abstractions;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Helpers;
+using StudMart.PartnersMicroservice.Repositories.Abstractions;
 
-static string BuildSslPart(bool hasSsl) => hasSsl ? "VerifyFull" : "Disable";
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
+
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = HttpLoggingFields.All;
+    options.RequestBodyLogLimit = 4096;
+    options.ResponseBodyLogLimit = 4096;
+});
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(r => r
+        .AddService(
+            serviceName: "partners-microservice",
+            serviceVersion: typeof(Program).Assembly.GetName().Version?.ToString() ?? "unknown",
+            serviceInstanceId: Environment.MachineName))
+    .WithTracing(tracing =>
+    {
+        tracing
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                .AddService(builder.Environment.ApplicationName))
+            .AddAspNetCoreInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation()
+            .SetSampler(new AlwaysOnSampler())
+            .UseGrafana(config => config.ResourceDetectors.Add(ResourceDetector.Container));
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                .AddService(builder.Environment.ApplicationName))
+            .AddAspNetCoreInstrumentation()
+            .AddRuntimeInstrumentation()
+            .AddProcessInstrumentation()
+            .UseGrafana(config => config.ResourceDetectors.Add(ResourceDetector.Container));
+    });
+
+builder.Logging.ClearProviders();
+builder.Logging.AddJsonConsole(options =>
+{
+    options.IncludeScopes = true;
+    options.TimestampFormat = "yyyy-MM-dd HH:mm:ss";
+});
+
+builder.Logging.AddOpenTelemetry(logging => logging.UseGrafana());
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -21,7 +68,7 @@ builder.Configuration.AddEnvironmentVariables();
 var rabbitSettings = builder.Configuration.GetSection("RabbitMq");
 builder.Services.Configure<RabbitSettings>(rabbitSettings);
 var dbSettings = builder.Configuration.GetRequiredSection("Database");
-builder.Configuration.AddEnvironmentVariables();
+
 var settings = dbSettings.Get<DatabaseSettings>();
 if(settings is null)
     throw new NullReferenceException("Database settings not found");
@@ -32,13 +79,6 @@ builder.Services.AddDbContext<DataContext>(options =>
         optionsBuilder =>
             optionsBuilder.MigrationsAssembly("StudMart.PartnersMicroservice.Infrastructure.EntityFramework"));
 }); 
-
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseNpgsql(connectionString,
-        optionsBuilder =>
-            optionsBuilder.MigrationsAssembly("StudMart.PartnersMicroservice.Infrastructure.EntityFramework"));
-});
 
 builder.Services.AddOpenApi();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -65,6 +105,7 @@ builder.Services.AddMediatR(configuration =>
     configuration.Lifetime = ServiceLifetime.Scoped;
 });
 builder.Services.AddControllers();
+
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
@@ -75,8 +116,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseHttpLogging();
 app.MapControllers();
+app.MapHealthChecks("healthz");
 app.UseHttpsRedirection();
 app.MigrateDatabase<DataContext>();
 app.Run();
