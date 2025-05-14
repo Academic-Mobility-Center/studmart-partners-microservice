@@ -97,16 +97,7 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
 
                     b.HasIndex("CountryId");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Inn")
-                        .IsUnique();
-
                     b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("Phone")
                         .IsUnique();
 
                     b.ToTable("Partners");

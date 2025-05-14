@@ -36,27 +36,27 @@ public class PartnerFactory(
         }
 
         var email = new Email(contract.Email);
-        var verification = await partnersRepository.GetByEmailAsync(email, cancellationToken);
+        /*var verification = await partnersRepository.GetByEmailAsync(email, cancellationToken);
         if (verification is not null)
         {
             logger.LogWarning("Partner with email {CountractEmail} already exist", contract.Email);
             return new PartnerEmailAlreadyRegisteredResult(contract.Email);
-        }
+        }*/
 
         var phone = new Phone(contract.Phone);
-        verification = await partnersRepository.GetByPhoneNumberAsync(phone, cancellationToken);
+        /*verification = await partnersRepository.GetByPhoneNumberAsync(phone, cancellationToken);
         if (verification is not null)
         {
             logger.LogWarning("Partner with phone {ContractPhone} already exists", contract.Phone);
             return new PartnerPhoneAlreadyRegisteredResult(contract.Phone);
-        }
-        var inn = new Inn(contract.Inn);
+        }*/
+        /*var inn = new Inn(contract.Inn);
         verification = await partnersRepository.GetByInnAsync(inn, cancellationToken);
         if (verification is not null)
         {
             logger.LogWarning("Partner with Inn {ContractInn} already exists", contract.Inn);
             return new PartnerAlreadyRegisteredResult(contract.Inn);
-        }
+        }*/
 
         var regions = new List<Region>();
         if (!contract.HasAllRegions)

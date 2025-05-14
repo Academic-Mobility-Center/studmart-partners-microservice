@@ -59,9 +59,9 @@ public class PartnerConfiguration : IEntityTypeConfiguration<Partner>
         builder.HasOne(partner => partner.Country).WithMany().OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(partner => partner.Category).WithMany().OnDelete(DeleteBehavior.Restrict);
         builder.HasIndex(partner => partner.Name).IsUnique();
-        builder.HasIndex(partner => partner.Inn).IsUnique();
+        /*builder.HasIndex(partner => partner.Inn).IsUnique();
         builder.HasIndex(partner => partner.Email).IsUnique();
-        builder.HasIndex(partner => partner.Phone).IsUnique();
+        builder.HasIndex(partner => partner.Phone).IsUnique();*/
         builder.HasMany(partner => partner.Employees).WithOne(employee => employee.Partner).OnDelete(DeleteBehavior.Restrict);
         builder.HasMany(partner => partner.Regions).WithMany();
     }
