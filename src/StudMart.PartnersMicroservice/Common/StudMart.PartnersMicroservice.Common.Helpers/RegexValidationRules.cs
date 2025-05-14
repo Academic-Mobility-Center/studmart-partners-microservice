@@ -55,7 +55,7 @@ public  static class RegexValidationRules
     /// <summary>
     /// Regex rule for company description
     /// </summary>
-    public const string DescriptionValidationRegex = @"^[\w\d\s.,:;!?()«»\[\]{}\-—_•*#+=/\\`'""<>|@&^~%\r\n\[\]()]*$";
+    public const string DescriptionValidationRegex = @"^[\w\sА-Яа-яЁё.,!?:;""'«»–—\-()\[\]{}<>*@#%+=/\\|&~`^$№_]+$";
 
 
 }
