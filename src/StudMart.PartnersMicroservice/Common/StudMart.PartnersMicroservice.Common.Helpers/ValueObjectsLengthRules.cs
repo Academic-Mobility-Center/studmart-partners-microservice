@@ -25,7 +25,7 @@ public static class ValueObjectsLengthRules
     public const int MinSiteLength = 10;
     public const int MaxSiteLength = 255;
     public const int MinSubtitleLength = 3;
-    public const int MaxSubtitleLength = 35;
+    public const int MaxSubtitleLength = 80;
     public const int MinCategoryLength = 3;
     public const int MaxCategoryLength = 50;
     public const int MinDescriptionLength = 200;
