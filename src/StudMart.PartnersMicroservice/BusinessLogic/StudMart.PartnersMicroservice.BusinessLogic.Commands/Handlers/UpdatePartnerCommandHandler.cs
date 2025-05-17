@@ -31,7 +31,7 @@ public class UpdatePartnerCommandHandler(
             return new PartnerNotFoundResult(request.Model.Id);
         }
 
-        verification = await partnersRepository.GetByInnAsync(new Inn(request.Model.Inn), cancellationToken);
+       /* verification = await partnersRepository.GetByInnAsync(new Inn(request.Model.Inn), cancellationToken);
         if (verification is not null && request.Model.Id != verification.Id)
         {
             logger.LogWarning("Partner with Inn {ModelInn} already exists", request.Model.Inn);
@@ -58,7 +58,7 @@ public class UpdatePartnerCommandHandler(
         {
             logger.LogWarning("Partner with Name {ModelName} already exists", request.Model.Name);
             return new PartnerNameAlreadyRegisteredResult(request.Model.Name);
-        }
+        }*/
         var partner = await partnersRepository.GetByIdAsync(request.Model.Id, cancellationToken);
         partner!.Name = new CompanyName(request.Model.Name);
         partner.Phone = new Phone(request.Model.Phone);
