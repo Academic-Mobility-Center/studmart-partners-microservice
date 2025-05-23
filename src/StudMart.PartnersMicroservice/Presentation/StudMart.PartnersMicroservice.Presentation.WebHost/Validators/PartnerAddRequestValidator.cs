@@ -93,7 +93,7 @@ public class PartnerAddRequestValidator : AbstractValidator<PartnerAddRequest>
             .WithMessage("Если партнёр находится по всей стране, то представленные регионы должны быть пустыми");
         RuleFor(x => x.RegionIds).NotNull().NotEmpty().When(x => !x.HasAllRegions).WithMessage(
             "Если партнёр представлен не по всей стране, то должен быть указан хотя бы 1 регион, где он пресдатвлен");
-        RuleFor(x => x.Inn.ToString()).NotNull().NotEmpty().Length(9).WithMessage("ИНН должен содержать 9 цифр");
+        RuleFor(x => x.Inn.ToString()).NotNull().NotEmpty().Length(9, 13).WithMessage("ИНН должен содержать 10 или 12 цифр");
         RuleFor(x => x.Inn).Must(ValidateInn).WithMessage("ИНН не является ИНН юридического лица");
         
     }
