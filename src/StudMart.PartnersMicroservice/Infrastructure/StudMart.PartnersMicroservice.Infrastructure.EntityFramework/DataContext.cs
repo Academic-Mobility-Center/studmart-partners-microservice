@@ -11,6 +11,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Partner> Partners { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<DescriptionRequest> DescriptionRequests { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

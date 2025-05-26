@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StudMart.PartnersMicroservice.Infrastructure.EntityFramework;
@@ -11,9 +12,11 @@ using StudMart.PartnersMicroservice.Infrastructure.EntityFramework;
 namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250526051027_DescriptionRequestsAdded")]
+    partial class DescriptionRequestsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,15 +163,12 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
                         .HasMaxLength(1200)
                         .HasColumnType("character varying(1200)");
 
-                    b.Property<Guid>("EmployeeId")
+                    b.Property<Guid>("PartnerId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("State")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("PartnerId");
 
                     b.ToTable("DescriptionRequests");
                 });
@@ -302,13 +302,13 @@ namespace StudMart.PartnersMicroservice.Infrastructure.EntityFramework.Migration
 
             modelBuilder.Entity("StudMart.PartnersMicroservice.Domain.Entities.DescriptionRequest", b =>
                 {
-                    b.HasOne("StudMart.PartnersMicroservice.Domain.Entities.Employee", "Employee")
+                    b.HasOne("StudMart.PartnersMicroservice.Domain.Entities.Aggregates.Partner", "Partner")
                         .WithMany()
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("PartnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Employee");
+                    b.Navigation("Partner");
                 });
 
             modelBuilder.Entity("StudMart.PartnersMicroservice.Domain.Entities.Employee", b =>
