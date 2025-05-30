@@ -20,6 +20,6 @@ public class EmployeesRepository(DataContext context)
     public Task<Employee?> GetByEmailAsync(Email email, CancellationToken cancellationToken = default) =>
         _context1.Employees
             .Include(employee => employee.Partner )
-            .ThenInclude(partner => partner.Regions)
+            .ThenInclude(partner => partner.Category )
             .FirstOrDefaultAsync(employee => employee.Email == email, cancellationToken);
 }
