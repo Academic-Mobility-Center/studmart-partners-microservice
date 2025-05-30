@@ -102,7 +102,7 @@ public class DescriptionRequestsController(
         var result = await mediator.Send(new RejectDescriptionRequestCommand(requestId), cancellationToken);
         switch (result)
         {
-            case DescriptionRequestAcceptedResult acceptedResult:
+            case DescriptionRequestRejectedResult acceptedResult:
                 await mediator.Publish(new DescriptionRequestRejectedNotification(new DescriptionRequestRejectedModel(requestId, acceptedResult.Employee.Email, request.Comment)), cancellationToken);
                 return NoContent();
             case INotFoundResult<Guid> notFoundResult:
