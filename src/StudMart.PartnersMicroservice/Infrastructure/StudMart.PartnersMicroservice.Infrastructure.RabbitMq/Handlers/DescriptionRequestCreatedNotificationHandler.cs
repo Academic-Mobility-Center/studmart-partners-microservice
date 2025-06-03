@@ -14,6 +14,6 @@ public class DescriptionRequestCreatedNotificationHandler(
     IMapper mapper,
     ILogger<INotificationHandler<DescriptionRequestCreatedNotification, DescriptionRequestModel>> logger)
     : NotificationHandlerBase<DescriptionRequestCreatedNotification, DescriptionRequestModel,
-        DescriptionRequestServiceModel>(options, mapper, "descriptionRequestCreated", logger)
+        DescriptionRequestServiceModel>(options, mapper, "DescriptionRequestCreated", logger)
 {
 }
