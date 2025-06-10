@@ -1,6 +1,9 @@
 using FluentValidation;
 using Grafana.OpenTelemetry;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.Identity;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -15,10 +18,14 @@ using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Helpers;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
+using StudMart.StudentsMicroservice.Presentation.WebHost.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
-
+var section = builder.Configuration.GetSection("ServiceUrls");
+var urls = section.Get<ServiceUrls>();
+if(urls is null)
+    throw new NullReferenceException($"{nameof(ServiceUrls)} is null");
 builder.Services.AddHttpLogging(options =>
 {
     options.LoggingFields = HttpLoggingFields.All;
@@ -109,6 +116,57 @@ builder.Services.AddMediatR(configuration =>
 builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient("S3ProtectionClient", client =>
+{
+    client.BaseAddress = new Uri(urls.FilesService); // или из конфигурации
+});
+
+builder.Services.AddSingleton<IXmlRepository>(provider =>
+{
+    var factory = provider.GetRequiredService<IHttpClientFactory>();
+    var client = factory.CreateClient("S3ProtectionClient");
+    return new HttpXmlRepository(client);
+});
+
+builder.Services.AddDataProtection()
+    .SetApplicationName("StudMart")
+    .AddKeyManagementOptions(options =>
+    {
+        options.XmlRepository = builder.Services.BuildServiceProvider().GetRequiredService<IXmlRepository>();
+    });
+// Добавьте аутентификацию через куки
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+    })
+    .AddCookie(IdentityConstants.ApplicationScheme,options =>
+    {
+        options.Cookie.Name = "StudMart";
+        options.Cookie.SameSite = SameSiteMode.None;
+        options.ExpireTimeSpan = TimeSpan.FromDays(30);
+        options.SlidingExpiration = true;
+        options.LoginPath = "/login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    })
+    .AddBearerToken(IdentityConstants.BearerScheme);;
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "StudMart";
+    options.Cookie.SameSite = SameSiteMode.Lax; // Для кросс-доменных запросов
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+    options.Cookie.HttpOnly = false;
+    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+    options.SlidingExpiration = true;
+});
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = HttpLoggingFields.All;
+    options.RequestBodyLogLimit = 4096;
+    options.ResponseBodyLogLimit = 4096;
+});
+
+builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -119,6 +177,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpLogging();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("healthz");
 app.UseHttpsRedirection();

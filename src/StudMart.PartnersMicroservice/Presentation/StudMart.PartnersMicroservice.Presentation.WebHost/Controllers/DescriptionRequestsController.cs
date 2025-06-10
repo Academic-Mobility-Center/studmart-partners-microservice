@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Base;
@@ -22,9 +23,16 @@ public class DescriptionRequestsController(
     IMapper mapper,
     ILogger<DescriptionRequestsController> logger) : ControllerBase
 {
+    /// <summary>
+    /// Get all description requests or description request detailed information
+    /// </summary>
+    /// <param name="parameters">Description request Id or empty</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of all description request under verification or description request detailed information or 404 if description request was not found or 400 if error was occured</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetAsync([FromQuery] DescriptionRequestQueryParameters parameters,
         CancellationToken cancellationToken)
     {
@@ -42,7 +50,12 @@ public class DescriptionRequestsController(
         var requests = await mediator.Send(new GetAllDescriptionRequestsRequest(), cancellationToken);
         return Ok(requests.Select(mapper.Map<DescriptionRequestResponse>));
     }
-
+    /// <summary>
+    /// Creates new description request
+    /// </summary>
+    /// <param name="request">Partner Id and description</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>201 if description request was created, 404 if partner was not found or 400 if error was occured</returns>
     [HttpPost]
     [ProducesResponseType(typeof(DescriptionRequestResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -70,10 +83,18 @@ public class DescriptionRequestsController(
                 return BadRequest();
         }
     }
+    /// <summary>
+    /// Accept description request
+    /// </summary>
+    /// <param name="requestId">Description request Id</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>204 if description request was accepted, 404 if description request was not found or 400 if error was occured</returns>
     [HttpPost("{requestId:guid}/accept")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> AcceptAsync(Guid requestId, CancellationToken cancellationToken)
     {
         logger.LogInformation(JsonSerializer.Serialize(requestId));
@@ -92,10 +113,19 @@ public class DescriptionRequestsController(
                 return BadRequest($"Error while accepting request with Id {requestId}");
         }
     }
+    /// <summary>
+    /// rejects description request
+    /// </summary>
+    /// <param name="requestId">Description request Id</param>
+    /// <param name="request">Description request rejection  comment</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>204 if description request was rejected, 404 if description request was not found or 400 if error was occured</returns>
     [HttpPost("{requestId:guid}/reject")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> RejectAsync(Guid requestId, [FromBody]DescriptionRequestRejectRequest request, CancellationToken cancellationToken)
     {
         logger.LogInformation(JsonSerializer.Serialize(requestId));

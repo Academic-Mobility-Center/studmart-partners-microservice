@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Base;
@@ -17,6 +18,7 @@ namespace StudMart.PartnersMicroservice.Presentation.WebHost.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(Roles = "Admin")]
 public class CategoriesController(IMediator mediator, IMapper mapper, ILogger<CategoriesController> logger)
     : ControllerBase
 {
@@ -34,8 +36,17 @@ public class CategoriesController(IMediator mediator, IMapper mapper, ILogger<Ca
             $"Category with name {categoryAlreadyExists.Name} already registered."),
         InternalErrorResult => BadRequest("Error while working with category")
     };
-
+    /// <summary>
+    /// Gets list of partners categories or category detailed information
+    /// </summary>
+    /// <param name="queryParameters">Category Id or category name or empty</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Categories list or category detailed information or 404 if category id or name was not found or 400 if error was occured</returns>
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<CategoryResponse>),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CategoryResponse),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string),StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAsync([FromQuery] CategoryQueryParameters queryParameters,
         CancellationToken cancellationToken = default)
     {
@@ -67,11 +78,15 @@ public class CategoriesController(IMediator mediator, IMapper mapper, ILogger<Ca
         logger.LogError("Error was created while get category");
         return BadRequest();
     }
-
+    /// <summary>
+    /// Creates new category
+    /// </summary>
+    /// <param name="request">Category name</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>201 if category was created or 400 if category already exists</returns>
     [HttpPost]
     [ProducesResponseType(typeof(CategoryResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateAsync([FromBody] CategoryAddRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -90,6 +105,13 @@ public class CategoriesController(IMediator mediator, IMapper mapper, ILogger<Ca
         logger.LogWarning(error.Value!.ToString());
         return error;
     }
+    /// <summary>
+    /// Updates category names
+    /// </summary>
+    /// <param name="id">Category Id</param>
+    /// <param name="request">Category new name</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>204 if updated, 404 if category was not found, 400 if another category has same name or if error was ocuured</returns>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -112,9 +134,16 @@ public class CategoriesController(IMediator mediator, IMapper mapper, ILogger<Ca
         logger.LogWarning(error.Value!.ToString());
         return error;
     }
+    /// <summary>
+    /// Deletes category
+    /// </summary>
+    /// <param name="id">Category Id</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>204 if was deleted, 404 if category was not found or 400 if error was occured</returns>
     [HttpDelete]
     [ProducesResponseType(typeof(int), StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteAsync([FromQuery] int id, CancellationToken cancellationToken = default)
     {
         var category = await mediator.Send(new GetCategoryByIdRequest(id), cancellationToken);

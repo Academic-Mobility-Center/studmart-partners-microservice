@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Base;
@@ -30,7 +31,14 @@ public class PartnersController(IMediator mediator, IMapper mapper, ILogger<Part
         PartnerNameAlreadyRegisteredResult partnerNameAlreadyRegisteredResult => BadRequest($"Partner with Name {partnerNameAlreadyRegisteredResult.Name} already registered."),
         PartnerNotFoundResult partnerNotFoundResult => NotFound($"Partner with Id {partnerNotFoundResult.NotFoundId} not found.")
     };
+    /// <summary>
+    /// Get list of all partners or partner detailed information by Id, name, inn, email, phone
+    /// </summary>
+    /// <param name="queryParameters">Id or name or inn or  email or phone or empty </param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of all partners or partner detailed information by ID or name or inn or  email or phone or 404 if partner was not found by Id or name or inn or  email or phone or 400 if error was occured</returns>
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(PartnerResponse),StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Guid),StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(Guid),StatusCodes.Status404NotFound)]
@@ -96,8 +104,14 @@ public class PartnersController(IMediator mediator, IMapper mapper, ILogger<Part
         var partners = await mediator.Send(new GetAllPartnersRequest(), cancellationToken);
         return Ok(partners.Select(mapper.Map<PartnerShortResponse>));
     }
-
+    /// <summary>
+    /// Creates new partner
+    /// </summary>
+    /// <param name="request">Partner information</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>201 if partner was created or 404 if category or country was not found, 400 if partner with same Inn, phone, email, name already exists or if error was occured</returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(PartnerResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -123,6 +137,13 @@ public class PartnersController(IMediator mediator, IMapper mapper, ILogger<Part
         logger.LogError("Error creating partner");
         return BadRequest();
     }
+    /// <summary>
+    /// Updates partner information
+    /// </summary>
+    /// <param name="id">Partner Id</param>
+    /// <param name="request">Partner information</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>204 if partner was partner  or 404 if category or country or partner was not found, 400 if another partner with same Inn, phone, email, name already exists or if error was occured</returns>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]

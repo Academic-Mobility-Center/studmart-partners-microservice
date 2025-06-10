@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Base;
@@ -14,6 +15,7 @@ using StudMart.PartnersMicroservice.Presentation.WebHost.Responses.Country;
 namespace StudMart.PartnersMicroservice.Presentation.WebHost.Controllers;
 [ApiController]
 [Route("[controller]")]
+[Authorize(Roles = "Admin")]
 public class CountriesController(IMapper mapper, IMediator mediator, ILogger<CategoriesController> logger) : ControllerBase
 {
     private async Task<IEnumerable<CountryShortResponse>> GetAllCategoriesAsync(CancellationToken cancellationToken)
@@ -21,7 +23,12 @@ public class CountriesController(IMapper mapper, IMediator mediator, ILogger<Cat
         var countries = await mediator.Send(new GetAllCountriesRequest(), cancellationToken);
         return countries.Select(mapper.Map<CountryShortResponse>);
     }
-        
+    /// <summary>
+    /// Get list of all countries or country detailed information
+    /// </summary>
+    /// <param name="queryParameters">Country Id or country name or empty</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of countries or country detailed information or 404 if country with id or name was not found or 400 if error was occured</returns>
     [HttpGet]
     public async Task<IActionResult> GetAsync([FromQuery]CountryQueryParameters queryParameters, CancellationToken cancellationToken = default)
     {
@@ -55,6 +62,12 @@ public class CountriesController(IMapper mapper, IMediator mediator, ILogger<Cat
         }
         return BadRequest();
     }
+    /// <summary>
+    /// Creates new country
+    /// </summary>
+    /// <param name="request">Country name</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>201 if country was created, 400 if another country has same name or if error was occured</returns>
     [HttpPost]
     [ProducesResponseType(typeof(CountryResponse),StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string),StatusCodes.Status400BadRequest)]
@@ -79,7 +92,7 @@ public class CountriesController(IMapper mapper, IMediator mediator, ILogger<Cat
             default:
             {
                 logger.LogError("Error creating country");
-                return BadRequest();
+                return BadRequest("Error creating country");
             }
         }
     }

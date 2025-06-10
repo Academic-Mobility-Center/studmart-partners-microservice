@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Base;
@@ -30,7 +31,12 @@ public class EmployeesController(IMediator mediator, IMapper mapper, ILogger<Emp
         EmployeeNotFoundResult employeeNotFoundResult => NotFound($"Employee with id {employeeNotFoundResult.NotFoundId} not found."),
 
     };
-
+    /// <summary>
+    /// Get list of employees or employee detailed information
+    /// </summary>
+    /// <param name="queryParameters">Employee Id or employee email or empty</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of all employees or employee detailed information by Id or Email or 404 if employee was not found by Id or email or 400 if error was occured</returns>
     [HttpGet]
     [ProducesResponseType(typeof(EmployeeResponse),StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string),StatusCodes.Status404NotFound)]
@@ -61,7 +67,7 @@ public class EmployeesController(IMediator mediator, IMapper mapper, ILogger<Emp
                 cancellationToken);
             if (employee is null)
             {
-                logger.LogWarning("Employee with id {QueryParametersId} not found", queryParameters.id, queryParameters.id);
+                logger.LogWarning("Employee with id {QueryParametersId} not found", queryParameters.id);
                 return NotFound(queryParameters.id);
             }
 
@@ -70,8 +76,14 @@ public class EmployeesController(IMediator mediator, IMapper mapper, ILogger<Emp
 
         return BadRequest();
     }
-
+    /// <summary>
+    /// Creates new employee
+    /// </summary>
+    /// <param name="request">Employe firstname, last name, email and partner Id</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>201 if employee was created, 404 if partner was not found, 400 if another employee has same email or if error was occured</returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(EmployeeResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -98,6 +110,13 @@ public class EmployeesController(IMediator mediator, IMapper mapper, ILogger<Emp
         logger.LogError("Error creating employee");
         return BadRequest();
     }
+    /// <summary>
+    /// Updates employee information
+    /// </summary>
+    /// <param name="id">Employee Id</param>
+    /// <param name="request">Employee email, firstname and lastname</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>204 if employee was updated, 404 if employee was not found or partner was not found, 400 if another employee has same email or if error was occured</returns>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]

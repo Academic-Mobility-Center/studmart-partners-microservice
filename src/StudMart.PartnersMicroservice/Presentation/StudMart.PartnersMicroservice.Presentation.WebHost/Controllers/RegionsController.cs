@@ -1,6 +1,7 @@
 using System.Text.Json;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Base;
@@ -22,8 +23,17 @@ public class RegionsController(IMapper mapper, IMediator mediator, ILogger<Regio
         var categories = await mediator.Send(new GetAllRegionsRequest(), cancellationToken);
         return categories.Select(mapper.Map<RegionShortResponse>);
     }
-        
+    /// <summary>
+    /// Get list of all regions or list of regions by country or region detailed information by region Id or region name
+    /// </summary>
+    /// <param name="queryParameters">Region Id or region name or country Id or empty</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of all regions or list of regions into country or region detailed information by Id or name or 404 if region with id or name was not found or country with id was not found or 400 if error was occured</returns>
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<RegionShortResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RegionShortResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAsync([FromQuery]RegionQueryParameters queryParameters, CancellationToken cancellationToken = default)
     {
         logger.LogInformation(JsonSerializer.Serialize(queryParameters));
@@ -65,8 +75,14 @@ public class RegionsController(IMapper mapper, IMediator mediator, ILogger<Regio
         }
         return BadRequest();
     }
-
+    /// <summary>
+    /// Creates new region
+    /// </summary>
+    /// <param name="request">Country Id and region name</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>201 if region was created, 404 if country was not found, 400 if region with same name already exists or error was occured</returns>
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(RegionResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(int), StatusCodes.Status404NotFound)]
