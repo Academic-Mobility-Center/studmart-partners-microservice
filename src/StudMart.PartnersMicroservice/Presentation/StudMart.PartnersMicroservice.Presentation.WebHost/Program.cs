@@ -18,7 +18,6 @@ using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications;
 using StudMart.PartnersMicroservice.Infrastructure.Repositories.Implementation;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Helpers;
 using StudMart.PartnersMicroservice.Repositories.Abstractions;
-using StudMart.StudentsMicroservice.Presentation.WebHost.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -143,21 +142,28 @@ builder.Services.AddAuthentication(options =>
     .AddCookie(IdentityConstants.ApplicationScheme,options =>
     {
         options.Cookie.Name = "StudMart";
-        options.Cookie.SameSite = SameSiteMode.None;
+        options.Cookie.SameSite = !string.IsNullOrEmpty(urls.Domain) ?  SameSiteMode.None : SameSiteMode.Lax;
+        options.Cookie.SecurePolicy = !string.IsNullOrEmpty(urls.Domain) ? CookieSecurePolicy.Always : CookieSecurePolicy.None;
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
         options.SlidingExpiration = true;
+        options.Cookie.HttpOnly = true;
         options.LoginPath = "/login";
         options.AccessDeniedPath = "/Account/AccessDenied";
+        if(!string.IsNullOrEmpty(urls.Domain))
+            options.Cookie.Domain = urls.Domain;
     })
-    .AddBearerToken(IdentityConstants.BearerScheme);;
+    .AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.Name = "StudMart";
-    options.Cookie.SameSite = SameSiteMode.Lax; // Для кросс-доменных запросов
-    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
-    options.Cookie.HttpOnly = false;
+    options.Cookie.SameSite = !string.IsNullOrEmpty(urls.Domain) ?  SameSiteMode.None : SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = !string.IsNullOrEmpty(urls.Domain) ? CookieSecurePolicy.Always : CookieSecurePolicy.None;
+    options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(30);
     options.SlidingExpiration = true;
+    if(!string.IsNullOrEmpty(urls.Domain))
+        options.Cookie.Domain = urls.Domain;
+    
 });
 builder.Services.AddHttpLogging(options =>
 {

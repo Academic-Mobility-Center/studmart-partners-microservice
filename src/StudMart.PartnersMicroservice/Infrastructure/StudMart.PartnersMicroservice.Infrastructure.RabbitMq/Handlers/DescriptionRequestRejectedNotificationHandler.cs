@@ -7,7 +7,7 @@ using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Helpers;
 using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Models;
 using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications;
 
-namespace StudMart.PartnersMicroservice.Infrastructure.RabbitMq;
+namespace StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Handlers;
 
 public class DescriptionRequestRejectedNotificationHandler(
     IOptions<RabbitSettings> options,

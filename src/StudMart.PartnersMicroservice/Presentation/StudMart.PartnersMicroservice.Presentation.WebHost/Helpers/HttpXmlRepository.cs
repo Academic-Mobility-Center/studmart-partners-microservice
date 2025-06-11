@@ -2,7 +2,7 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.DataProtection.Repositories;
 
-namespace StudMart.StudentsMicroservice.Presentation.WebHost.Helpers;
+namespace StudMart.PartnersMicroservice.Presentation.WebHost.Helpers;
 
 public class HttpXmlRepository(HttpClient httpClient) : IXmlRepository
 {
