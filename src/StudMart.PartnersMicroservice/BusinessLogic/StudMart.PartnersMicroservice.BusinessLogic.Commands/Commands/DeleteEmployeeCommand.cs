@@ -3,7 +3,7 @@ using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Base;
 
 namespace StudMart.PartnersMicroservice.BusinessLogic.Commands.Commands;
 
-public class DeleteEmployeeCommand(Guid Id) :  IRequest<IResult>
+public class DeleteEmployeeCommand(Guid id) :  IRequest<IResult>
 {
-    public Guid Id => Id;
+    public Guid Id => id;
 }
