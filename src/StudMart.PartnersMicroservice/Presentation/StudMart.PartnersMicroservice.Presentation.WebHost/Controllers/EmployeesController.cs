@@ -144,5 +144,23 @@ public class EmployeesController(IMediator mediator, IMapper mapper, ILogger<Emp
         return BadRequest();
         
     }
+
+    [HttpDelete]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken = default)
+    {
+        var result = await mediator.Send(new DeleteEmployeeCommand(id), cancellationToken);
+
+        if (result is ISuccessResult)
+        {
+            logger.LogInformation("Employee with id {Id} was successfully deleted", id);
+            return NoContent();
+        }
         
+        var response = MapErrorFromLogicResult(result);
+        logger.LogWarning(response.Value!.ToString());
+        return response;
+    }
 }
