@@ -151,11 +151,20 @@ public class EmployeesController(IMediator mediator, IMapper mapper, ILogger<Emp
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken = default)
     {
+        var employeeModel =  await mediator.Send(new GetEmployeeByIdRequest(id), cancellationToken);
+        
+        if (employeeModel is null)
+        {
+            logger.LogWarning("Employee with id  {EmployeeId} not found", id);
+            return NotFound(id);
+        }
+        
         var result = await mediator.Send(new DeleteEmployeeCommand(id), cancellationToken);
 
         if (result is ISuccessResult)
         {
             logger.LogInformation("Employee with id {Id} was successfully deleted", id);
+            await mediator.Publish(new EmployeeDeletedNotification(employeeModel), cancellationToken);
             return NoContent();
         }
         
