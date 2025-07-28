@@ -9,9 +9,11 @@ using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Employee;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Partner;
 using StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Region;
 using StudMart.PartnersMicroservice.BusinessLogic.Models.Partner;
+using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Employee;
 using StudMart.PartnersMicroservice.BusinessLogic.Queries.Requests.Partner;
 using StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Notifications;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Requests.Partner;
+using StudMart.PartnersMicroservice.Presentation.WebHost.Responses.Employee;
 using StudMart.PartnersMicroservice.Presentation.WebHost.Responses.Partner;
 using IResult = StudMart.PartnersMicroservice.BusinessLogic.Commands.Results.Base.IResult;
 
@@ -171,5 +173,69 @@ public class PartnersController(IMediator mediator, IMapper mapper, ILogger<Part
         logger.LogError("Error creating partner");
         return BadRequest();
         
+    }
+
+    [HttpDelete]
+    [Authorize(Roles = "Admin")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteAsync([FromQuery] Guid id, CancellationToken cancellationToken)
+    {
+        logger.LogInformation(JsonSerializer.Serialize(id));
+        logger.LogInformation($"Try processing delete partner with id {id}.");
+        
+        var partner = await mediator.Send(new GetPartnerByIdRequest(id), cancellationToken);
+
+        if (partner is null)
+        {
+            return NotFound($"Partner with id {id} is not found");
+        }
+        
+        var employees = await mediator.Send(new GetAllEmployeesRequest(), cancellationToken);
+        var employeesForDelete = employees.Select(mapper.Map<EmployeeResponse>).Where(w => w.Partner.Id == partner.Id);
+        
+        logger.LogInformation("Try found employees partner in table 'Employees'.");
+
+        if (!employeesForDelete.Any())
+        {
+            logger.LogWarning("Employees for delete by partner with id {Guid} not found.", id);
+        }
+
+        foreach (var employee in employeesForDelete)
+        {
+            var empDeleteResult = await mediator.Send(new DeleteEmployeeCommand(employee.Id), cancellationToken);
+
+            if (empDeleteResult is ISuccessResult)
+            {
+                logger.LogInformation("Successfully deleted partner employee with id {EmployeeId}.", employee.Id);
+                continue;
+            }
+
+            if (empDeleteResult is EmployeeNotFoundResult)
+            {
+                logger.LogInformation("Not found partner employee with id {EmployeeId}.", employee.Id);
+            }
+        }
+        
+        logger.LogInformation("Try found and delete PartnerRegions in table 'PartnerRegion'.");
+        
+        var deletedPartnerRegionsResult = await mediator.Send(new DeletePartnerRegionsCommand(partner.Id), cancellationToken);
+        
+        logger.LogInformation(deletedPartnerRegionsResult is ISuccessResult
+            ? "Successfully deleted partner regions. Try to delete partner. "
+            : "Not found partner regions. Try to delete partner.");
+        
+        var deletePartnerResult = await mediator.Send(new DeletePartnerCommand(partner.Id), cancellationToken);
+
+        if (deletePartnerResult is ISuccessResult)
+        {
+            logger.LogInformation("Successfully deleted partner with id {PartnerId}.",  partner.Id);
+            return NoContent();
+        }
+        
+        var response = MapErrorFromLogicResult(deletePartnerResult);
+        logger.LogWarning(response.Value!.ToString());
+        return response;
     }
 }
