@@ -192,27 +192,6 @@ public class PartnersController(IMediator mediator, IMapper mapper, ILogger<Part
             return NotFound($"Partner with id {id} is not found");
         }
         
-        logger.LogInformation("Try found and delete employees partner in table 'Employees'.");
-        
-        var employeesDeleteResult = await mediator.Send(new DeletePartnerEmployeesCommand(id), cancellationToken);
-
-        if (employeesDeleteResult is ISuccessResult)
-        {
-            logger.LogInformation("Successfully deleted partner employees");
-        }
-        else
-        {
-            logger.LogWarning("Not found no one partner employees");
-        }
-        
-        logger.LogInformation("Try found and delete PartnerRegions in table 'PartnerRegion'.");
-        
-        var deletedPartnerRegionsResult = await mediator.Send(new DeletePartnerRegionsCommand(partner.Id), cancellationToken);
-        
-        logger.LogInformation(deletedPartnerRegionsResult is ISuccessResult
-            ? "Successfully deleted partner regions. Try to delete partner. "
-            : "Not found partner regions. Try to delete partner.");
-        
         var deletePartnerResult = await mediator.Send(new DeletePartnerCommand(partner.Id), cancellationToken);
 
         if (deletePartnerResult is ISuccessResult)
