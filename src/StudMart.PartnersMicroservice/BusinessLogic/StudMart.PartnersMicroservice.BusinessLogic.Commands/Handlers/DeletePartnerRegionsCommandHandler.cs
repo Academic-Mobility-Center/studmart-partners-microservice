@@ -16,7 +16,7 @@ public class DeletePartnerRegionsCommandHandler(
     public async Task<IResult> Handle(DeletePartnerRegionsCommand request, CancellationToken cancellationToken)
     {
         var regionsDeleted = await dataContext.Database.ExecuteSqlRawAsync(
-            SQLQueryHelper.DeletePartnersRegionsQuery,
+            CustomSQLQueryHelper.DeletePartnersRegionsQuery,
             request.PartnerId);
 
         return regionsDeleted > 0

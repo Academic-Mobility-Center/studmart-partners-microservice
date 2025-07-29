@@ -192,30 +192,17 @@ public class PartnersController(IMediator mediator, IMapper mapper, ILogger<Part
             return NotFound($"Partner with id {id} is not found");
         }
         
-        var employees = await mediator.Send(new GetAllEmployeesRequest(), cancellationToken);
-        var employeesForDelete = employees.Where(w => w.Partner.Id == partner.Id);
+        logger.LogInformation("Try found and delete employees partner in table 'Employees'.");
         
-        logger.LogInformation("Try found employees partner in table 'Employees'.");
+        var employeesDeleteResult = await mediator.Send(new DeletePartnerEmployeesCommand(id), cancellationToken);
 
-        if (!employeesForDelete.Any())
+        if (employeesDeleteResult is ISuccessResult)
         {
-            logger.LogWarning("Employees for delete by partner with id {Guid} not found.", id);
+            logger.LogInformation("Successfully deleted partner employees");
         }
-
-        foreach (var employee in employeesForDelete)
+        else
         {
-            var empDeleteResult = await mediator.Send(new DeleteEmployeeCommand(employee.Id), cancellationToken);
-
-            if (empDeleteResult is ISuccessResult)
-            {
-                logger.LogInformation("Successfully deleted partner employee with id {EmployeeId}.", employee.Id);
-                continue;
-            }
-
-            if (empDeleteResult is EmployeeNotFoundResult)
-            {
-                logger.LogInformation("Not found partner employee with id {EmployeeId}.", employee.Id);
-            }
+            logger.LogWarning("Not found no one partner employees");
         }
         
         logger.LogInformation("Try found and delete PartnerRegions in table 'PartnerRegion'.");
@@ -231,6 +218,7 @@ public class PartnersController(IMediator mediator, IMapper mapper, ILogger<Part
         if (deletePartnerResult is ISuccessResult)
         {
             logger.LogInformation("Successfully deleted partner with id {PartnerId}.",  partner.Id);
+            await mediator.Publish(new PartnerDeletedNotification(partner), cancellationToken);
             return NoContent();
         }
         
