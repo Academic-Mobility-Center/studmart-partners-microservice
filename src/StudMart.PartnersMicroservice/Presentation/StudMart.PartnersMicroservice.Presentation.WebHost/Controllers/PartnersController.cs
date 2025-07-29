@@ -193,7 +193,7 @@ public class PartnersController(IMediator mediator, IMapper mapper, ILogger<Part
         }
         
         var employees = await mediator.Send(new GetAllEmployeesRequest(), cancellationToken);
-        var employeesForDelete = employees.Select(mapper.Map<EmployeeResponse>).Where(w => w.Partner.Id == partner.Id);
+        var employeesForDelete = employees.Where(w => w.Partner.Id == partner.Id);
         
         logger.LogInformation("Try found employees partner in table 'Employees'.");
 
