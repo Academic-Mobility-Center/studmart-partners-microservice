@@ -18,8 +18,8 @@ public class DeletePartnerEmployeesCommandHandler(
     {
         var deleteEmployeeResult = await dataContext.Database.ExecuteSqlRawAsync(
             CustomSQLQueryHelper.DeletePartnerEmployeesByPartnerIdQuery, 
-            request.PartnerId, 
-            cancellationToken);
+            [request.PartnerId],
+            cancellationToken: cancellationToken);
         
         return  deleteEmployeeResult > 0 
                 ? new PartnerEmployeesDeletedResult()
