@@ -23,6 +23,6 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
             .HasConversion(email => email.Value, email => new Email(email))
             .HasMaxLength(ValueObjectsLengthRules.MaxEmailLength)
             .IsRequired();
-        builder.HasOne(employee => employee.Partner).WithOne().OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(employee => employee.Partner).WithOne().OnDelete(DeleteBehavior.Cascade);
     }
 }
