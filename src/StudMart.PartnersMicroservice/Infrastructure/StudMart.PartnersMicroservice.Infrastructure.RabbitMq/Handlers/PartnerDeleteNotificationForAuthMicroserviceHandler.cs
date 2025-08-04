@@ -12,7 +12,6 @@ namespace StudMart.PartnersMicroservice.Infrastructure.RabbitMq.Handlers;
 public class PartnerDeleteNotificationForAuthMicroserviceHandler(
     IOptions<RabbitSettings> options,
     IMapper mapper,
-    ILogger<PartnerDeleteNotificationForAuthMicroserviceHandler> logger) : NotificationHandlerBase<PartnerDeleteNotificationForAuthMicroservice, PartnerDeleteModel, PartnerServiceModel>(options, mapper, "DeletePartnerEmployeesAuthMicroservice", logger)
+    ILogger<PartnerDeleteNotificationForAuthMicroserviceHandler> logger) : NotificationHandlerBase<PartnerDeleteNotificationForAuthMicroservice, PartnerDeleteModel, PartnerDeletionServiceModel>(options, mapper, "DeletePartnerEmployeesAuthMicroservice", logger)
 {
-    
 }

@@ -20,5 +20,8 @@ public class PartnerMappingProfile : Profile
             .ForCtorParam("CompanyName", expression => expression.MapFrom(model => model.Name))
             .ForCtorParam("HasAllRegions", expression => expression.MapFrom(model => model.HasAllRegions))
             .ForCtorParam("RegionIds", expression => expression.MapFrom(model => model.Regions.Select(region => region.Id)));
+        CreateMap<PartnerDeleteModel, PartnerDeletionServiceModel>()
+            .ForCtorParam("PartnerId", expression => expression.MapFrom(model => model.PartnerId))
+            .ForCtorParam("EmployeesIds", expression => expression.MapFrom(model => model.EmployeesIds));
     }
 }
