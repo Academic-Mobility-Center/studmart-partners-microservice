@@ -192,6 +192,18 @@ public class PartnersController(IMediator mediator, IMapper mapper, ILogger<Part
             return NotFound($"Partner with id {id} is not found");
         }
         
+        var partnerEmployees = await mediator.Send(new GetPartnerEmployeesRequest(partner.Id), cancellationToken);
+
+        if (partnerEmployees.Any())
+        {
+            logger.LogInformation("Try publish delete partner employees. Employees count [{EmployeesCount}]", partnerEmployees.Count());
+            await mediator.Publish(new PartnerDeleteNotificationForAuthMicroservice(new PartnerDeleteModel(partner.Id, partnerEmployees.Select((s => s.Id)))), cancellationToken);
+        }
+        else
+        {
+            logger.LogWarning("Partner with id {id} does not have any employees.", partner.Id);
+        }
+
         var deletePartnerResult = await mediator.Send(new DeletePartnerCommand(partner.Id), cancellationToken);
 
         if (deletePartnerResult is ISuccessResult)

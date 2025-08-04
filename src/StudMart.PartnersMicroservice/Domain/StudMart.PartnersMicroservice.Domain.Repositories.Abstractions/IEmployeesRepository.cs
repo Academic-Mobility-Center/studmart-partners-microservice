@@ -6,4 +6,5 @@ public interface IEmployeesRepository : IUpdatableRepository<Employee, Guid>, ID
     IEmailEntityRepository<Employee, Guid>
 
 {
+    Task<IEnumerable<Employee>> GetAllByPartnerIdAsync(Guid partnerId, CancellationToken cancellationToken);
 }

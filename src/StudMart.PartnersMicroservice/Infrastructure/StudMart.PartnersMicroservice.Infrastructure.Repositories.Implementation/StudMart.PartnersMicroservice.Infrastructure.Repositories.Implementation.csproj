@@ -7,8 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Domain.Entities\StudMart.PartnersMicroservice.Domain.Entities.csproj" />
       <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions\StudMart.PartnersMicroservice.Domain.Repositories.Abstractions.csproj" />
+      <ProjectReference Include="..\..\Domain\StudMart.PartnersMicroservice.Domain.ValueObjects\StudMart.PartnersMicroservice.Domain.ValueObjects.csproj" />
       <ProjectReference Include="..\StudMart.PartnersMicroservice.Infrastructure.EntityFramework\StudMart.PartnersMicroservice.Infrastructure.EntityFramework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
     </ItemGroup>
 
 </Project>

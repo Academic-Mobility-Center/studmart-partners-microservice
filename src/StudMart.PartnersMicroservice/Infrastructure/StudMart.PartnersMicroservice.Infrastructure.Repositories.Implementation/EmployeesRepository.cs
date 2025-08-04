@@ -22,4 +22,17 @@ public class EmployeesRepository(DataContext context)
             .Include(employee => employee.Partner )
             .ThenInclude(partner => partner.Category )
             .FirstOrDefaultAsync(employee => employee.Email == email, cancellationToken);
+    
+    public async Task<IEnumerable<Employee>> GetAllByPartnerIdAsync(
+        Guid partnerId, 
+        CancellationToken cancellationToken = default)
+    {
+        return await _context1.Employees
+            .Where(employee => employee.Partner.Id == partnerId) // Используем PartnerId вместо навигации
+            .Include(employee => employee.Partner)
+            .ThenInclude(partner => partner.Category)
+            .AsNoTracking() // Для read-only операций
+            .ToListAsync(cancellationToken);
+    }
+
 }
