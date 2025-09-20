@@ -1,6 +1,12 @@
-name: 🚀 Сборка и деплой в Yandex Cloud
+  name: 🚀 Сборка и деплой в Yandex Cloud
 
 on:
+  # Автоматические триггеры для деплоя
+  push:
+    branches:
+      - master    # Продовый стенд
+      - staging   # Тестовый стенд
+  # Ручной запуск
   workflow_dispatch:
     inputs:
       environment:
@@ -22,22 +28,74 @@ on:
         default: true
         type: boolean
 
+# Контроль конкурентных запусков
+concurrency:
+  group: deploy-${{ github.ref_name }}-${{ github.event.inputs.environment || github.ref_name }}
+  cancel-in-progress: true
+
 env:
   APP_NAME: "partners-microservice"
   HELM_CHART_REPO: "https://github.com/Academic-Mobility-Center/helm-charts.git"
   HELM_CHART_NAME: "partners-microservice"
   REGISTRY: "cr.yandex/crphujqn4a371i0ve0b5"
-  K8S_NAMESPACE: "${{ github.event.inputs.environment }}"
-  IMAGE_TAG: ${{ github.event.inputs.image-tag || github.sha }}
   DOCKERFILE_PATH: "./src/StudMart.PartnersMicroservice/Presentation/StudMart.PartnersMicroservice.Presentation.WebHost/Dockerfile"
   CONTEXT_PATH: "./src/StudMart.PartnersMicroservice"
-  VALUES_FILE: "values.${{ github.event.inputs.environment }}.yaml"
+  # Определяем окружение: для автоматических запусков по веткам, для ручных - из параметров
+  K8S_NAMESPACE: ${{ github.event.inputs.environment || (github.ref_name == 'master' && 'production') || 'staging' }}
+  # Тег образа: для автоматических запусков используем SHA коммита, для ручных - из параметров
+  IMAGE_TAG: ${{ github.event.inputs.image-tag || github.sha }}
+  VALUES_FILE: "values.${{ github.event.inputs.environment || (github.ref_name == 'master' && 'production') || 'staging' }}.yaml"
 
 jobs:
-  deploy:
-    name: 🚀 Деплой ${{ github.event.inputs.image-tag }} в ${{ github.event.inputs.environment }}
+  # Запуск тестов (если они есть)
+  test:
+    name: 🧪 Запуск тестов
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    if: always()
+    steps:
+      - name: 🛠 Загрузка кода
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Установка .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: 🔍 Поиск тестовых проектов
+        id: find-tests
+        run: |
+          TEST_PROJECTS=$(find . -name "*.Tests.csproj" -o -name "*Test*.csproj" | tr '\n' ' ')
+          if [ -n "$TEST_PROJECTS" ]; then
+            echo "test-projects=$TEST_PROJECTS" >> $GITHUB_OUTPUT
+            echo "has-tests=true" >> $GITHUB_OUTPUT
+            echo "✅ Найдены тестовые проекты: $TEST_PROJECTS"
+          else
+            echo "has-tests=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ Тестовые проекты не найдены"
+          fi
+
+      - name: 🧪 Запуск тестов
+        if: steps.find-tests.outputs.has-tests == 'true'
+        run: |
+          echo "🧪 Запускаю тесты..."
+          dotnet test ${{ steps.find-tests.outputs.test-projects }} --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
+      - name: 📊 Публикация результатов тестов
+        if: always() && steps.find-tests.outputs.has-tests == 'true'
+        uses: dorny/test-reporter@v1
+        with:
+          name: .NET Tests
+          path: ./TestResults/**/*.trx
+          reporter: dotnet-trx
+
+  deploy:
+    name: 🚀 Деплой ${{ github.event.inputs.image-tag || github.sha }} в ${{ github.event.inputs.environment || (github.ref_name == 'master' && 'production') || 'staging' }}
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || (github.ref_name == 'master' && 'production') || 'staging' }}
+    needs: test
+    if: always() && (needs.test.result == 'success' || needs.test.result == 'skipped')
     
     steps:
       - name: 📌 Подготовка
@@ -46,13 +104,15 @@ jobs:
           echo "🚀 Начало деплоя ${{ env.APP_NAME }}"
           echo "👤 Инициатор: ${{ github.actor }}"
           echo "🏷 Версия образа: ${{ env.IMAGE_TAG }}"
-          echo "🌍 Окружение: ${{ github.event.inputs.environment }}"
+          echo "🌍 Окружение: ${{ env.K8S_NAMESPACE }}"
           echo "📝 Файл конфигурации: ${{ env.VALUES_FILE }}"
-          echo "🛠 Сборка при отсутствии образа: ${{ github.event.inputs.build-image }}"
+          echo "🛠 Сборка при отсутствии образа: ${{ github.event.inputs.build-image || 'true' }}"
           echo "🐳 Dockerfile: ${{ env.DOCKERFILE_PATH }}"
           echo "⏱ Начато в: $(date)"
           echo "🔖 Хеш коммита: ${{ github.sha }}"
           echo "🏷 Метка: ${{ github.ref_name }}"
+          echo "🔄 Тип запуска: ${{ github.event_name == 'push' && 'Автоматический' || 'Ручной' }}"
+          echo "📋 Ветка: ${{ github.ref_name }}"
 
           echo "start-time=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
 
@@ -101,7 +161,7 @@ jobs:
           fi
 
       - name: 🏗️ Сборка Docker образа
-        if: steps.image-check.outputs.image-exists == 'false' && github.event.inputs.build-image
+        if: steps.image-check.outputs.image-exists == 'false' && (github.event.inputs.build-image != 'false')
         run: |
           echo "🏗️ Начинаю сборку Docker образа..."
           echo "📦 Имя образа: ${{ env.REGISTRY }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}"
@@ -152,6 +212,7 @@ jobs:
           echo "📌 Целевой неймспейс: ${{ env.K8S_NAMESPACE }}"
           echo "🏷 Версия образа: ${{ env.IMAGE_TAG }}"
           echo "📝 Использую конфигурацию: ${{ env.VALUES_FILE }}"
+          echo "🔄 Тип запуска: ${{ github.event_name == 'push' && 'Автоматический' || 'Ручной' }}"
           
           echo "::group::🚀 Выполнение Helm деплоя"
           helm upgrade --install ${{ env.APP_NAME }} ./helm-chart/charts/${{ env.HELM_CHART_NAME }} \
@@ -160,7 +221,7 @@ jobs:
             --values ./helm-chart/charts/${{ env.HELM_CHART_NAME }}/${{ env.VALUES_FILE }} \
             --set image.tag=${{ env.IMAGE_TAG }} \
             --set image.repository=${{ env.REGISTRY }}/${{ env.APP_NAME }} \
-            --set ci.build.enabled=${{ github.event.inputs.build-image }} \
+            --set ci.build.enabled=${{ github.event.inputs.build-image != 'false' }} \
             --set image.verify=true \
             --wait \
             --timeout 5m \
@@ -193,10 +254,13 @@ jobs:
         run: |
           echo "🏁 Процесс деплоя завершен"
           echo "👤 Инициатор: ${{ github.actor }}"
+          echo "🔄 Тип запуска: ${{ github.event_name == 'push' && 'Автоматический' || 'Ручной' }}"
+          echo "📋 Ветка: ${{ github.ref_name }}"
           echo "⏱ Длительность: $(( ($(date +%s) - $(date -d "${{ steps.preparation.outputs.start-time }}" +%s)) / 60 )) минут"
           echo "🔄 Состояние образа: ${{ steps.image-check.outputs.image-exists == 'true' && 'Существующий' || 'Новый' }}"
           echo "🚀 Статус деплоя: ${{ job.status }}"
           echo "📝 Использованная конфигурация: ${{ env.VALUES_FILE }}"
+          echo "🧪 Статус тестов: ${{ needs.test.result || 'Не запускались' }}"
           
           if [ "${{ job.status }}" = "success" ]; then
             echo "✅ Деплой успешно завершен!"
@@ -205,3 +269,5 @@ jobs:
             echo "❌ Деплой завершен с ошибкой"
             echo "::error::Деплой завершен с ошибкой"
           fi
+
+          
