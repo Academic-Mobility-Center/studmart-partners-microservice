@@ -51,7 +51,6 @@ jobs:
     name: 🚀 Деплой ${{ github.event.inputs.image-tag || github.sha }} в ${{ github.event.inputs.environment || (github.ref_name == 'master' && 'production') || 'staging' }}
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || (github.ref_name == 'master' && 'production') || 'staging' }}
-    if: always() && (needs.test.result == 'success' || needs.test.result == 'skipped')
     
     steps:
       - name: 📌 Подготовка
