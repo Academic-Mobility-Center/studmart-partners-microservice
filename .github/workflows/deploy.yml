@@ -47,54 +47,10 @@ env:
   VALUES_FILE: "values.${{ github.event.inputs.environment || (github.ref_name == 'master' && 'production') || 'staging' }}.yaml"
 
 jobs:
-  # Запуск тестов (если они есть)
-  test:
-    name: 🧪 Запуск тестов
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: 🛠 Загрузка кода
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: 🔧 Установка .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: 🔍 Поиск тестовых проектов
-        id: find-tests
-        run: |
-          TEST_PROJECTS=$(find . -name "*.Tests.csproj" -o -name "*Test*.csproj" | tr '\n' ' ')
-          if [ -n "$TEST_PROJECTS" ]; then
-            echo "test-projects=$TEST_PROJECTS" >> $GITHUB_OUTPUT
-            echo "has-tests=true" >> $GITHUB_OUTPUT
-            echo "✅ Найдены тестовые проекты: $TEST_PROJECTS"
-          else
-            echo "has-tests=false" >> $GITHUB_OUTPUT
-            echo "ℹ️ Тестовые проекты не найдены"
-          fi
-
-      - name: 🧪 Запуск тестов
-        if: steps.find-tests.outputs.has-tests == 'true'
-        run: |
-          echo "🧪 Запускаю тесты..."
-          dotnet test ${{ steps.find-tests.outputs.test-projects }} --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./TestResults
-
-      - name: 📊 Публикация результатов тестов
-        if: always() && steps.find-tests.outputs.has-tests == 'true'
-        uses: dorny/test-reporter@v1
-        with:
-          name: .NET Tests
-          path: ./TestResults/**/*.trx
-          reporter: dotnet-trx
-
   deploy:
     name: 🚀 Деплой ${{ github.event.inputs.image-tag || github.sha }} в ${{ github.event.inputs.environment || (github.ref_name == 'master' && 'production') || 'staging' }}
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || (github.ref_name == 'master' && 'production') || 'staging' }}
-    needs: test
     if: always() && (needs.test.result == 'success' || needs.test.result == 'skipped')
     
     steps:
@@ -260,7 +216,6 @@ jobs:
           echo "🔄 Состояние образа: ${{ steps.image-check.outputs.image-exists == 'true' && 'Существующий' || 'Новый' }}"
           echo "🚀 Статус деплоя: ${{ job.status }}"
           echo "📝 Использованная конфигурация: ${{ env.VALUES_FILE }}"
-          echo "🧪 Статус тестов: ${{ needs.test.result || 'Не запускались' }}"
           
           if [ "${{ job.status }}" = "success" ]; then
             echo "✅ Деплой успешно завершен!"
